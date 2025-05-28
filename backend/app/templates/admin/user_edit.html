@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{% if user %}Редактирование пользователя{% else %}Создание пользователя{% endif %}</h1>
+<form method="post" action="{% if user %}/admin/users/{{ user.id }}/edit{% else %}/admin/users/create{% endif %}">
+    <div>
+        <label for="username">Имя пользователя:</label>
+        <input type="text" id="username" name="username" value="{{ user.username if user else '' }}" required>
+    </div>
+    <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" value="{{ user.email if user else '' }}" required>
+    </div>
+    <div>
+        <label for="password">Пароль:</label>
+        <input type="password" id="password" name="password" {% if not user %}required{% endif %}>
+    </div>
+    <div>
+        <label for="role_id">Роль:</label>
+        <select id="role_id" name="role_id" required>
+            {% for role in roles %}
+            <option value="{{ role.id }}" {% if user and user.role_id == role.id %}selected{% endif %}>
+                {{ role.name }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+    <div>
+        <label for="is_active">Активен:</label>
+        <input type="checkbox" id="is_active" name="is_active" {% if user and user.is_active %}checked{% endif %}>
+    </div>
+    <button type="submit">Сохранить</button>
+    <a href="/admin/users">Отмена</a>
+</form>
+{% endblock %} 
