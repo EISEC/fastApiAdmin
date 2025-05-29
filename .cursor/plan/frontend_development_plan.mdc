@@ -1,0 +1,450 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+ 
+# Структура и задачи Frontend проекта
+
+# Важно!
+При выполнении каждой задачи, отмечай в этом файле что уже сделано, что бы повторно не делать!
+
+## Вся разработка frontend должна вестись в папке frontend, при возникновении несоответствий, ошибок или подключения необходимых роутов обращаться к папке backend и frontend, для сверки или исправлений
+
+## 1. Техническая архитектура
+
+### Рекомендуемый стек:
+- **React 18** + TypeScript
+- **Next.js 14** для разработки и **Vite** для сборки
+- **TailwindCSS** для стилизации
+- **Zustand** или **Context API** для управления состоянием
+- **React Hook Form** + **Zod** для валидации форм
+- **Axios** или **Fetch API** для работы с API
+- **TinyMCE** для редактирования постов
+- **React DnD** или **dnd-kit** для drag & drop конструктора страниц
+
+## 2. Локальная разработка без Docker
+
+### Установка и настройка:
+
+#### Вариант 1: С Vite (рекомендуется для быстрой разработки)
+```bash
+# Создание проекта
+yarn create vite@latest my-cms-frontend -- --template react-ts
+cd my-cms-frontend
+yarn install
+
+# Установка дополнительных зависимостей
+yarn install tailwindcss postcss autoprefixer
+yarn install @headlessui/react @heroicons/react
+yarn install react-hook-form @hookform/resolvers zod
+yarn install axios
+yarn install zustand
+yarn install @tinymce/tinymce-react
+yarn install @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities
+yarn install react-router-dom
+```
+
+#### Вариант 2: С Next.js
+```bash
+# Создание проекта
+npx create-next-app@latest my-cms-frontend --typescript --tailwind --eslint --app
+cd my-cms-frontend
+
+# Дополнительные зависимости (аналогично)
+```
+
+### Настройка TailwindCSS:
+```bash
+npx tailwindcss init -p
+```
+
+## 3. Структура проекта
+
+```
+src/
+├── components/
+│   ├── ui/                     # Базовые UI компоненты
+│   │   ├── Button.tsx
+│   │   ├── Input.tsx
+│   │   ├── Modal.tsx
+│   │   ├── Card.tsx
+│   │   └── index.ts
+│   ├── layout/                 # Компоненты макета
+│   │   ├── DashboardLayout.tsx
+│   │   ├── Sidebar.tsx
+│   │   ├── Header.tsx
+│   │   └── Breadcrumbs.tsx
+│   ├── forms/                  # Формы
+│   │   ├── SiteForm.tsx
+│   │   ├── PostForm.tsx
+│   │   ├── UserForm.tsx
+│   │   └── LoginForm.tsx
+│   ├── editors/                # Редакторы
+│   │   ├── TinyMCEEditor.tsx
+│   │   └── PageBuilder/
+│   ├── tables/                 # Таблицы с данными
+│   └── auth/                   # Компоненты авторизации
+├── pages/                      # Страницы (для Vite + React Router)
+├── hooks/                      # Кастомные хуки
+│   ├── useAuth.ts
+│   ├── usePermissions.ts
+│   └── useApi.ts
+├── store/                      # Управление состоянием
+│   ├── authStore.ts
+│   ├── sitesStore.ts
+│   └── index.ts
+├── services/                   # API сервисы
+│   ├── api.ts
+│   ├── auth.service.ts
+│   └── sites.service.ts
+├── types/                      # TypeScript типы
+│   ├── auth.types.ts
+│   ├── site.types.ts
+│   └── index.ts
+├── utils/                      # Утилиты
+│   ├── permissions.ts
+│   ├── validators.ts
+│   └── helpers.ts
+├── constants/                  # Константы
+│   ├── roles.ts
+│   └── api.ts
+└── lib/                        # Библиотеки и конфигурации
+    ├── tinymce.config.ts
+    └── axios.config.ts
+```
+
+## 4. Основные роуты и страницы
+
+### Настройка роутинга (React Router):
+```typescript
+// src/App.tsx
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { ProtectedRoute } from './components/auth/ProtectedRoute';
+
+const App = () => {
+  return (
+    <BrowserRouter>
+      <Routes>
+        {/* Публичные роуты */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        
+        {/* Защищенные роуты */}
+        <Route path="/dashboard" element={
+          <ProtectedRoute>
+            <DashboardPage />
+          </ProtectedRoute>
+        } />
+        <Route path="/sites" element={
+          <ProtectedRoute permissions={['sites.read']}>
+            <SitesPage />
+          </ProtectedRoute>
+        } />
+        {/* Остальные роуты... */}
+      </Routes>
+    </BrowserRouter>
+  );
+};
+```
+
+## 5. Система ролей и разрешений
+
+### Определение типов:
+```typescript
+// src/types/auth.types.ts
+export interface User {
+  id: number;
+  username: string;
+  email: string;
+  role: Role;
+  isActive: boolean;
+  siteId?: number;
+}
+
+export interface Role {
+  id: number;
+  name: 'superuser' | 'admin' | 'author' | 'user';
+  permissions: Permission[];
+}
+
+export interface Permission {
+  resource: string;
+  action: string;
+  scope?: 'all' | 'own' | 'assigned';
+}
+```
+
+### Hook для разрешений:
+```typescript
+// src/hooks/usePermissions.ts
+export const usePermissions = () => {
+  const { user } = useAuth();
+  
+  const hasPermission = (resource: string, action: string): boolean => {
+    if (!user) return false;
+    
+    return user.role.permissions.some(
+      p => p.resource === resource && p.action === action
+    );
+  };
+  
+  const canAccessSite = (siteId: number): boolean => {
+    // Логика проверки доступа к конкретному сайту
+  };
+  
+  return { hasPermission, canAccessSite };
+};
+```
+
+## 6. Задачи для разработки
+
+### Этап 1: Настройка проекта 
+- [ ] Инициализация проекта с Vite/Next.js
+- [ ] Настройка TailwindCSS
+- [ ] Настройка TypeScript конфигурации
+- [ ] Создание базовой структуры папок
+- [ ] Настройка ESLint и Prettier
+- [ ] Настройка Git hooks (husky)
+
+### Этап 2: Базовые UI компоненты 
+- [ ] Button компонент с вариантами
+- [ ] Input, Textarea, Select компоненты
+- [ ] Modal и Dialog компоненты
+- [ ] Card компонент
+- [ ] Loading состояния (Spinner, Skeleton)
+- [ ] Notification компонент (Toast)
+
+### Этап 3: Система авторизации 
+- [ ] Настройка Axios/Fetch для API запросов
+- [ ] Zustand store для авторизации
+- [ ] Login/Register формы
+- [ ] JWT токен management
+- [ ] Protected routes компонент
+- [ ] Logout функциональность
+
+### Этап 4: Layout и навигация 
+- [ ] Dashboard Layout
+- [ ] Sidebar с навигацией по ролям
+- [ ] Header с профилем пользователя
+- [ ] Breadcrumbs навигация
+- [ ] Responsive дизайн
+
+### Этап 5: Система разрешений 
+- [ ] Определение ролей и разрешений
+- [ ] Хук usePermissions
+- [ ] Компонент для условного рендеринга
+- [ ] Проверки на уровне роутов
+- [ ] Проверки на уровне UI элементов
+
+### Этап 6: Управление сайтами 
+- [ ] API service для сайтов
+- [ ] Zustand store для сайтов
+- [ ] Таблица сайтов с пагинацией
+- [ ] Форма создания/редактирования сайта
+- [ ] Компонент загрузки изображений
+- [ ] Настройки SEO
+
+### Этап 7: Управление постами 
+- [ ] Интеграция TinyMCE
+- [ ] API service для постов
+- [ ] Список постов с фильтрацией
+- [ ] Форма создания/редактирования поста
+- [ ] Превью постов
+- [ ] Управление изображениями
+
+### Этап 8: Конструктор страниц 
+- [ ] Настройка dnd-kit
+- [ ] Базовые drag & drop компоненты
+- [ ] Библиотека блоков:
+  - [ ] Текстовый блок
+  - [ ] Изображение
+  - [ ] Кнопка
+  - [ ] Форма
+  - [ ] Галерея
+- [ ] Редактор свойств блоков
+- [ ] Генерация HTML + CSS
+- [ ] Превью страниц
+
+### Этап 9: Динамические модели 
+- [ ] Конструктор полей модели
+- [ ] Типы полей (text, number, date, etc.)
+- [ ] Формы для моделей
+- [ ] CRUD операции с записями
+- [ ] Валидация данных
+
+### Этап 10: Управление пользователями 
+- [ ] Список пользователей
+- [ ] Форма создания пользователя
+- [ ] Назначение ролей
+- [ ] Привязка к сайтам
+- [ ] Управление активностью
+
+## 7. Локальная разработка
+
+### Настройка окружения:
+```bash
+# .env.local файл
+VITE_API_BASE_URL=http://localhost:8000/api
+VITE_TINYMCE_API_KEY=your-tinymce-key
+```
+
+### Скрипты package.json:
+```json
+{
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "lint": "eslint src --ext ts,tsx",
+    "lint:fix": "eslint src --ext ts,tsx --fix",
+    "type-check": "tsc --noEmit"
+  }
+}
+```
+
+### Mock данные для разработки:
+```typescript
+// src/mocks/api.ts
+export const mockSites = [
+  {
+    id: 1,
+    name: 'Мой сайт',
+    domain: 'example.com',
+    createdAt: '2024-01-01'
+  }
+];
+
+// Использование MSW для мокирования API
+yarn install -D msw
+```
+
+## 8. Состояние приложения (Zustand)
+
+### Пример store:
+```typescript
+// src/store/authStore.ts
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+
+interface AuthState {
+  user: User | null;
+  token: string | null;
+  isLoading: boolean;
+  login: (credentials: LoginCredentials) => Promise<void>;
+  logout: () => void;
+}
+
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set, get) => ({
+      user: null,
+      token: null,
+      isLoading: false,
+      
+      login: async (credentials) => {
+        set({ isLoading: true });
+        try {
+          const response = await authService.login(credentials);
+          set({ 
+            user: response.user, 
+            token: response.token,
+            isLoading: false 
+          });
+        } catch (error) {
+          set({ isLoading: false });
+          throw error;
+        }
+      },
+      
+      logout: () => {
+        set({ user: null, token: null });
+        localStorage.removeItem('auth-storage');
+      }
+    }),
+    {
+      name: 'auth-storage',
+    }
+  )
+);
+```
+
+## 9. API интеграция
+
+### Базовая настройка Axios:
+```typescript
+// src/lib/axios.config.ts
+import axios from 'axios';
+
+const apiClient = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL,
+  timeout: 10000,
+});
+
+// Interceptors для токенов
+apiClient.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+export default apiClient;
+```
+
+## 10. Тестирование
+
+### Настройка тестирования:
+```bash
+yarn install -D vitest @testing-library/react @testing-library/jest-dom
+yarn install -D @testing-library/user-event
+```
+
+### Конфигурация Vitest:
+```typescript
+// vite.config.ts
+export default defineConfig({
+  plugins: [react()],
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './src/test/setup.ts',
+  },
+});
+```
+
+## 11. Деплой и сборка
+
+### Сборка для продакшена:
+```bash
+yarn run build
+```
+
+### Статический хостинг:
+- Vercel (для Next.js)
+- Netlify 
+- GitHub Pages
+- Обычный веб-сервер (Apache/Nginx)
+
+
+**Основные изменения:**
+
+1. **Локальная разработка** - все через yarn/yarn, без контейнеров
+2. **Vite вместо сложных сборщиков** - быстрее для разработки
+3. **Простые инструменты** - Zustand вместо Redux, обычный Axios
+4. **Mock данные** - для независимой разработки frontend'а
+5. **Стандартный деплой** - статические файлы на любой хостинг
+
+**Преимущества такого подхода:**
+- Быстрый старт проекта
+- Простая отладка
+- Меньше зависимостей
+- Легче настройка IDE
+- Простой деплой
+
+**Рекомендуемый порядок работы:**
+1. Начните с базовых компонентов и авторизации
+2. Используйте mock данные для независимой разработки
+3. Постепенно интегрируйте с реальным API
+4. Конструктор страниц оставьте на последний этап

@@ -1,0 +1,8 @@
+-r base.txt
+
+# Production monitoring and logging
+sentry-sdk==1.38.0
+django-health-check==3.17.0
+
+# Security
+django-security==0.17.0 

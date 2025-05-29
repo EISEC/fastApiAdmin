@@ -1,0 +1,32 @@
+# Core Django packages
+Django==5.0.6
+djangorestframework==3.15.1
+django-cors-headers==4.1.0
+djangorestframework-simplejwt==5.2.2
+django-filter==23.2
+
+# Database
+mysqlclient==2.2.4
+
+# API Documentation
+drf-yasg==1.21.7
+
+# Image processing
+Pillow==10.3.0
+
+# Background tasks
+celery==5.3.0
+redis==4.6.0
+
+# Utilities
+django-extensions==3.2.3
+django-mptt==0.14.0
+django-taggit==5.0.1
+python-decouple==3.8
+
+# File storage
+django-storages==1.14.2
+whitenoise==6.5.0
+
+# Production server
+gunicorn==21.2.0 

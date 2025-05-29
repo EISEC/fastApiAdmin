@@ -1,0 +1,182 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Правила разработки Frontend (React + TypeScript)
+
+## Общие принципы разработки
+
+## Важно! Запомни у нас нет команды npm мы всегда используем yarn
+## ВАЖНО! Всегда проверяй из под какой папки ты даешь мне команды, папка Frontend только для фронтенда - запуск, установки зависимостей и все что связанно с фронтендом
+## ВАЖНО! При исполнении терминальных команд в новом окне, всегда добавляй перехеод в папку разработки - frontend
+
+### 1. Основные требования
+- **Вся разработка frontend ведется ТОЛЬКО в папке `frontend/`**
+- Использовать **React 18** + **TypeScript** для типобезопасности
+- Обязательная типизация всех props, state и функций
+- Следовать принципам компонентной архитектуры
+- При ошибках или несоответствиях обращаться к папкам `backend/` и `frontend/` для сверки
+
+### 2. Технический стек (обязательный)
+- **React 18** + **TypeScript**
+- **Next.js 14** для разработки и **Vite** для сборки
+- **TailwindCSS** для стилизации
+- **Zustand** для управления состоянием
+- **React Hook Form** + **Zod** для форм и валидации
+- **Axios** для API запросов
+- **React Router DOM** для навигации
+- **TinyMCE** для редактирования контента
+- **dnd-kit** для drag & drop функциональности
+
+### 3. Обязательная структура проекта
+```
+frontend/src/
+├── components/
+│   ├── ui/                     # Базовые UI компоненты
+│   ├── layout/                 # Компоненты макета (DashboardLayout, Sidebar, Header)
+│   ├── forms/                  # Формы (SiteForm, PostForm, UserForm, LoginForm)
+│   ├── editors/                # Редакторы (TinyMCEEditor, PageBuilder)
+│   ├── tables/                 # Таблицы с данными
+│   └── auth/                   # Компоненты авторизации
+├── pages/                      # Страницы приложения
+├── hooks/                      # Кастомные хуки (useAuth, usePermissions, useApi)
+├── store/                      # Zustand stores (authStore, sitesStore)
+├── services/                   # API сервисы (api.ts, auth.service.ts, sites.service.ts)
+├── types/                      # TypeScript типы (auth.types.ts, site.types.ts)
+├── utils/                      # Утилиты (permissions.ts, validators.ts, helpers.ts)
+├── constants/                  # Константы (roles.ts, api.ts)
+└── lib/                        # Конфигурации (tinymce.config.ts, axios.config.ts)
+```
+
+## Правила написания кода
+
+### 1. Компоненты React
+- **ВСЕГДА** использовать TypeScript интерфейсы для props
+- Использовать функциональные компоненты с хуками
+- Экспортировать компоненты как `export default`
+- Добавлять JSDoc комментарии для сложных компонентов
+- Использовать мемоизацию (`React.memo`, `useMemo`, `useCallback`) при необходимости
+
+```typescript
+interface ButtonProps {
+  variant?: 'primary' | 'secondary' | 'danger';
+  size?: 'sm' | 'md' | 'lg';
+  disabled?: boolean;
+  loading?: boolean;
+  onClick?: () => void;
+  children: React.ReactNode;
+  className?: string;
+}
+
+/**
+ * Базовый компонент кнопки с различными вариантами стилизации
+ */
+const Button: React.FC<ButtonProps> = ({
+  variant = 'primary',
+  size = 'md',
+  disabled = false,
+  loading = false,
+  onClick,
+  children,
+  className = '',
+  ...props
+}) => {
+  const baseClasses = 'font-medium rounded-lg transition-colors focus:outline-none focus:ring-2';
+  
+  const variantClasses = {
+    primary: 'bg-blue-600 hover:bg-blue-700 text-white focus:ring-blue-500',
+    secondary: 'bg-gray-200 hover:bg-gray-300 text-gray-900 focus:ring-gray-500',
+    danger: 'bg-red-600 hover:bg-red-700 text-white focus:ring-red-500',
+  };
+  
+  const sizeClasses = {
+    sm: 'px-3 py-1.5 text-sm',
+    md: 'px-4 py-2 text-base',
+    lg: 'px-6 py-3 text-lg',
+  };
+  
+  const classes = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
+  
+  return (
+    <button 
+      className={classes} 
+      disabled={disabled || loading}
+      onClick={onClick}
+      {...props}
+    >
+      {loading ? <Spinner size="sm" /> : children}
+    </button>
+  );
+};
+
+export default Button;
+```
+
+### 2. Кастомные хуки
+- Начинать названия с `use`
+- Типизировать все параметры и возвращаемые значения
+- Возвращать объект с именованными свойствами
+- Документировать назначение хука
+
+```typescript
+interface UseApiOptions<T> {
+  url: string;
+  method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
+  dependencies?: any[];
+  enabled?: boolean;
+  initialData?: T;
+}
+
+interface UseApiReturn<T> {
+  data: T | null;
+  loading: boolean;
+  error: string | null;
+  refetch: () => Promise<void>;
+  mutate: (newData: T) => void;
+}
+
+/**
+ * Хук для работы с API запросами
+ * Автоматически управляет состоянием загрузки, данными и ошибками
+ */
+export const useApi = <T>({
+  url,
+  method = 'GET',
+  dependencies = [],
+  enabled = true,
+  initialData = null
+}: UseApiOptions<T>): UseApiReturn<T> => {
+  const [data, setData] = useState<T | null>(initialData);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const { handleError } = useApiError();
+
+  const fetchData = useCallback(async () => {
+    if (!enabled) return;
+    
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const response = await apiClient.request({ url, method });
+      setData(response.data);
+    } catch (err) {
+      const errorMessage = handleError(err);
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  }, [url, method, enabled, handleError]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData, ...dependencies]);
+
+  const mutate = useCallback((newData: T) => {
+    setData(newData);
+  }, []);
+
+  return { data, loading, error, refetch: fetchData, mutate };
+};
+```

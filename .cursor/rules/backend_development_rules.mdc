@@ -1,0 +1,295 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Правила разработки Backend (Django)
+
+## Общие принципы
+
+## Важно! Запомни у нас нет команды python у нас есть команда python3
+## ВАЖНО! Всегда проверяй из под какой папки ты даешь мне команды, папка Backend только для бэкенда - запуск, миграции, установки зависимостей и все что связанно с бэкендом
+## ВАЖНО! При исполнении терминальных команд в новом окне, всегда добавляй перехеод в папку разработки - backend
+
+### 1. Структура и организация кода
+- Вся разработка backend должна вестись в папке `backend/`
+- Следовать принципу "толстых моделей, тонких представлений"
+- Использовать Django best practices и PEP 8
+- Каждое приложение должно иметь четкую область ответственности
+- Обязательно использовать type hints в Python коде
+
+### 2. Архитектурные требования
+- **Django 5.0** + **Python 3.11+**
+- **MySQL 5.7** как основная БД
+- **Django REST Framework** для всех API endpoints
+- **JWT Authentication** для авторизации
+- **Celery + Redis** для фоновых задач
+
+### 3. Структура приложений
+```
+backend/
+├── core/                   # Основные настройки
+├── apps/
+│   ├── accounts/           # Пользователи и авторизация
+│   ├── sites/              # Управление сайтами
+│   ├── posts/              # Посты
+│   ├── pages/              # Страницы
+│   ├── dynamic_models/     # Динамические модели
+│   ├── common/             # Общие компоненты
+│   └── api/                # API endpoints
+```
+
+## Правила написания кода
+
+### 1. Модели (Models)
+- Всегда добавлять `verbose_name` и `verbose_name_plural` для русской локализации
+- Использовать `help_text` для сложных полей
+- Добавлять `__str__` метод для всех моделей
+- Использовать `Meta` класс для настройки ordering, constraints, indexes
+- Обязательно добавлять поля `created_at` и `updated_at` с `auto_now_add` и `auto_now`
+
+```python
+class Site(models.Model):
+    name = models.CharField(max_length=255, verbose_name='Название сайта')
+    domain = models.CharField(max_length=255, unique=True, verbose_name='Домен')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        verbose_name = 'Сайт'
+        verbose_name_plural = 'Сайты'
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        return self.name
+```
+
+### 2. Сериализаторы (Serializers)
+- Использовать `ModelSerializer` для базовых операций
+- Добавлять кастомную валидацию через методы `validate_field` и `validate`
+- Использовать `SerializerMethodField` для вычисляемых полей
+- Всегда указывать `read_only_fields` для полей, которые не должны изменяться
+
+```python
+class SiteSerializer(serializers.ModelSerializer):
+    owner_name = serializers.CharField(source='owner.username', read_only=True)
+    posts_count = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = Site
+        fields = '__all__'
+        read_only_fields = ['owner', 'created_at', 'updated_at']
+    
+    def get_posts_count(self, obj):
+        return obj.posts.count()
+```
+
+### 3. Views и ViewSets
+- Использовать `ViewSets` для CRUD операций
+- Добавлять проверки разрешений через `permission_classes`
+- Использовать `filter_backends` для фильтрации и поиска
+- Переопределять `get_queryset()` для фильтрации по ролям
+- Добавлять `@action` декораторы для кастомных методов
+
+```python
+class SiteViewSet(viewsets.ModelViewSet):
+    serializer_class = SiteSerializer
+    permission_classes = [IsAuthenticated, SitePermission]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['is_active', 'owner']
+    
+    def get_queryset(self):
+        user = self.request.user
+        if user.role.name == 'superuser':
+            return Site.objects.all()
+        elif user.role.name == 'admin':
+            return Site.objects.filter(owner=user)
+        return Site.objects.none()
+```
+
+### 4. Система разрешений
+- Создавать кастомные классы разрешений наследуя от `BasePermission`
+- Использовать `has_permission` для общих проверок
+- Использовать `has_object_permission` для проверок на уровне объектов
+- Проверять роли пользователей в зависимости от действия
+
+```python
+class SitePermission(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        user_role = request.user.role.name
+        
+        if user_role == 'superuser':
+            return True
+        elif user_role == 'admin':
+            return obj.owner == request.user
+        elif user_role == 'author':
+            return request.user in obj.assigned_users.all()
+        
+        return False
+```
+
+### 5. Django Admin
+- Кастомизировать админку с TailwindCSS
+- Использовать `fieldsets` для группировки полей
+- Добавлять `list_display`, `list_filter`, `search_fields`
+- Переопределять `get_queryset()` для фильтрации по ролям
+- Использовать `inline` классы для связанных моделей
+
+### 6. API URLs
+- Использовать `DefaultRouter` для автоматической генерации URL
+- Группировать endpoints логически
+- Добавлять версионирование API (`/api/v1/`)
+- Использовать namespace для приложений
+
+```python
+# apps/api/urls.py
+router = DefaultRouter()
+router.register(r'sites', SiteViewSet)
+router.register(r'posts', PostViewSet)
+router.register(r'pages', PageViewSet)
+
+urlpatterns = [
+    path('auth/', include('apps.accounts.urls')),
+    path('', include(router.urls)),
+]
+```
+
+## Безопасность и производительность
+
+### 1. Безопасность
+- Всегда валидировать входящие данные
+- Использовать `select_related` и `prefetch_related` для оптимизации запросов
+- Добавлять ограничения на загрузку файлов (размер, тип)
+- Использовать HTTPS для продакшена
+- Настроить CORS правильно
+
+### 2. Оптимизация БД
+- Добавлять индексы для часто используемых полей
+- Использовать `F()` объекты для атомарных операций
+- Избегать N+1 проблем с помощью `select_related`
+- Использовать `bulk_create` и `bulk_update` для массовых операций
+
+### 3. Обработка ошибок
+- Создать кастомные исключения для бизнес-логики
+- Использовать `try-except` блоки в критических местах
+- Добавлять логирование ошибок
+- Возвращать понятные сообщения об ошибках в API
+
+## Тестирование
+
+### 1. Unit тесты
+- Писать тесты для всех моделей
+- Тестировать кастомные методы и свойства
+- Использовать `setUp` и `tearDown` для подготовки данных
+- Покрывать тестами все edge cases
+
+### 2. API тесты
+- Тестировать все CRUD операции
+- Проверять права доступа для разных ролей
+- Тестировать валидацию данных
+- Использовать `APITestCase` для тестирования API
+
+### 3. Интеграционные тесты
+- Тестировать взаимодействие между приложениями
+- Проверять работу с внешними сервисами
+- Тестировать фоновые задачи Celery
+
+## База данных
+
+### 1. Миграции
+- Создавать миграции для каждого изменения моделей
+- Использовать `data migrations` для изменения данных
+- Тестировать миграции на копии продакшн БД
+- Добавлять `reverse` операции для отката
+
+### 2. Подключение к MySQL
+```python
+# Данные для подключения
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'eisec_fastapi',
+        'USER': 'eisec_fastapi',
+        'PASSWORD': 'jA&TJA8x5rBt',
+        'HOST': 'eisec.beget.tech',
+        'PORT': '3306',
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+        },
+    }
+}
+```
+
+## Управление зависимостями
+
+### 1. Requirements
+- Разделять зависимости по окружениям (`base.txt`, `development.txt`, `production.txt`)
+- Фиксировать версии пакетов в продакшене
+- Регулярно обновлять зависимости
+
+### 2. Обязательные пакеты
+```
+Django==5.0.6
+djangorestframework==3.15.1
+django-cors-headers==4.1.0
+djangorestframework-simplejwt==5.2.2
+mysqlclient==2.2.4
+Pillow==10.3.0
+celery==5.3.0
+redis==4.6.0
+```
+
+## Настройка окружения
+
+### 1. Settings
+- Разделять настройки по окружениям
+- Использовать переменные окружения для чувствительных данных
+- Настроить логирование для разных уровней
+
+### 2. Переменные окружения
+```
+SECRET_KEY=your-secret-key
+DEBUG=False
+DB_NAME=eisec_fastapi
+DB_USER=eisec_fastapi
+DB_PASSWORD=jA&TJA8x5rBt
+DB_HOST=eisec.beget.tech
+```
+
+## Документация
+
+### 1. Swagger
+- Использовать `drf-yasg` для автогенерации документации
+- Добавлять описания для всех endpoints
+- Документировать параметры запросов и ответов
+
+### 2. Комментарии в коде
+- Добавлять docstrings для всех классов и методов
+- Комментировать сложную бизнес-логику
+- Использовать type hints для всех функций
+
+## Checklist для каждой задачи
+
+### При создании новой модели:
+- [ ] Добавить `verbose_name` и `verbose_name_plural`
+- [ ] Добавить `created_at` и `updated_at` поля
+- [ ] Создать миграцию
+- [ ] Добавить в админку
+- [ ] Написать тесты
+- [ ] Создать сериализатор
+- [ ] Добавить в API
+
+### При создании API endpoint:
+- [ ] Создать ViewSet или APIView
+- [ ] Добавить проверки разрешений
+- [ ] Настроить фильтрацию
+- [ ] Добавить в роутер
+- [ ] Написать тесты
+- [ ] Добавить в Swagger документацию
+
+### Перед коммитом:
+- [ ] Запустить тесты
+- [ ] Проверить code style (flake8, black)
+- [ ] Проверить безопасность (bandit)
+- [ ] Обновить документацию если нужно
+- [ ] Проверить миграции
