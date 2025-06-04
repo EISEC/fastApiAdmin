@@ -113,6 +113,33 @@ export const api = {
       },
     }).then(response => response.data);
   },
+  
+  uploadFile: <T>(
+    method: 'POST' | 'PATCH' | 'PUT', 
+    url: string, 
+    formData: FormData, 
+    onProgress?: (progress: number) => void
+  ) => {
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      onUploadProgress: (progressEvent: any) => {
+        if (onProgress && progressEvent.total) {
+          const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          onProgress(progress);
+        }
+      },
+    };
+    
+    const request = method === 'POST' 
+      ? apiClient.post<T>(url, formData, config)
+      : method === 'PATCH'
+      ? apiClient.patch<T>(url, formData, config)  
+      : apiClient.put<T>(url, formData, config);
+      
+    return request.then(response => response.data);
+  },
 };
 
 export default apiClient; 

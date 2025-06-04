@@ -14,14 +14,15 @@ const postSchema = z.object({
     .min(3, 'Заголовок должен содержать минимум 3 символа')
     .max(255, 'Заголовок не должен превышать 255 символов'),
   slug: z.string()
-    .min(1, 'URL slug обязателен')
     .regex(/^[a-z0-9-]+$/, 'URL slug может содержать только строчные буквы, цифры и дефисы')
+    .or(z.literal(''))
     .optional(),
   content: z.string()
     .min(1, 'Содержимое поста обязательно')
     .min(10, 'Содержимое должно содержать минимум 10 символов'),
   excerpt: z.string()
     .max(500, 'Описание не должно превышать 500 символов')
+    .or(z.literal(''))
     .optional(),
   featured_image: z.union([
     z.instanceof(File),
@@ -30,8 +31,10 @@ const postSchema = z.object({
   ]).optional(),
   status: z.enum(['draft', 'published', 'scheduled', 'archived'] as const),
   visibility: z.enum(['public', 'private', 'password'] as const),
-  site: z.number()
-    .min(1, 'Выберите сайт для поста'),
+  site: z.number({
+    required_error: 'Выберите сайт для поста',
+    invalid_type_error: 'Выберите сайт для поста'
+  }).min(1, 'Выберите сайт для поста'),
   meta_title: z.string().optional(),
   meta_description: z.string().optional(),
   meta_keywords: z.string().optional(),
@@ -79,11 +82,13 @@ const PostForm: React.FC<PostFormProps> = ({
       excerpt: '',
       status: 'draft' as PostStatus,
       visibility: 'public' as PostVisibility,
-      site: 0,
+      // site будет установлен после загрузки сайтов
     },
+    mode: 'onChange', // Включаем валидацию при изменении
   });
 
   const watchedTitle = watch('title');
+  const watchedSite = watch('site');
 
   // Автогенерация slug из заголовка
   useEffect(() => {
@@ -94,7 +99,7 @@ const PostForm: React.FC<PostFormProps> = ({
         .replace(/\s+/g, '-')
         .replace(/-+/g, '-')
         .trim();
-      setValue('slug', slug);
+      setValue('slug', slug, { shouldValidate: true });
     }
   }, [watchedTitle, isEditing, setValue]);
 
@@ -102,6 +107,13 @@ const PostForm: React.FC<PostFormProps> = ({
   useEffect(() => {
     fetchSites();
   }, [fetchSites]);
+
+  // Устанавливаем первый сайт по умолчанию после загрузки, если не в режиме редактирования
+  useEffect(() => {
+    if (sites.length > 0 && !isEditing && !watchedSite) {
+      setValue('site', sites[0].id, { shouldValidate: true });
+    }
+  }, [sites, isEditing, setValue, watchedSite]);
 
   // Загружаем данные поста для редактирования
   useEffect(() => {
@@ -131,6 +143,11 @@ const PostForm: React.FC<PostFormProps> = ({
   const onSubmit = async (data: PostFormData) => {
     try {
       clearError();
+      
+      // Проверяем что сайт выбран
+      if (!data.site) {
+        return;
+      }
       
       if (isEditing && post) {
         const updateData: PostUpdateData = {
@@ -261,7 +278,6 @@ const PostForm: React.FC<PostFormProps> = ({
                 }`}
                 disabled={isLoading}
               >
-                <option value={0}>Выберите сайт</option>
                 {sites.map((site) => (
                   <option key={site.id} value={site.id}>
                     {site.name} ({site.domain})

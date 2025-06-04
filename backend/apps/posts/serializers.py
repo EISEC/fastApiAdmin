@@ -1,66 +1,111 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from taggit.serializers import TagListSerializerField, TaggitSerializer
-from .models import Post
+from .models import Post, Category, Tag
 from apps.sites.models import Site
 
 User = get_user_model()
 
 
-class PostListSerializer(serializers.ModelSerializer):
-    """Упрощенный сериализатор для списка постов"""
+class CategorySerializer(serializers.ModelSerializer):
+    """Сериализатор для категорий"""
+    posts_count = serializers.SerializerMethodField()
     
-    author_name = serializers.CharField(source='author.get_full_name', read_only=True)
+    class Meta:
+        model = Category
+        fields = [
+            'id', 'name', 'slug', 'description', 'site', 'parent', 
+            'order', 'is_active', 'created_at', 'updated_at', 'posts_count'
+        ]
+        read_only_fields = ['created_at', 'updated_at', 'posts_count']
+    
+    def get_posts_count(self, obj):
+        return obj.posts.filter(status='published').count()
+
+
+class TagSerializer(serializers.ModelSerializer):
+    """Сериализатор для тегов"""
+    posts_count = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = Tag
+        fields = [
+            'id', 'name', 'slug', 'site', 'color', 
+            'created_at', 'updated_at', 'posts_count'
+        ]
+        read_only_fields = ['created_at', 'updated_at', 'posts_count']
+    
+    def get_posts_count(self, obj):
+        return obj.posts.filter(status='published').count()
+
+
+class PostListSerializer(serializers.ModelSerializer):
+    """Сериализатор для списка постов"""
+    author_name = serializers.CharField(source='author.username', read_only=True)
     site_name = serializers.CharField(source='site.name', read_only=True)
-    excerpt = serializers.SerializerMethodField()
+    category_name = serializers.CharField(source='category.name', read_only=True)
+    tags_list = TagSerializer(source='tags', many=True, read_only=True)
+    comments_count = serializers.SerializerMethodField()
+    categories = serializers.SerializerMethodField()
+    tags = TagSerializer(many=True, read_only=True)
     
     class Meta:
         model = Post
         fields = [
-            'id', 'title', 'slug', 'excerpt', 'image',
-            'author', 'author_name', 'site', 'site_name',
-            'is_published', 'views_count', 'reading_time', 
-            'published_at', 'created_at'
+            'id', 'title', 'slug', 'excerpt', 'status', 'visibility', 'site', 'site_name',
+            'author', 'author_name', 'category', 'category_name', 'tags_list',
+            'featured_image', 'published_at', 'created_at', 'updated_at',
+            'views_count', 'is_featured', 'comments_count', 'categories', 'tags'
         ]
-        read_only_fields = ['author', 'slug', 'views_count', 'reading_time']
     
-    def get_excerpt(self, obj):
-        """Получаем краткое описание поста"""
-        return obj.get_excerpt()
+    def get_comments_count(self, obj):
+        # Пока возвращаем 0, когда будет система комментариев - обновим
+        return 0
+    
+    def get_categories(self, obj):
+        # Возвращаем категорию как массив для совместимости с frontend
+        if obj.category:
+            return [CategorySerializer(obj.category).data]
+        return []
 
 
 class PostDetailSerializer(serializers.ModelSerializer):
-    """Подробный сериализатор для поста"""
-    
-    author_name = serializers.CharField(source='author.get_full_name', read_only=True)
+    """Сериализатор для детального просмотра поста"""
+    author_name = serializers.CharField(source='author.username', read_only=True)
     site_name = serializers.CharField(source='site.name', read_only=True)
-    excerpt = serializers.SerializerMethodField()
+    category_data = CategorySerializer(source='category', read_only=True)
+    tags_data = TagSerializer(source='tags', many=True, read_only=True)
+    comments_count = serializers.SerializerMethodField()
+    categories = serializers.SerializerMethodField()
+    tags = TagSerializer(many=True, read_only=True)
     
     class Meta:
         model = Post
-        fields = '__all__'
-        read_only_fields = ['author', 'slug', 'views_count', 'reading_time', 'created_at', 'updated_at']
+        fields = [
+            'id', 'title', 'slug', 'content', 'excerpt', 'status', 'visibility',
+            'site', 'site_name', 'author', 'author_name', 
+            'category', 'category_data', 'tags', 'tags_data',
+            'meta_title', 'meta_description', 'meta_keywords', 'featured_image',
+            'published_at', 'created_at', 'updated_at',
+            'views_count', 'is_featured', 'allow_comments',
+            'comments_count', 'categories'
+        ]
+        read_only_fields = ['author', 'created_at', 'updated_at', 'views_count']
     
-    def get_excerpt(self, obj):
-        """Получаем краткое описание поста"""
-        return obj.get_excerpt()
+    def get_comments_count(self, obj):
+        # Пока возвращаем 0, когда будет система комментариев - обновим
+        return 0
     
-    def validate_site(self, value):
-        """Проверяем, что пользователь имеет доступ к сайту"""
-        user = self.context['request'].user
-        
-        # Проверка для анонимных пользователей
-        if not user.is_authenticated or not hasattr(user, 'role') or user.role is None:
-            raise serializers.ValidationError("Необходима авторизация")
-        
-        if user.role.name == 'superuser':
-            return value
-        elif user.role.name == 'admin' and value.owner != user:
-            raise serializers.ValidationError("У вас нет прав на этот сайт")
-        elif user.role.name == 'author' and user not in value.assigned_users.all():
-            raise serializers.ValidationError("У вас нет прав на этот сайт")
-        
-        return value
+    def get_categories(self, obj):
+        # Возвращаем категорию как массив для совместимости с frontend
+        if obj.category:
+            return [CategorySerializer(obj.category).data]
+        return []
+    
+    def create(self, validated_data):
+        # Устанавливаем автора как текущего пользователя
+        validated_data['author'] = self.context['request'].user
+        return super().create(validated_data)
 
 
 class PostCreateUpdateSerializer(serializers.ModelSerializer):
@@ -69,32 +114,27 @@ class PostCreateUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = [
-            'title', 'content', 'image', 'site', 'is_published',
-            'meta_title', 'meta_description', 'meta_keywords',
-            'published_at'
+            'title', 'slug', 'content', 'excerpt', 'status', 'visibility',
+            'site', 'category', 'tags',
+            'meta_title', 'meta_description', 'meta_keywords', 'featured_image',
+            'published_at', 'is_featured', 'allow_comments'
         ]
     
-    def validate_site(self, value):
-        """Проверяем права доступа к сайту"""
-        user = self.context['request'].user
-        
-        # Проверка для анонимных пользователей
-        if not user.is_authenticated or not hasattr(user, 'role') or user.role is None:
-            raise serializers.ValidationError("Необходима авторизация")
-        
-        if user.role.name == 'superuser':
-            return value
-        elif user.role.name == 'admin' and value.owner != user:
-            raise serializers.ValidationError("У вас нет прав на этот сайт")
-        elif user.role.name == 'author' and user not in value.assigned_users.all():
-            raise serializers.ValidationError("У вас нет прав на этот сайт")
-        
-        return value
-    
     def create(self, validated_data):
-        """Создание поста с автоматическим назначением автора"""
+        # Устанавливаем автора как текущего пользователя
         validated_data['author'] = self.context['request'].user
         return super().create(validated_data)
+    
+    def validate_slug(self, value):
+        """Проверяем уникальность slug в рамках сайта"""
+        site = self.initial_data.get('site') or (self.instance.site.id if self.instance else None)
+        if site:
+            queryset = Post.objects.filter(site_id=site, slug=value)
+            if self.instance:
+                queryset = queryset.exclude(id=self.instance.id)
+            if queryset.exists():
+                raise serializers.ValidationError("Пост с таким slug уже существует на данном сайте.")
+        return value
 
 
 class PostStatsSerializer(serializers.ModelSerializer):

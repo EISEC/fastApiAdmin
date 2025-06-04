@@ -11,9 +11,14 @@ import Posts from './pages/Posts';
 import CreatePost from './pages/CreatePost';
 import EditPost from './pages/EditPost';
 import Users from './pages/Users';
+import CreateUser from './pages/CreateUser';
+import EditUser from './pages/EditUser';
 import Pages from './pages/Pages';
 import CreatePage from './pages/CreatePage';
 import EditPage from './pages/EditPage';
+import CreatePageWithBuilder from './pages/CreatePageWithBuilder';
+import MediaLibrary from './pages/MediaLibrary';
+import Settings from './pages/Settings';
 
 /**
  * Компонент для защищенных маршрутов
@@ -153,6 +158,22 @@ const App: React.FC = () => {
               </ProtectedRoute>
             } 
           />
+          <Route 
+            path="/users/create" 
+            element={
+              <ProtectedRoute>
+                <CreateUser />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/users/:id/edit" 
+            element={
+              <ProtectedRoute>
+                <EditUser />
+              </ProtectedRoute>
+            } 
+          />
           
           {/* Управление страницами */}
           <Route 
@@ -172,10 +193,38 @@ const App: React.FC = () => {
             } 
           />
           <Route 
+            path="/pages/create-with-builder" 
+            element={
+              <ProtectedRoute>
+                <CreatePageWithBuilder />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
             path="/pages/:id/edit" 
             element={
               <ProtectedRoute>
                 <EditPage />
+              </ProtectedRoute>
+            } 
+          />
+          
+          {/* Медиа-библиотека */}
+          <Route 
+            path="/media" 
+            element={
+              <ProtectedRoute>
+                <MediaLibrary />
+              </ProtectedRoute>
+            } 
+          />
+          
+          {/* Настройки */}
+          <Route 
+            path="/settings" 
+            element={
+              <ProtectedRoute>
+                <Settings />
               </ProtectedRoute>
             } 
           />

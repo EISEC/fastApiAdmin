@@ -64,8 +64,12 @@ export interface PostListItem {
   excerpt?: string;
   featured_image?: string;
   status: PostStatus;
+  visibility?: PostVisibility;
   author_name: string;
   site_name: string;
+  categories?: Category[];
+  tags?: Tag[];
+  comments_count?: number;
   published_at?: string;
   views_count: number;
   created_at: string;

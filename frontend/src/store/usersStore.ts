@@ -12,11 +12,15 @@ export interface UserCreateData {
   role: number;
   parent_user?: number;
   is_active?: boolean;
+  avatar?: File;
+  birth_date?: string;
+  about?: string;
 }
 
 export interface UserUpdateData {
   username?: string;
   email?: string;
+  password?: string;
   first_name?: string;
   last_name?: string;
   role?: number;
@@ -38,6 +42,7 @@ export interface UserStats {
 
 export interface UsersStoreExtended extends UsersStore {
   roles: Role[];
+  rolesLoading: boolean;
   createUser: (data: UserCreateData) => Promise<void>;
   updateUser: (id: number, data: UserUpdateData) => Promise<void>;
   deleteUser: (id: number) => Promise<void>;
@@ -55,23 +60,59 @@ export const useUsersStore = create<UsersStoreExtended>()(
       users: [],
       currentUser: null,
       roles: [],
+      rolesLoading: false,
       isLoading: false,
       error: null,
 
       fetchUsers: async () => {
+        console.log('🔄 UsersStore: Starting fetchUsers...');
         set({ isLoading: true, error: null });
         
         try {
+          console.log('📡 UsersStore: Making API request to /auth/users/');
           const response = await api.get<{ results?: User[], count?: number }>('/auth/users/');
+          console.log('📨 UsersStore: API response received:', response);
+          
           const users = Array.isArray(response) ? response : (response.results || []);
+          console.log('👥 UsersStore: Processed users:', users);
           
           set({
             users,
             isLoading: false,
           });
+          
+          console.log('✅ UsersStore: Users loaded successfully, count:', users.length);
         } catch (error: unknown) {
-          const apiError = error as ApiErrorResponse;
-          const errorMessage = apiError.message || 'Ошибка загрузки пользователей';
+          console.error('❌ UsersStore: Error loading users:', error);
+          
+          // Более детальная обработка ошибок
+          let errorMessage = 'Ошибка загрузки пользователей';
+          
+          if (error && typeof error === 'object') {
+            const apiError = error as any;
+            
+            // Проверяем статус ответа
+            if (apiError.response?.status === 401) {
+              errorMessage = 'Ошибка авторизации. Пожалуйста, войдите в систему.';
+            } else if (apiError.response?.status === 403) {
+              errorMessage = 'Недостаточно прав для просмотра пользователей.';
+            } else if (apiError.response?.status === 404) {
+              errorMessage = 'API endpoint не найден.';
+            } else if (apiError.response?.status >= 500) {
+              errorMessage = 'Ошибка сервера. Попробуйте позже.';
+            } else if (apiError.message) {
+              errorMessage = apiError.message;
+            } else if (apiError.response?.data?.detail) {
+              errorMessage = apiError.response.data.detail;
+            }
+          }
+          
+          console.error('📝 UsersStore: Error details:', {
+            status: (error as any)?.response?.status,
+            statusText: (error as any)?.response?.statusText,
+            data: (error as any)?.response?.data,
+            message: (error as any)?.message
+          });
           
           set({
             error: errorMessage,
@@ -107,13 +148,37 @@ export const useUsersStore = create<UsersStoreExtended>()(
         set({ isLoading: true, error: null });
         
         try {
-          const newUser = await api.post<User>('/auth/users/', data);
-          
-          set(state => ({
-            users: [newUser, ...state.users],
-            currentUser: newUser,
-            isLoading: false,
-          }));
+          // Если есть аватар (файл), используем FormData
+          if (data.avatar instanceof File) {
+            const formData = new FormData();
+            formData.append('username', data.username);
+            formData.append('email', data.email);
+            formData.append('password', data.password);
+            if (data.first_name) formData.append('first_name', data.first_name);
+            if (data.last_name) formData.append('last_name', data.last_name);
+            formData.append('role', data.role.toString());
+            formData.append('is_active', data.is_active ? 'true' : 'false');
+            if (data.birth_date) formData.append('birth_date', data.birth_date);
+            if (data.about) formData.append('about', data.about);
+            formData.append('avatar', data.avatar);
+
+            const newUser = await api.uploadFile<User>('POST', '/auth/users/', formData);
+            
+            set(state => ({
+              users: [newUser, ...state.users],
+              currentUser: newUser,
+              isLoading: false,
+            }));
+          } else {
+            // Обычный JSON запрос без файлов
+            const newUser = await api.post<User>('/auth/users/', data);
+            
+            set(state => ({
+              users: [newUser, ...state.users],
+              currentUser: newUser,
+              isLoading: false,
+            }));
+          }
         } catch (error: unknown) {
           const apiError = error as ApiErrorResponse;
           const errorMessage = apiError.message || 'Ошибка создания пользователя';
@@ -130,15 +195,41 @@ export const useUsersStore = create<UsersStoreExtended>()(
         set({ isLoading: true, error: null });
         
         try {
-          const updatedUser = await api.patch<User>(`/auth/users/${id}/`, data);
-          
-          set(state => ({
-            users: state.users.map(user => 
-              user.id === id ? updatedUser : user
-            ),
-            currentUser: state.currentUser?.id === id ? updatedUser : state.currentUser,
-            isLoading: false,
-          }));
+          // Если есть аватар (файл), используем FormData
+          if (data.avatar instanceof File) {
+            const formData = new FormData();
+            if (data.username) formData.append('username', data.username);
+            if (data.email) formData.append('email', data.email);
+            if (data.password) formData.append('password', data.password);
+            if (data.first_name !== undefined) formData.append('first_name', data.first_name);
+            if (data.last_name !== undefined) formData.append('last_name', data.last_name);
+            if (data.role) formData.append('role', data.role.toString());
+            if (data.is_active !== undefined) formData.append('is_active', data.is_active ? 'true' : 'false');
+            if (data.birth_date !== undefined) formData.append('birth_date', data.birth_date);
+            if (data.about !== undefined) formData.append('about', data.about);
+            formData.append('avatar', data.avatar);
+
+            const updatedUser = await api.uploadFile<User>('PATCH', `/auth/users/${id}/`, formData);
+            
+            set(state => ({
+              users: state.users.map(user => 
+                user.id === id ? updatedUser : user
+              ),
+              currentUser: state.currentUser?.id === id ? updatedUser : state.currentUser,
+              isLoading: false,
+            }));
+          } else {
+            // Обычный JSON запрос без файлов
+            const updatedUser = await api.patch<User>(`/auth/users/${id}/`, data);
+            
+            set(state => ({
+              users: state.users.map(user => 
+                user.id === id ? updatedUser : user
+              ),
+              currentUser: state.currentUser?.id === id ? updatedUser : state.currentUser,
+              isLoading: false,
+            }));
+          }
         } catch (error: unknown) {
           const apiError = error as ApiErrorResponse;
           const errorMessage = apiError.message || 'Ошибка обновления пользователя';
@@ -242,15 +333,20 @@ export const useUsersStore = create<UsersStoreExtended>()(
       },
 
       fetchRoles: async () => {
+        set({ rolesLoading: true, error: null });
+        
         try {
-          const roles = await api.get<Role[]>('/auth/roles/');
+          const response = await api.get<{ results: Role[] }>('/auth/roles/');
+          const roles = response.results || [];
+          console.log('✅ Roles loaded:', roles.length, 'roles');
           
-          set({ roles });
+          set({ roles, rolesLoading: false });
         } catch (error: unknown) {
+          console.error('❌ fetchRoles: Error:', error);
           const apiError = error as ApiErrorResponse;
           const errorMessage = apiError.message || 'Ошибка загрузки ролей';
           
-          set({ error: errorMessage });
+          set({ error: errorMessage, rolesLoading: false });
           throw error;
         }
       },

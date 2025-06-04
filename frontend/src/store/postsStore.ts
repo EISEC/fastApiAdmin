@@ -55,7 +55,36 @@ export const usePostsStore = create<PostsStore>()(
       createPost: async (data: PostCreateData) => {
         set({ isLoading: true, error: null });
         try {
-          const newPost = await api.post<Post>('/posts/', data);
+          console.log('Creating post with data:', data);
+          let newPost: Post;
+          
+          // Если есть файл, используем FormData
+          if (data.featured_image instanceof File) {
+            console.log('Creating post with file:', data.featured_image.name);
+            const formData = new FormData();
+            
+            // Добавляем все поля в FormData
+            Object.entries(data).forEach(([key, value]) => {
+              if (value !== undefined && value !== null) {
+                if (key === 'featured_image' && value instanceof File) {
+                  formData.append(key, value);
+                  console.log('Added file to FormData:', key, value.name);
+                } else {
+                  formData.append(key, String(value));
+                  console.log('Added field to FormData:', key, value);
+                }
+              }
+            });
+            
+            console.log('Uploading with FormData...');
+            newPost = await api.upload<Post>('/posts/', formData);
+          } else {
+            console.log('Creating post without file');
+            newPost = await api.post<Post>('/posts/', data);
+          }
+          
+          console.log('Post created successfully:', newPost);
+          
           // Конвертируем в PostListItem для списка
           const postListItem: PostListItem = {
             id: newPost.id,
@@ -64,8 +93,12 @@ export const usePostsStore = create<PostsStore>()(
             excerpt: newPost.excerpt,
             featured_image: newPost.featured_image,
             status: newPost.status,
+            visibility: newPost.visibility,
             author_name: newPost.author_name,
             site_name: newPost.site_name,
+            categories: newPost.categories,
+            tags: newPost.tags,
+            comments_count: newPost.comments_count,
             published_at: newPost.published_at,
             views_count: newPost.views_count,
             created_at: newPost.created_at,
@@ -78,6 +111,7 @@ export const usePostsStore = create<PostsStore>()(
           }));
           useToastStore.getState().success('Пост создан', `Пост "${newPost.title}" был успешно создан`);
         } catch (error) {
+          console.error('Error creating post:', error);
           const apiError = error as ApiErrorResponse;
           const errorMessage = apiError.message || 'Ошибка создания поста';
           set({ error: errorMessage, isLoading: false });
@@ -89,7 +123,34 @@ export const usePostsStore = create<PostsStore>()(
       updatePost: async (id: number, data: PostUpdateData) => {
         set({ isLoading: true, error: null });
         try {
-          const updatedPost = await api.patch<Post>(`/posts/${id}/`, data);
+          let updatedPost: Post;
+          
+          // Если есть файл, используем FormData
+          if (data.featured_image instanceof File) {
+            const formData = new FormData();
+            
+            // Добавляем все поля в FormData
+            Object.entries(data).forEach(([key, value]) => {
+              if (value !== undefined && value !== null) {
+                if (key === 'featured_image' && value instanceof File) {
+                  formData.append(key, value);
+                } else {
+                  formData.append(key, String(value));
+                }
+              }
+            });
+            
+            // Используем прямой вызов axios для PATCH с FormData
+            const { default: apiClient } = await import('../lib/axios.config');
+            const response = await apiClient.patch(`/posts/${id}/`, formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            });
+            updatedPost = response.data;
+          } else {
+            updatedPost = await api.patch<Post>(`/posts/${id}/`, data);
+          }
           
           // Обновляем в списке постов
           const postListItem: PostListItem = {
@@ -99,8 +160,12 @@ export const usePostsStore = create<PostsStore>()(
             excerpt: updatedPost.excerpt,
             featured_image: updatedPost.featured_image,
             status: updatedPost.status,
+            visibility: updatedPost.visibility,
             author_name: updatedPost.author_name,
             site_name: updatedPost.site_name,
+            categories: updatedPost.categories,
+            tags: updatedPost.tags,
+            comments_count: updatedPost.comments_count,
             published_at: updatedPost.published_at,
             views_count: updatedPost.views_count,
             created_at: updatedPost.created_at,
@@ -155,8 +220,12 @@ export const usePostsStore = create<PostsStore>()(
             excerpt: duplicatedPost.excerpt,
             featured_image: duplicatedPost.featured_image,
             status: duplicatedPost.status,
+            visibility: duplicatedPost.visibility,
             author_name: duplicatedPost.author_name,
             site_name: duplicatedPost.site_name,
+            categories: duplicatedPost.categories,
+            tags: duplicatedPost.tags,
+            comments_count: duplicatedPost.comments_count,
             published_at: duplicatedPost.published_at,
             views_count: duplicatedPost.views_count,
             created_at: duplicatedPost.created_at,
@@ -180,7 +249,7 @@ export const usePostsStore = create<PostsStore>()(
       changeStatus: async (id: number, status: PostStatus) => {
         set({ isLoading: true, error: null });
         try {
-          const updatedPost = await api.patch<Post>(`/posts/${id}/`, { status });
+          const updatedPost = await api.patch<Post>(`/posts/${id}/change_status/`, { status });
           
           const postListItem: PostListItem = {
             id: updatedPost.id,
@@ -189,8 +258,12 @@ export const usePostsStore = create<PostsStore>()(
             excerpt: updatedPost.excerpt,
             featured_image: updatedPost.featured_image,
             status: updatedPost.status,
+            visibility: updatedPost.visibility,
             author_name: updatedPost.author_name,
             site_name: updatedPost.site_name,
+            categories: updatedPost.categories,
+            tags: updatedPost.tags,
+            comments_count: updatedPost.comments_count,
             published_at: updatedPost.published_at,
             views_count: updatedPost.views_count,
             created_at: updatedPost.created_at,
@@ -222,9 +295,11 @@ export const usePostsStore = create<PostsStore>()(
         }
       },
 
-      fetchCategories: async () => {
+      fetchCategories: async (siteId?: number) => {
         try {
-          const categories = await api.get<Category[]>('/categories/');
+          const url = siteId ? `/posts/categories/?site=${siteId}` : '/posts/categories/';
+          const response = await api.get<{ results: Category[] }>(url);
+          const categories = Array.isArray(response) ? response : response.results || [];
           set({ categories });
         } catch (error) {
           const apiError = error as ApiErrorResponse;
@@ -233,9 +308,11 @@ export const usePostsStore = create<PostsStore>()(
         }
       },
 
-      fetchTags: async () => {
+      fetchTags: async (siteId?: number) => {
         try {
-          const tags = await api.get<Tag[]>('/tags/');
+          const url = siteId ? `/posts/tags/?site=${siteId}` : '/posts/tags/';
+          const response = await api.get<{ results: Tag[] }>(url);
+          const tags = Array.isArray(response) ? response : response.results || [];
           set({ tags });
         } catch (error) {
           const apiError = error as ApiErrorResponse;

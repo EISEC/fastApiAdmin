@@ -123,9 +123,9 @@ class Site(models.Model):
         """Возвращает абсолютный URL сайта"""
         return f"https://{self.domain}"
     
-    def get_posts_count(self) -> int:
-        """Возвращает количество постов на сайте"""
-        return self.posts.filter(is_published=True).count()
+    def get_posts_count(self):
+        """Получить количество опубликованных постов"""
+        return self.posts.filter(status='published').count()
     
     def get_pages_count(self) -> int:
         """Возвращает количество страниц на сайте"""

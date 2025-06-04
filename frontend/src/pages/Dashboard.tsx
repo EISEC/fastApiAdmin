@@ -1,252 +1,259 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import DashboardLayout from '../components/layout/DashboardLayout';
-import Card from '../components/ui/Card';
-import { useAuthStore } from '../store/authStore';
+import StatsCard from '../components/ui/StatsCard';
+import Button from '../components/ui/Button';
+import { useSitesStore, usePostsStore, useUsersStore } from '../store';
 
 /**
- * Главная страница дашборда
+ * Главная страница дашборда с общей статистикой
  */
 const Dashboard: React.FC = () => {
-  const { user } = useAuthStore();
+  const navigate = useNavigate();
   
-  const stats = [
-    {
-      name: 'Всего сайтов',
-      value: '12',
-      icon: '🌐',
-      change: '+2 за неделю',
-      changeType: 'positive',
-    },
-    {
-      name: 'Активных постов',
-      value: '245',
-      icon: '📝',
-      change: '+12 за неделю',
-      changeType: 'positive',
-    },
-    {
-      name: 'Страниц',
-      value: '89',
-      icon: '📄',
-      change: '+5 за неделю',
-      changeType: 'positive',
-    },
-    {
-      name: 'Пользователей',
-      value: '8',
-      icon: '👥',
-      change: '+1 за неделю',
-      changeType: 'positive',
-    },
-  ];
-  
-  const recentActivity = [
-    {
-      id: 1,
-      action: 'Создан новый пост',
-      details: '"10 способов улучшить SEO"',
-      user: 'Иван Петров',
-      time: '2 часа назад',
-    },
-    {
-      id: 2,
-      action: 'Обновлена страница',
-      details: 'Главная страница сайта example.com',
-      user: 'Мария Сидорова',
-      time: '4 часа назад',
-    },
-    {
-      id: 3,
-      action: 'Добавлен новый сайт',
-      details: 'blog.example.com',
-      user: 'Алексей Иванов',
-      time: '1 день назад',
-    },
-  ];
-  
+  const { sites, fetchSites } = useSitesStore();
+  const { posts, fetchPosts } = usePostsStore();
+  const { users, fetchUsers } = useUsersStore();
+
+  useEffect(() => {
+    // Загружаем данные для статистики
+    fetchSites();
+    fetchPosts();
+    fetchUsers();
+  }, [fetchSites, fetchPosts, fetchUsers]);
+
+  // Вычисляем статистику
+  const sitesStats = {
+    total: sites.length,
+    active: sites.filter(site => site.is_active).length,
+  };
+
+  const postsStats = {
+    total: posts.length,
+    published: posts.filter(post => post.status === 'published').length,
+    drafts: posts.filter(post => post.status === 'draft').length,
+    views: posts.reduce((sum, post) => sum + (post.views_count || 0), 0),
+  };
+
+  const usersStats = {
+    total: users.length,
+    active: users.filter(user => user.is_active).length,
+    admins: users.filter(user => user.role?.name === 'admin').length,
+    authors: users.filter(user => user.role?.name === 'author').length,
+  };
+
   return (
     <DashboardLayout>
-      <div className="space-y-6">
-        {/* Welcome section */}
+      <div className="space-y-8">
+        {/* Header */}
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">
-            Добро пожаловать, {user?.first_name || user?.username}!
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            Добро пожаловать в панель управления! 👋
           </h1>
-          <p className="mt-1 text-sm text-gray-600">
-            Обзор вашей системы управления контентом
+          <p className="text-lg text-gray-600">
+            Управляйте вашими сайтами, контентом и пользователями из единого места.
           </p>
         </div>
-        
-        {/* Stats */}
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {stats.map((stat) => (
-            <Card key={stat.name} hover>
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <div className="text-2xl">{stat.icon}</div>
-                </div>
-                <div className="ml-5 w-0 flex-1">
-                  <dl>
-                    <dt className="text-sm font-medium text-gray-500 truncate">
-                      {stat.name}
-                    </dt>
-                    <dd className="flex items-baseline">
-                      <div className="text-2xl font-semibold text-gray-900">
-                        {stat.value}
-                      </div>
-                      <div className={`ml-2 flex items-baseline text-sm font-semibold ${
-                        stat.changeType === 'positive' ? 'text-green-600' : 'text-red-600'
-                      }`}>
-                        {stat.change}
-                      </div>
-                    </dd>
-                  </dl>
-                </div>
-              </div>
-            </Card>
-          ))}
+
+        {/* Test Connection Component */}
+        {/* TestConnection /> */}
+
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <StatsCard
+            title="Всего сайтов"
+            value={sitesStats.total}
+            change={{ value: `+${sitesStats.active} активных`, type: 'increase' }}
+            color="blue"
+            icon={
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9" />
+              </svg>
+            }
+          />
+          
+          <StatsCard
+            title="Всего постов"
+            value={postsStats.total}
+            change={{ value: `${postsStats.published} опубликованных`, type: 'increase' }}
+            color="green"
+            icon={
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            }
+          />
+          
+          <StatsCard
+            title="Пользователи"
+            value={usersStats.total}
+            change={{ value: `${usersStats.active} активных`, type: 'increase' }}
+            color="purple"
+            icon={
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+              </svg>
+            }
+          />
+          
+          <StatsCard
+            title="Просмотры"
+            value={postsStats.views.toLocaleString()}
+            change={{ value: '+12%', type: 'increase' }}
+            color="yellow"
+            icon={
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+            }
+          />
         </div>
-        
+
+        {/* Quick Actions */}
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Быстрые действия</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <Button
+              variant="primary"
+              onClick={() => navigate('/sites/create')}
+              className="justify-center"
+            >
+              <span className="mr-2">🌐</span>
+              Создать сайт
+            </Button>
+            
+            <Button
+              variant="secondary"
+              onClick={() => navigate('/posts/create')}
+              className="justify-center"
+            >
+              <span className="mr-2">📝</span>
+              Написать пост
+            </Button>
+            
+            <Button
+              variant="secondary"
+              onClick={() => navigate('/users/create')}
+              className="justify-center"
+            >
+              <span className="mr-2">👤</span>
+              Добавить пользователя
+            </Button>
+            
+            <Button
+              variant="secondary"
+              onClick={() => navigate('/pages/create')}
+              className="justify-center"
+            >
+              <span className="mr-2">📄</span>
+              Создать страницу
+            </Button>
+          </div>
+        </div>
+
         {/* Recent Activity */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Activity Feed */}
-          <Card>
-            <div className="mb-4">
-              <h3 className="text-lg font-medium text-gray-900">
-                Последняя активность
-              </h3>
+          {/* Recent Sites */}
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-semibold text-gray-900">Последние сайты</h2>
+              <Button variant="secondary" size="sm" onClick={() => navigate('/sites')}>
+                Все сайты
+              </Button>
             </div>
-            <div className="flow-root">
-              <ul className="-mb-8">
-                {recentActivity.map((activity, activityIdx) => (
-                  <li key={activity.id}>
-                    <div className="relative pb-8">
-                      {activityIdx !== recentActivity.length - 1 ? (
-                        <span
-                          className="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200"
-                          aria-hidden="true"
+            
+            {sites.slice(0, 3).length > 0 ? (
+              <div className="space-y-3">
+                {sites.slice(0, 3).map((site) => (
+                  <div key={site.id} className="flex items-center p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+                    <div className="flex-shrink-0 h-10 w-10 mr-3">
+                      {site.logo ? (
+                        <img
+                          className="h-10 w-10 rounded-lg object-cover"
+                          src={site.logo}
+                          alt={site.name}
                         />
-                      ) : null}
-                      <div className="relative flex space-x-3">
-                        <div>
-                          <span className="h-8 w-8 rounded-full bg-primary-500 flex items-center justify-center ring-8 ring-white">
-                            <svg
-                              className="h-4 w-4 text-white"
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.236 4.53L8.23 10.661a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
+                      ) : (
+                        <div className="h-10 w-10 rounded-lg bg-blue-500 flex items-center justify-center">
+                          <span className="text-white font-bold">
+                            {site.name.charAt(0).toUpperCase()}
                           </span>
                         </div>
-                        <div className="min-w-0 flex-1">
-                          <div>
-                            <div className="text-sm">
-                              <span className="font-medium text-gray-900">
-                                {activity.action}
-                              </span>
-                            </div>
-                            <p className="mt-0.5 text-sm text-gray-500">
-                              {activity.details}
-                            </p>
-                            <div className="mt-2 text-xs text-gray-400">
-                              {activity.user} • {activity.time}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                      )}
                     </div>
-                  </li>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-gray-900 truncate">{site.name}</p>
+                      <p className="text-sm text-gray-500 truncate">{site.domain}</p>
+                    </div>
+                    <div className={`ml-2 px-2 py-1 text-xs rounded-full ${
+                      site.is_active 
+                        ? 'bg-green-100 text-green-800' 
+                        : 'bg-red-100 text-red-800'
+                    }`}>
+                      {site.is_active ? 'Активен' : 'Неактивен'}
+                    </div>
+                  </div>
                 ))}
-              </ul>
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <div className="text-4xl mb-3">🌐</div>
+                <p className="text-gray-500">Нет созданных сайтов</p>
+              </div>
+            )}
+          </div>
+
+          {/* Recent Posts */}
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-semibold text-gray-900">Последние посты</h2>
+              <Button variant="secondary" size="sm" onClick={() => navigate('/posts')}>
+                Все посты
+              </Button>
             </div>
-          </Card>
-          
-          {/* Quick Actions */}
-          <Card>
-            <div className="mb-4">
-              <h3 className="text-lg font-medium text-gray-900">
-                Быстрые действия
-              </h3>
-            </div>
-            <div className="space-y-3">
-              <Link
-                to="/posts"
-                className="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
-              >
-                <div className="flex-shrink-0">
-                  <span className="text-xl">📝</span>
-                </div>
-                <div className="ml-3">
-                  <p className="text-sm font-medium text-gray-900">
-                    Управление постами
-                  </p>
-                  <p className="text-sm text-gray-500">
-                    Создавать и редактировать посты
-                  </p>
-                </div>
-              </Link>
-              
-              <Link
-                to="/pages"
-                className="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
-              >
-                <div className="flex-shrink-0">
-                  <span className="text-xl">📄</span>
-                </div>
-                <div className="ml-3">
-                  <p className="text-sm font-medium text-gray-900">
-                    Управление страницами
-                  </p>
-                  <p className="text-sm text-gray-500">
-                    Создавать и редактировать страницы
-                  </p>
-                </div>
-              </Link>
-              
-              <Link
-                to="/sites"
-                className="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
-              >
-                <div className="flex-shrink-0">
-                  <span className="text-xl">🌐</span>
-                </div>
-                <div className="ml-3">
-                  <p className="text-sm font-medium text-gray-900">
-                    Управление сайтами
-                  </p>
-                  <p className="text-sm text-gray-500">
-                    Создавать и настраивать сайты
-                  </p>
-                </div>
-              </Link>
-              
-              {(user?.role?.name === 'superuser' || user?.role?.name === 'admin') && (
-                <Link
-                  to="/users"
-                  className="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
-                >
-                  <div className="flex-shrink-0">
-                    <span className="text-xl">👥</span>
+            
+            {posts.slice(0, 3).length > 0 ? (
+              <div className="space-y-3">
+                {posts.slice(0, 3).map((post) => (
+                  <div key={post.id} className="flex items-center p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+                    <div className="flex-shrink-0 h-10 w-10 mr-3">
+                      {post.featured_image ? (
+                        <img
+                          className="h-10 w-10 rounded-lg object-cover"
+                          src={post.featured_image}
+                          alt={post.title}
+                        />
+                      ) : (
+                        <div className="h-10 w-10 rounded-lg bg-purple-500 flex items-center justify-center">
+                          <span className="text-white text-lg">📄</span>
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-gray-900 truncate">{post.title}</p>
+                      <p className="text-sm text-gray-500 truncate">{post.author_name}</p>
+                    </div>
+                    <div className={`ml-2 px-2 py-1 text-xs rounded-full ${
+                      post.status === 'published' ? 'bg-green-100 text-green-800' :
+                      post.status === 'draft' ? 'bg-gray-100 text-gray-800' :
+                      post.status === 'scheduled' ? 'bg-blue-100 text-blue-800' :
+                      'bg-yellow-100 text-yellow-800'
+                    }`}>
+                      {post.status === 'published' ? 'Опубликован' :
+                       post.status === 'draft' ? 'Черновик' :
+                       post.status === 'scheduled' ? 'Запланирован' : 'Архивирован'}
+                    </div>
                   </div>
-                  <div className="ml-3">
-                    <p className="text-sm font-medium text-gray-900">
-                      Управление пользователями
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      Создавать и управлять пользователями
-                    </p>
-                  </div>
-                </Link>
-              )}
-            </div>
-          </Card>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <div className="text-4xl mb-3">📝</div>
+                <p className="text-gray-500">Нет созданных постов</p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </DashboardLayout>

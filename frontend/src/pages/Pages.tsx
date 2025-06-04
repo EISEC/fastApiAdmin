@@ -97,9 +97,23 @@ const Pages: React.FC = () => {
               Создавайте и редактируйте страницы для ваших сайтов
             </p>
           </div>
-          <Button variant="primary" onClick={handleCreatePage}>
-            + Создать страницу
-          </Button>
+          
+          {/* Кнопки создания */}
+          <div className="flex gap-2">
+            <Button 
+              variant="secondary" 
+              onClick={() => navigate('/pages/create-with-builder')}
+              size="sm"
+            >
+              🎨 Конструктор страниц
+            </Button>
+            <Button 
+              variant="primary" 
+              onClick={handleCreatePage}
+            >
+              + Создать страницу
+            </Button>
+          </div>
         </div>
 
         {/* Error message */}
@@ -126,12 +140,23 @@ const Pages: React.FC = () => {
               <h3 className="text-lg font-medium text-gray-900 mb-2">
                 Нет страниц
               </h3>
-              <p className="text-gray-500 mb-4">
+              <p className="text-gray-500 mb-6">
                 Создайте первую страницу для вашего сайта
               </p>
-              <Button variant="primary" onClick={handleCreatePage}>
-                Создать первую страницу
-              </Button>
+              <div className="flex gap-3 justify-center">
+                <Button 
+                  variant="primary" 
+                  onClick={handleCreatePage}
+                >
+                  ✏️ Обычная страница
+                </Button>
+                <Button 
+                  variant="secondary" 
+                  onClick={() => navigate('/pages/create-with-builder')}
+                >
+                  🎨 Конструктор страниц
+                </Button>
+              </div>
             </div>
           </Card>
         ) : (

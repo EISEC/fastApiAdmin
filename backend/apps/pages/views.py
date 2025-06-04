@@ -2,9 +2,9 @@ from django.shortcuts import render
 from rest_framework import viewsets, status, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
-from django.db.models import Q, F
+from django.db.models import Count, Q
+from django.utils import timezone
 from django.http import HttpResponse
 
 from .models import Page
@@ -20,14 +20,13 @@ from apps.sites.models import Site
 
 
 class PageViewSet(viewsets.ModelViewSet):
-    """ViewSet для управления страницами"""
+    """ViewSet для работы со страницами"""
     
     queryset = Page.objects.all()
     permission_classes = [permissions.IsAuthenticated, PagePermission]
-    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    filterset_fields = ['is_published', 'template_name', 'site', 'author', 'is_homepage']
+    filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ['title', 'meta_title', 'meta_description']
-    ordering_fields = ['created_at', 'updated_at', 'title', 'sort_order']
+    ordering_fields = ['title', 'created_at', 'updated_at']
     ordering = ['-created_at']
     
     def get_serializer_class(self):
