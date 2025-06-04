@@ -14,6 +14,7 @@ export { usePostsStore } from './postsStore';
 export { usePagesStore } from './pagesStore';
 export { useUsersStore } from './usersStore';
 export { useToastStore } from './toastStore';
+export { usePageBuilderStore } from './pageBuilderStore';
 
 // Re-export store types and interfaces for external usage
 export type { 

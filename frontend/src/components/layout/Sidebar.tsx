@@ -32,9 +32,21 @@ const navigationItems = [
     roles: ['superuser', 'admin', 'author'],
   },
   {
+    name: 'Медиа-библиотека',
+    href: '/media',
+    icon: '📁',
+    roles: ['superuser', 'admin', 'author'],
+  },
+  {
     name: 'Пользователи',
     href: '/users',
     icon: '👥',
+    roles: ['superuser', 'admin'],
+  },
+  {
+    name: 'Настройки',
+    href: '/settings',
+    icon: '⚙️',
     roles: ['superuser', 'admin'],
   },
 ];

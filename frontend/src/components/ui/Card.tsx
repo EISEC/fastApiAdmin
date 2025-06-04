@@ -6,6 +6,7 @@ interface CardProps {
   className?: string;
   padding?: 'none' | 'sm' | 'md' | 'lg';
   hover?: boolean;
+  gradient?: boolean;
 }
 
 /**
@@ -16,6 +17,7 @@ const Card: React.FC<CardProps> = ({
   className = '',
   padding = 'md',
   hover = false,
+  gradient = false,
 }) => {
   const paddingClasses = {
     none: '',
@@ -25,9 +27,14 @@ const Card: React.FC<CardProps> = ({
   };
   
   const classes = clsx(
-    'bg-white shadow rounded-lg border border-gray-200',
+    // Базовые стили согласно STYLE_GUIDE.md
+    'bg-white rounded-2xl shadow-sm border border-gray-100',
+    // Градиентный фон если включен
+    gradient && 'relative overflow-hidden bg-gradient-to-br from-transparent to-gray-25',
+    // Отступы
     paddingClasses[padding],
-    hover && 'hover:shadow-md transition-shadow duration-200',
+    // Hover эффекты согласно STYLE_GUIDE.md
+    hover && 'hover:shadow-md transition-all duration-200 cursor-pointer',
     className
   );
   

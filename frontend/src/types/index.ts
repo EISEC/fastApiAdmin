@@ -155,8 +155,99 @@ export type {
 } from './api.types';
 
 // Export all specific types
-export * from './auth.types';
-export * from './site.types';
-export * from './post.types';
-export * from './page.types';
-export * from './api.types'; 
+export type * from './auth.types';
+export type * from './site.types';
+export type * from './post.types';
+export type * from './page.types';
+export type * from './api.types';
+export type * from './pageBuilder.types';
+
+// File Types  
+export * from './file.types';
+
+// Common interfaces
+export interface PaginatedResponse<T> {
+  results: T[];
+  count: number;
+  next: string | null;
+  previous: string | null;
+}
+
+export interface ApiError {
+  detail: string;
+  code?: string;
+  field?: string;
+}
+
+export interface FileSelectOption<T = string> {
+  value: T;
+  label: string;
+  disabled?: boolean;
+  icon?: string;
+}
+
+export interface FileTableColumn<T = any> {
+  key: keyof T | string;
+  label: string;
+  sortable?: boolean;
+  width?: string;
+  align?: 'left' | 'center' | 'right';
+  render?: (value: unknown, record: T) => React.ReactNode;
+}
+
+export interface FileTableProps<T = any> {
+  data: T[];
+  columns: FileTableColumn<T>[];
+  loading?: boolean;
+  pagination?: {
+    current: number;
+    total: number;
+    pageSize: number;
+    onChange: (page: number, pageSize: number) => void;
+  };
+  selection?: {
+    selectedRows: string[];
+    onChange: (selectedRows: string[]) => void;
+    getRowId: (item: T) => string;
+  };
+  sorting?: {
+    field: string;
+    direction: 'asc' | 'desc';
+    onChange: (field: string, direction: 'asc' | 'desc') => void;
+  };
+  onRowClick?: (item: T, index: number) => void;
+  emptyText?: string;
+  className?: string;
+}
+
+export interface ToastMessage {
+  id: string;
+  type: 'success' | 'error' | 'warning' | 'info';
+  title: string;
+  message?: string;
+  duration?: number;
+  action?: {
+    label: string;
+    onClick: () => void;
+  };
+}
+
+export interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  title?: string;
+  size?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
+  children: React.ReactNode;
+  className?: string;
+}
+
+export interface ConfirmDialogProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  title: string;
+  message: string;
+  confirmText?: string;
+  cancelText?: string;
+  variant?: 'danger' | 'warning' | 'info';
+} 

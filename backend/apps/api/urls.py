@@ -31,5 +31,5 @@ urlpatterns = [
     path('sites/', include('apps.sites.urls')),
     path('posts/', include('apps.posts.urls')),
     path('pages/', include('apps.pages.urls')),
-    # Добавим остальные приложения позже
+    path('settings/', include('apps.settings.urls')),
 ] 

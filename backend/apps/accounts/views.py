@@ -6,7 +6,6 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
-from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework import serializers
 
@@ -91,8 +90,7 @@ class UserViewSet(ModelViewSet):
     """ViewSet для управления пользователями"""
     queryset = CustomUser.objects.all()
     permission_classes = [permissions.IsAuthenticated, UserPermission]
-    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    filterset_fields = ['role', 'is_active', 'parent_user']
+    filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ['username', 'email', 'first_name', 'last_name']
     ordering_fields = ['created_at', 'username', 'email']
     ordering = ['-created_at']

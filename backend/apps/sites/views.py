@@ -2,7 +2,6 @@ from django.shortcuts import render
 from rest_framework import viewsets, status, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django.db.models import Count, Q
 
@@ -23,8 +22,7 @@ class SiteViewSet(viewsets.ModelViewSet):
     
     queryset = Site.objects.all()
     permission_classes = [permissions.IsAuthenticated, SitePermission]
-    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    filterset_fields = ['is_active', 'owner']
+    filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ['name', 'domain']
     ordering_fields = ['created_at', 'name', 'domain']
     ordering = ['-created_at']
@@ -78,14 +76,14 @@ class SiteViewSet(viewsets.ModelViewSet):
         
         posts_stats = Post.objects.filter(site=site).aggregate(
             total=Count('id'),
-            published=Count('id', filter=Q(is_published=True)),
-            draft=Count('id', filter=Q(is_published=False))
+            published=Count('id', filter=Q(status='published')),
+            draft=Count('id', filter=Q(status='draft'))
         )
         
         pages_stats = Page.objects.filter(site=site).aggregate(
             total=Count('id'),
-            published=Count('id', filter=Q(is_published=True)),
-            draft=Count('id', filter=Q(is_published=False))
+            published=Count('id', filter=Q(status='published')),
+            draft=Count('id', filter=Q(status='draft'))
         )
         
         # Общее количество просмотров постов
@@ -111,42 +109,36 @@ class SiteViewSet(viewsets.ModelViewSet):
     def assign_users(self, request, pk=None):
         """Назначение пользователей на сайт"""
         site = self.get_object()
+        user_ids = request.data.get('user_ids', [])
         
-        # Проверка аутентификации
-        if not request.user.is_authenticated or not hasattr(request.user, 'role') or request.user.role is None:
-            return Response({
-                'error': 'Необходима авторизация'
-            }, status=status.HTTP_401_UNAUTHORIZED)
+        if not user_ids:
+            return Response(
+                {'error': 'Необходимо указать user_ids'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
         
-        # Проверяем права доступа (только владелец или суперпользователь)
-        user_role = request.user.role.name
-        if user_role not in [Role.SUPERUSER] and site.owner != request.user:
-            return Response({
-                'error': 'У вас нет прав для назначения пользователей'
-            }, status=status.HTTP_403_FORBIDDEN)
-        
-        serializer = SiteAssignUsersSerializer(
-            data=request.data, 
-            context={'request': request}
-        )
-        
-        if serializer.is_valid():
-            user_ids = serializer.validated_data['user_ids']
-            from django.contrib.auth import get_user_model
-            User = get_user_model()
+        try:
+            # Получаем пользователей
+            from apps.accounts.models import CustomUser
+            users = CustomUser.objects.filter(id__in=user_ids)
             
-            users = User.objects.filter(id__in=user_ids)
+            if len(users) != len(user_ids):
+                return Response(
+                    {'error': 'Некоторые пользователи не найдены'}, 
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            
+            # Назначаем пользователей
             site.assigned_users.set(users)
             
-            return Response({
-                'message': f'Назначено {len(users)} пользователей',
-                'assigned_users': [
-                    {'id': user.id, 'username': user.username, 'email': user.email}
-                    for user in users
-                ]
-            })
+            serializer = self.get_serializer(site)
+            return Response(serializer.data)
         
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response(
+                {'error': f'Ошибка назначения пользователей: {str(e)}'}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
     
     @action(detail=True, methods=['post'])
     def remove_user(self, request, pk=None):

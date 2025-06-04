@@ -1,110 +1,204 @@
 from django.shortcuts import render
-from rest_framework import viewsets, status, permissions
+from rest_framework import viewsets, status, filters
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django.db.models import Q, F
 from django.utils import timezone
 
-from .models import Post
+from .models import Post, Category, Tag
 from .serializers import (
     PostListSerializer,
     PostDetailSerializer,
     PostCreateUpdateSerializer,
-    PostStatsSerializer
+    PostStatsSerializer,
+    CategorySerializer,
+    TagSerializer
 )
-from apps.common.permissions import PostPermission
+from apps.common.permissions import PostPermission, SitePermission
 from apps.sites.models import Site
 
 
-class PostViewSet(viewsets.ModelViewSet):
-    """ViewSet для управления постами"""
+class CategoryViewSet(viewsets.ModelViewSet):
+    """ViewSet для работы с категориями постов"""
+    serializer_class = CategorySerializer
+    permission_classes = [IsAuthenticated, SitePermission]
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['name', 'description']
+    ordering_fields = ['name', 'order', 'created_at']
+    ordering = ['order', 'name']
     
-    queryset = Post.objects.all()
-    permission_classes = [permissions.IsAuthenticated, PostPermission]
-    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    filterset_fields = ['is_published', 'site', 'author']
-    search_fields = ['title', 'content']
-    ordering_fields = ['created_at', 'updated_at', 'title']
+    def get_queryset(self):
+        user = self.request.user
+        if not hasattr(user, 'role') or user.role is None:
+            return Category.objects.none()
+            
+        if user.role.name == 'superuser':
+            return Category.objects.all()
+        elif user.role.name == 'admin':
+            return Category.objects.filter(site__owner=user)
+        elif user.role.name == 'author':
+            return Category.objects.filter(site__assigned_users=user)
+        
+        return Category.objects.none()
+
+
+class TagViewSet(viewsets.ModelViewSet):
+    """ViewSet для работы с тегами постов"""
+    serializer_class = TagSerializer
+    permission_classes = [IsAuthenticated, SitePermission]
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['name']
+    ordering_fields = ['name', 'created_at']
+    ordering = ['name']
+    
+    def get_queryset(self):
+        user = self.request.user
+        if not hasattr(user, 'role') or user.role is None:
+            return Tag.objects.none()
+            
+        if user.role.name == 'superuser':
+            return Tag.objects.all()
+        elif user.role.name == 'admin':
+            return Tag.objects.filter(site__owner=user)
+        elif user.role.name == 'author':
+            return Tag.objects.filter(site__assigned_users=user)
+        
+        return Tag.objects.none()
+
+
+class PostViewSet(viewsets.ModelViewSet):
+    """ViewSet для работы с постами"""
+    permission_classes = [IsAuthenticated, SitePermission]
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['title', 'content', 'excerpt']
+    ordering_fields = ['title', 'created_at', 'published_at', 'views_count']
     ordering = ['-created_at']
     
+    def get_queryset(self):
+        user = self.request.user
+        if not hasattr(user, 'role') or user.role is None:
+            return Post.objects.none()
+            
+        if user.role.name == 'superuser':
+            queryset = Post.objects.all()
+        elif user.role.name == 'admin':
+            queryset = Post.objects.filter(site__owner=user)
+        elif user.role.name == 'author':
+            queryset = Post.objects.filter(
+                Q(site__assigned_users=user) | Q(author=user)
+            )
+        else:
+            queryset = Post.objects.none()
+        
+        return queryset.select_related('site', 'author', 'category').prefetch_related('tags')
+    
     def get_serializer_class(self):
-        """Выбор сериализатора в зависимости от действия"""
         if self.action == 'list':
             return PostListSerializer
         elif self.action in ['create', 'update', 'partial_update']:
             return PostCreateUpdateSerializer
         return PostDetailSerializer
     
-    def get_queryset(self):
-        """Фильтрация постов по ролям пользователей"""
-        user = self.request.user
-        queryset = Post.objects.select_related('author', 'site')
-        
-        # Проверка для Swagger схемы и анонимных пользователей
-        if not user.is_authenticated or not hasattr(user, 'role') or user.role is None:
-            return queryset.none()
-        
-        if user.role.name == 'superuser':
-            return queryset
-        elif user.role.name == 'admin':
-            # Админ видит посты только своих сайтов
-            return queryset.filter(site__owner=user)
-        elif user.role.name == 'author':
-            # Автор видит только свои посты или посты сайтов, к которым имеет доступ
-            return queryset.filter(
-                Q(author=user) | Q(site__assigned_users=user)
-            ).distinct()
-        
-        return queryset.none()
-    
     def perform_create(self, serializer):
-        """Создание поста с назначением автора"""
         serializer.save(author=self.request.user)
+    
+    @action(detail=True, methods=['post'])
+    def duplicate(self, request, pk=None):
+        """Дублирование поста"""
+        post = self.get_object()
+        
+        # Создаем копию поста
+        new_post = Post.objects.create(
+            title=f"{post.title} (копия)",
+            content=post.content,
+            excerpt=post.excerpt,
+            status='draft',
+            site=post.site,
+            author=request.user,
+            category=post.category,
+            meta_title=post.meta_title,
+            meta_description=post.meta_description,
+            is_featured=False,
+            allow_comments=post.allow_comments
+        )
+        
+        # Копируем теги
+        new_post.tags.set(post.tags.all())
+        
+        serializer = self.get_serializer(new_post)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    @action(detail=True, methods=['patch'])
+    def change_status(self, request, pk=None):
+        """Изменение статуса поста"""
+        post = self.get_object()
+        new_status = request.data.get('status')
+        
+        if new_status not in ['draft', 'published', 'scheduled', 'archived']:
+            return Response(
+                {'error': 'Неверный статус'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        post.status = new_status
+        
+        # Устанавливаем дату публикации при публикации
+        if new_status == 'published' and not post.published_at:
+            post.published_at = timezone.now()
+        
+        post.save()
+        
+        serializer = self.get_serializer(post)
+        return Response(serializer.data)
     
     @action(detail=True, methods=['post'])
     def increment_views(self, request, pk=None):
         """Увеличение счетчика просмотров"""
         post = self.get_object()
-        post.increment_views()
+        post.views_count += 1
+        post.save(update_fields=['views_count'])
         
-        return Response({
-            'success': True,
-            'views_count': post.views_count
-        })
+        return Response({'views_count': post.views_count})
     
-    @action(detail=True, methods=['post'])
-    def publish(self, request, pk=None):
-        """Публикация поста"""
-        post = self.get_object()
+    @action(detail=False, methods=['get'])
+    def by_category(self, request):
+        """Получение постов по категории"""
+        category_id = request.query_params.get('category_id')
+        if not category_id:
+            return Response(
+                {'error': 'Необходимо указать category_id'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
         
-        if not post.is_published:
-            post.is_published = True
-            if not post.published_at:
-                post.published_at = timezone.now()
-            post.save(update_fields=['is_published', 'published_at'])
+        queryset = self.get_queryset().filter(category_id=category_id)
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = PostListSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
         
-        return Response({
-            'success': True,
-            'is_published': post.is_published,
-            'published_at': post.published_at
-        })
+        serializer = PostListSerializer(queryset, many=True)
+        return Response(serializer.data)
     
-    @action(detail=True, methods=['post'])
-    def unpublish(self, request, pk=None):
-        """Снятие поста с публикации"""
-        post = self.get_object()
+    @action(detail=False, methods=['get'])
+    def by_tag(self, request):
+        """Получение постов по тегу"""
+        tag_id = request.query_params.get('tag_id')
+        if not tag_id:
+            return Response(
+                {'error': 'Необходимо указать tag_id'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
         
-        if post.is_published:
-            post.is_published = False
-            post.published_at = None
-            post.save(update_fields=['is_published', 'published_at'])
+        queryset = self.get_queryset().filter(tags__id=tag_id)
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = PostListSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
         
-        return Response({
-            'success': True,
-            'is_published': post.is_published
-        })
+        serializer = PostListSerializer(queryset, many=True)
+        return Response(serializer.data)
     
     @action(detail=False, methods=['get'])
     def my_posts(self, request):
@@ -122,7 +216,7 @@ class PostViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'])
     def published(self, request):
         """Получение опубликованных постов"""
-        queryset = self.get_queryset().filter(is_published=True)
+        queryset = self.get_queryset().filter(status='published')
         
         page = self.paginate_queryset(queryset)
         if page is not None:
@@ -139,8 +233,8 @@ class PostViewSet(viewsets.ModelViewSet):
         
         stats = {
             'total_posts': queryset.count(),
-            'published_posts': queryset.filter(is_published=True).count(),
-            'draft_posts': queryset.filter(is_published=False).count(),
+            'published_posts': queryset.filter(status='published').count(),
+            'draft_posts': queryset.filter(status='draft').count(),
             'total_views': sum(post.views_count for post in queryset),
         }
         
