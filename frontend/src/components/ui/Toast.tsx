@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import Icon from './Icon';
 
 export type ToastType = 'success' | 'error' | 'warning' | 'info';
 
@@ -67,15 +68,15 @@ const Toast: React.FC<ToastProps> = ({
   const getIconByType = () => {
     switch (type) {
       case 'success':
-        return '✅';
+        return <Icon name="check" size="lg" color="success" />;
       case 'error':
-        return '❌';
+        return <Icon name="cancel" size="lg" color="danger" />;
       case 'warning':
-        return '⚠️';
+        return <Icon name="warning" size="lg" color="warning" />;
       case 'info':
-        return 'ℹ️';
+        return <Icon name="info" size="lg" color="primary" />;
       default:
-        return 'ℹ️';
+        return <Icon name="info" size="lg" color="gray" />;
     }
   };
 
@@ -121,7 +122,7 @@ const Toast: React.FC<ToastProps> = ({
       <div className="p-4">
         <div className="flex items-start">
           <div className="flex-shrink-0">
-            <span className="text-xl">{getIconByType()}</span>
+            {getIconByType()}
           </div>
           <div className="ml-3 w-0 flex-1">
             <p className={`text-sm font-medium ${colors.titleColor}`}>
@@ -139,13 +140,7 @@ const Toast: React.FC<ToastProps> = ({
               onClick={handleClose}
             >
               <span className="sr-only">Закрыть</span>
-              <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path
-                  fillRule="evenodd"
-                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                  clipRule="evenodd"
-                />
-              </svg>
+              <Icon name="close" size="sm" />
             </button>
           </div>
         </div>

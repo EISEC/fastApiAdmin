@@ -65,25 +65,25 @@ export const useUsersStore = create<UsersStoreExtended>()(
       error: null,
 
       fetchUsers: async () => {
-        console.log('🔄 UsersStore: Starting fetchUsers...');
+        console.log('UsersStore: Starting fetchUsers...');
         set({ isLoading: true, error: null });
         
         try {
-          console.log('📡 UsersStore: Making API request to /auth/users/');
+          console.log('UsersStore: Making API request to /auth/users/');
           const response = await api.get<{ results?: User[], count?: number }>('/auth/users/');
-          console.log('📨 UsersStore: API response received:', response);
+          console.log('UsersStore: API response received:', response);
           
           const users = Array.isArray(response) ? response : (response.results || []);
-          console.log('👥 UsersStore: Processed users:', users);
+          console.log('UsersStore: Processed users:', users);
           
           set({
             users,
             isLoading: false,
           });
           
-          console.log('✅ UsersStore: Users loaded successfully, count:', users.length);
+          console.log('UsersStore: Users loaded successfully, count:', users.length);
         } catch (error: unknown) {
-          console.error('❌ UsersStore: Error loading users:', error);
+          console.error('UsersStore: Error loading users:', error);
           
           // Более детальная обработка ошибок
           let errorMessage = 'Ошибка загрузки пользователей';
@@ -107,7 +107,7 @@ export const useUsersStore = create<UsersStoreExtended>()(
             }
           }
           
-          console.error('📝 UsersStore: Error details:', {
+          console.error('UsersStore: Error details:', {
             status: (error as any)?.response?.status,
             statusText: (error as any)?.response?.statusText,
             data: (error as any)?.response?.data,
@@ -338,11 +338,11 @@ export const useUsersStore = create<UsersStoreExtended>()(
         try {
           const response = await api.get<{ results: Role[] }>('/auth/roles/');
           const roles = response.results || [];
-          console.log('✅ Roles loaded:', roles.length, 'roles');
+          console.log('Roles loaded:', roles.length, 'roles');
           
           set({ roles, rolesLoading: false });
         } catch (error: unknown) {
-          console.error('❌ fetchRoles: Error:', error);
+          console.error('fetchRoles: Error:', error);
           const apiError = error as ApiErrorResponse;
           const errorMessage = apiError.message || 'Ошибка загрузки ролей';
           

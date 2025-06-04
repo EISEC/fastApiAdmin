@@ -1,5 +1,6 @@
 import React from 'react';
 import { clsx } from 'clsx';
+import Icon from '../ui/Icon';
 
 interface TinyMCEEditorProps {
   value?: string;
@@ -82,8 +83,9 @@ const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
         <span>
           Символов: {value.length}
         </span>
-        <span>
-          ⚠️ Для полной функциональности установите TinyMCE
+        <span className="flex items-center">
+          <Icon name="warning" size="xs" className="mr-1" />
+          Для полной функциональности установите TinyMCE
         </span>
       </div>
     </div>

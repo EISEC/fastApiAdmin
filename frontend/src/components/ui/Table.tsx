@@ -1,5 +1,6 @@
 import React from 'react';
 import type { ReactNode } from 'react';
+import Icon from './Icon';
 
 // Типы для конфигурации колонок
 export interface TableColumn<T> {
@@ -56,20 +57,16 @@ function Table<T extends { id?: string | number }>({
     
     return (
       <span className="ml-2 inline-flex flex-col">
-        <svg 
-          className={`h-3 w-3 transition-colors ${isActive && sortConfig.direction === 'asc' ? 'text-blue-600' : 'text-gray-400'}`}
-          fill="currentColor" 
-          viewBox="0 0 20 20"
-        >
-          <path fillRule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clipRule="evenodd" />
-        </svg>
-        <svg 
-          className={`h-3 w-3 -mt-1 transition-colors ${isActive && sortConfig.direction === 'desc' ? 'text-blue-600' : 'text-gray-400'}`}
-          fill="currentColor" 
-          viewBox="0 0 20 20"
-        >
-          <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-        </svg>
+        <Icon 
+          name="arrowUp"
+          size="xs"
+          className={`transition-colors ${isActive && sortConfig.direction === 'asc' ? 'text-blue-600' : 'text-gray-400'}`}
+        />
+        <Icon 
+          name="arrowDown" 
+          size="xs"
+          className={`-mt-1 transition-colors ${isActive && sortConfig.direction === 'desc' ? 'text-blue-600' : 'text-gray-400'}`}
+        />
       </span>
     );
   };
@@ -117,9 +114,7 @@ function Table<T extends { id?: string | number }>({
     return (
       <div className={`bg-white shadow-sm rounded-lg overflow-hidden ${className}`}>
         <div className="p-8 text-center">
-          <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-          </svg>
+          <Icon name="file" size="2xl" className="mx-auto text-gray-400" />
           <p className="mt-4 text-gray-600">{emptyMessage}</p>
         </div>
       </div>

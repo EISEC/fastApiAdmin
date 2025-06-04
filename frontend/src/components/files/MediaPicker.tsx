@@ -3,6 +3,7 @@ import type { MediaPickerOptions, FileItem } from '../../types';
 import FileManager from './FileManager';
 import Modal from '../ui/Modal';
 import Button from '../ui/Button';
+import Icon from '../ui/Icon';
 
 interface MediaPickerProps extends MediaPickerOptions {
   isOpen: boolean;
@@ -88,11 +89,11 @@ const MediaPicker: React.FC<MediaPickerProps> = ({
                 <span className="ml-2">
                   • Только: {accept.map(type => {
                     switch (type) {
-                      case 'image': return '🖼️ изображения';
-                      case 'video': return '🎬 видео';
-                      case 'audio': return '🎵 аудио';
-                      case 'document': return '📄 документы';
-                      case 'archive': return '🗜️ архивы';
+                      case 'image': return 'изображения';
+                      case 'video': return 'видео';
+                      case 'audio': return 'аудио';
+                      case 'document': return 'документы';
+                      case 'archive': return 'архивы';
                       default: return type;
                     }
                   }).join(', ')}
@@ -176,20 +177,20 @@ const SelectedFilePreview: React.FC<SelectedFilePreviewProps> = ({
   file,
   onRemove
 }) => {
-  const getFileIcon = (type: string): string => {
+  const getFileIcon = (type: string) => {
     switch (type) {
       case 'image':
-        return '🖼️';
+        return <Icon name="image" size="md" color="gray" />;
       case 'video':
-        return '🎬';
+        return <Icon name="video" size="md" color="gray" />;
       case 'audio':
-        return '🎵';
+        return <Icon name="video" size="md" color="gray" />;
       case 'document':
-        return '📄';
+        return <Icon name="file" size="md" color="gray" />;
       case 'archive':
-        return '🗜️';
+        return <Icon name="folder" size="md" color="gray" />;
       default:
-        return '📁';
+        return <Icon name="folder" size="md" color="gray" />;
     }
   };
 
@@ -218,7 +219,7 @@ const SelectedFilePreview: React.FC<SelectedFilePreviewProps> = ({
           />
         ) : null}
         <div 
-          className={`w-8 h-8 flex items-center justify-center text-lg ${file.type === 'image' ? 'hidden' : ''}`}
+          className={`w-8 h-8 flex items-center justify-center ${file.type === 'image' ? 'hidden' : ''}`}
         >
           {getFileIcon(file.type)}
         </div>
@@ -237,10 +238,10 @@ const SelectedFilePreview: React.FC<SelectedFilePreviewProps> = ({
       {/* Кнопка удаления */}
       <button
         onClick={onRemove}
-        className="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition-colors"
+        className="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors"
         title="Убрать из выбора"
       >
-        ✕
+        <Icon name="close" size="xs" className="text-white" />
       </button>
     </div>
   );

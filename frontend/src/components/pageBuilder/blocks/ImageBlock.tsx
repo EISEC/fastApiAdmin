@@ -1,5 +1,6 @@
 import React from 'react';
 import type { BlockConfig, ImageBlockData } from '../../../types/pageBuilder.types';
+import Icon from '../../ui/Icon';
 
 interface ImageBlockProps {
   block: BlockConfig;
@@ -157,8 +158,9 @@ const ImageBlock: React.FC<ImageBlockProps> = ({
         </div>
         
         {isSelected && (
-          <div className="absolute -top-8 left-0 bg-blue-500 text-white px-2 py-1 text-xs rounded">
-            🖼️ Изображение
+          <div className="absolute -top-8 left-0 bg-blue-500 text-white px-2 py-1 text-xs rounded flex items-center">
+            <Icon name="image" size="xs" className="mr-1" />
+            Изображение
           </div>
         )}
       </div>
@@ -195,15 +197,16 @@ const ImageBlock: React.FC<ImageBlockProps> = ({
       ) : (
         <div className="flex items-center justify-center h-32 bg-gray-100 rounded-lg border-2 border-dashed border-gray-300">
           <div className="text-center">
-            <span className="text-4xl text-gray-400">🖼️</span>
+            <Icon name="image" size="xl" color="gray" />
             <p className="text-sm text-gray-500 mt-1">Нет изображения</p>
           </div>
         </div>
       )}
       
       {isSelected && (
-        <div className="absolute -top-8 left-0 bg-blue-500 text-white px-2 py-1 text-xs rounded">
-          🖼️ Изображение
+        <div className="absolute -top-8 left-0 bg-blue-500 text-white px-2 py-1 text-xs rounded flex items-center">
+          <Icon name="image" size="xs" className="mr-1" />
+          Изображение
         </div>
       )}
     </div>

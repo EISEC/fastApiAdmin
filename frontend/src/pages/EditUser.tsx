@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import DashboardLayout from '../components/layout/DashboardLayout';
+import Card from '../components/ui/Card';
 import UserForm from '../components/forms/UserForm';
+import Icon from '../components/ui/Icon';
 import { useUsersStore } from '../store';
 import type { User } from '../types';
 
@@ -72,7 +74,7 @@ const EditUser: React.FC = () => {
           <div className="bg-red-50 border border-red-200 rounded-lg p-6">
             <div className="flex">
               <div className="flex-shrink-0">
-                <span className="text-red-400 text-xl">⚠️</span>
+                <Icon name="warning" size="lg" color="danger" />
               </div>
               <div className="ml-3">
                 <h3 className="text-lg font-medium text-red-800">Ошибка</h3>
@@ -104,18 +106,23 @@ const EditUser: React.FC = () => {
             onClick={() => navigate('/users')}
             className="hover:text-gray-700 transition-colors"
           >
-            👥 Пользователи
+            <Icon name="users" size="md" className="mr-2" />
+            Пользователи
           </button>
           <span>→</span>
-          <span className="text-gray-900 font-medium">{user.username}</span>
+          <span className="text-gray-900 font-medium">
+            <Icon name="edit" size="md" className="mr-2" />
+            Редактирование пользователя
+          </span>
         </div>
 
         {/* Header */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">
-                ✏️ Редактирование пользователя
+              <h1 className="text-2xl font-bold text-gray-900 flex items-center">
+                <Icon name="edit" size="lg" className="mr-2" />
+                Редактирование пользователя
               </h1>
               <p className="mt-2 text-sm text-gray-600">
                 Обновите информацию о пользователе {user.username}

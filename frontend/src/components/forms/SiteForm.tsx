@@ -21,15 +21,22 @@ const siteSchema = z.object({
     ),
   description: z.string()
     .max(500, 'Описание не должно превышать 500 символов')
-    .optional(),
+    .optional()
+    .or(z.literal('')),
   logo: z.union([
     z.instanceof(File),
     z.string(),
     z.null()
   ]).optional(),
-  meta_title: z.string().optional(),
-  meta_description: z.string().optional(),
-  meta_keywords: z.string().optional(),
+  meta_title: z.string()
+    .optional()
+    .or(z.literal('')),
+  meta_description: z.string()
+    .optional()
+    .or(z.literal('')),
+  meta_keywords: z.string()
+    .optional()
+    .or(z.literal('')),
 });
 
 type SiteFormData = z.infer<typeof siteSchema>;
@@ -65,10 +72,15 @@ const SiteForm: React.FC<SiteFormProps> = ({
     formState: { errors, isDirty, isValid }
   } = useForm<SiteFormData>({
     resolver: zodResolver(siteSchema),
+    mode: 'onChange',
     defaultValues: {
       name: '',
       domain: '',
       description: '',
+      meta_title: '',
+      meta_description: '',
+      meta_keywords: '',
+      logo: null,
     },
   });
 
@@ -308,6 +320,16 @@ const SiteForm: React.FC<SiteFormProps> = ({
 
           {/* Кнопки действий */}
           <div className="flex items-center justify-end space-x-3 pt-6 border-t border-gray-200">
+            {/* DEBUG: Отладочная информация */}
+            {process.env.NODE_ENV === 'development' && (
+              <div className="text-xs text-gray-500 mr-auto">
+                isValid: {String(isValid)} | isDirty: {String(isDirty)} | isLoading: {String(isLoading)}
+                {Object.keys(errors).length > 0 && (
+                  <div>Errors: {Object.keys(errors).join(', ')}</div>
+                )}
+              </div>
+            )}
+            
             <Button
               type="button"
               variant="secondary"

@@ -1,10 +1,10 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Table from '../ui/Table';
+import Table, { type TableColumn, type SortConfig } from '../ui/Table';
 import Button from '../ui/Button';
+import Icon from '../ui/Icon';
 import { useSitesStore, useToastStore } from '../../store';
 import type { Site } from '../../types';
-import type { TableColumn, SortConfig } from '../ui/Table';
 
 interface SitesTableProps {
   className?: string;
@@ -119,7 +119,8 @@ const SitesTable: React.FC<SitesTableProps> = ({ className }) => {
               {String(value)}
             </div>
             <div className="text-sm text-gray-500 truncate group-hover:text-gray-600 transition-colors">
-              🌐 {site.domain}
+              <Icon name="globe" size="sm" className="mr-1 inline" />
+              {site.domain}
             </div>
           </div>
         </div>
@@ -151,7 +152,7 @@ const SitesTable: React.FC<SitesTableProps> = ({ className }) => {
           }`}
         >
           <span className={`w-2 h-2 mr-2 rounded-full ${value ? 'bg-green-500' : 'bg-red-500'}`}></span>
-          {value ? '✅ Активен' : '❌ Неактивен'}
+          {value ? 'Активен' : 'Неактивен'}
         </button>
       ),
     },
@@ -164,8 +165,9 @@ const SitesTable: React.FC<SitesTableProps> = ({ className }) => {
           <div className="text-gray-900 font-medium">
             {formatDate(String(value))}
           </div>
-          <div className="text-gray-500 text-xs">
-            📅 {new Date(String(value)).toLocaleDateString('ru-RU', { weekday: 'short' })}
+          <div className="text-gray-500 text-xs flex items-center">
+            <Icon name="calendar" size="xs" className="mr-1" />
+            {new Date(String(value)).toLocaleDateString('ru-RU', { weekday: 'short' })}
           </div>
         </div>
       ),
@@ -183,7 +185,7 @@ const SitesTable: React.FC<SitesTableProps> = ({ className }) => {
             onClick={() => handleEdit(site)}
             className="hover:bg-blue-50 hover:text-blue-600 hover:border-blue-300 transition-colors group"
           >
-            <span className="group-hover:scale-110 transition-transform inline-block">✏️</span>
+            <Icon name="edit" size="sm" className="mr-1" />
             Редактировать
           </Button>
           <Button
@@ -192,7 +194,7 @@ const SitesTable: React.FC<SitesTableProps> = ({ className }) => {
             onClick={() => handleDelete(site)}
             className="hover:bg-red-50 hover:text-red-600 hover:border-red-300 transition-colors group"
           >
-            <span className="group-hover:scale-110 transition-transform inline-block">🗑️</span>
+            <Icon name="delete" size="sm" className="mr-1" />
             Удалить
           </Button>
         </div>

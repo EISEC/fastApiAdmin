@@ -2,22 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import PostForm from '../components/forms/PostForm';
+import Icon from '../components/ui/Icon';
 import { api } from '../lib/axios.config';
-
-interface Post {
-  id: number;
-  title: string;
-  content: string;
-  slug: string;
-  image?: string;
-  is_published: boolean;
-  site: number;
-  site_name?: string;
-  author: number;
-  author_name?: string;
-  created_at: string;
-  updated_at: string;
-}
+import type { Post } from '../types';
 
 /**
  * Страница редактирования поста
@@ -79,7 +66,7 @@ const EditPost: React.FC = () => {
           <div className="bg-red-50 border border-red-200 rounded-md p-6">
             <div className="flex">
               <div className="flex-shrink-0">
-                <span className="text-red-400 text-xl">⚠️</span>
+                <Icon name="warning" size="lg" color="danger" />
               </div>
               <div className="ml-3">
                 <h3 className="text-lg font-medium text-red-800">Ошибка</h3>
@@ -108,9 +95,7 @@ const EditPost: React.FC = () => {
             onClick={() => navigate('/posts')}
             className="inline-flex items-center text-sm text-gray-500 hover:text-gray-700 transition-colors"
           >
-            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
+            <Icon name="arrowLeft" size="sm" className="mr-2" />
             Назад к списку постов
           </button>
         </div>

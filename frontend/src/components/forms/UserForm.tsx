@@ -6,6 +6,7 @@ import { useUsersStore } from '../../store';
 import type { User, Role } from '../../types';
 import Button from '../ui/Button';
 import Card from '../ui/Card';
+import Icon from '../ui/Icon';
 
 // Zod схема валидации для пользователя
 const userSchema = z.object({
@@ -101,7 +102,7 @@ const UserForm: React.FC<UserFormProps> = ({
     if (!rolesLoading && Array.isArray(roles) && roles.length > 0 && !isEditing && !watchedRole) {
       const defaultRole = roles.find(r => r.name === 'user') || roles[0];
       setValue('role', defaultRole.id, { shouldValidate: true });
-      console.log('🎯 Set default role:', defaultRole.name_display, `(id: ${defaultRole.id})`);
+      console.log('Set default role:', defaultRole.name_display, `(id: ${defaultRole.id})`);
     }
   };
 
@@ -112,9 +113,9 @@ const UserForm: React.FC<UserFormProps> = ({
       const userRole = roles.find(r => r.id === user.role?.id);
       if (userRole) {
         setValue('role', userRole.id, { shouldValidate: true });
-        console.log('🎯 Set user role for editing:', userRole.name_display, `(id: ${userRole.id})`);
+        console.log('Set user role for editing:', userRole.name_display, `(id: ${userRole.id})`);
       } else {
-        console.warn('⚠️ User role not found in roles list:', user.role);
+        console.warn('User role not found in roles list:', user.role);
       }
     }
   };
@@ -135,7 +136,7 @@ const UserForm: React.FC<UserFormProps> = ({
         about: user.about || '',
       });
       
-      console.log('📝 Form reset with user data:', {
+      console.log('Form reset with user data:', {
         username: user.username,
         email: user.email,
         role: user.role?.id,
@@ -154,9 +155,9 @@ const UserForm: React.FC<UserFormProps> = ({
       try {
         // Вызываем функцию напрямую из store
         await useUsersStore.getState().fetchRoles();
-        console.log('🎉 Roles loaded successfully in component');
+        console.log('Roles loaded successfully in component');
       } catch (error) {
-        console.error('❌ Failed to load roles in component:', error);
+        console.error('Failed to load roles in component:', error);
       }
     };
     
@@ -256,16 +257,7 @@ const UserForm: React.FC<UserFormProps> = ({
     const role = roles.find(r => r.id === roleId);
     if (!role) return 'Неизвестная роль';
     
-    // Добавляем эмодзи к названию роли
-    const roleIcons: Record<string, string> = {
-      superuser: '👑',
-      admin: '🛡️',
-      author: '✍️',
-      user: '👤',
-    };
-    
-    const icon = roleIcons[role.name] || '👤';
-    return `${icon} ${role.name_display}`;
+    return role.name_display;
   };
 
   return (
@@ -288,7 +280,7 @@ const UserForm: React.FC<UserFormProps> = ({
           <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4">
             <div className="flex">
               <div className="flex-shrink-0">
-                <span className="text-red-400 text-xl">⚠️</span>
+                <Icon name="warning" size="lg" color="danger" />
               </div>
               <div className="ml-3">
                 <h3 className="text-sm font-medium text-red-800">Ошибка</h3>
@@ -471,8 +463,8 @@ const UserForm: React.FC<UserFormProps> = ({
                   className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
                   disabled={isLoading}
                 >
-                  <option value="true">✅ Активный</option>
-                  <option value="false">❌ Заблокированный</option>
+                  <option value="true">Активный</option>
+                  <option value="false">Заблокированный</option>
                 </select>
               </div>
             </div>

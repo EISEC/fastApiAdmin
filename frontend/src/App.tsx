@@ -19,6 +19,7 @@ import EditPage from './pages/EditPage';
 import CreatePageWithBuilder from './pages/CreatePageWithBuilder';
 import MediaLibrary from './pages/MediaLibrary';
 import Settings from './pages/Settings';
+import IconsDemo from './pages/IconsDemo';
 
 /**
  * Компонент для защищенных маршрутов
@@ -225,6 +226,16 @@ const App: React.FC = () => {
             element={
               <ProtectedRoute>
                 <Settings />
+              </ProtectedRoute>
+            } 
+          />
+          
+          {/* Демонстрация иконок */}
+          <Route 
+            path="/icons" 
+            element={
+              <ProtectedRoute>
+                <IconsDemo />
               </ProtectedRoute>
             } 
           />

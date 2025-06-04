@@ -4,6 +4,7 @@ import DashboardLayout from '../components/layout/DashboardLayout';
 import PageBuilder from '../components/pageBuilder/PageBuilder';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
+import Icon from '../components/ui/Icon';
 import { usePageBuilderStore } from '../store/pageBuilderStore';
 import { usePagesStore } from '../store/pagesStore';
 
@@ -143,7 +144,8 @@ const CreatePageWithBuilder: React.FC = () => {
                 loading={isSaving}
                 disabled={!pageData.title.trim() || blocks.length === 0}
               >
-                💾 Сохранить черновик
+                <Icon name="download" size="sm" className="mr-2" />
+                Сохранить черновик
               </Button>
               
               <Button
@@ -153,7 +155,8 @@ const CreatePageWithBuilder: React.FC = () => {
                 loading={isSaving}
                 disabled={!pageData.title.trim() || blocks.length === 0}
               >
-                🚀 Опубликовать
+                <Icon name="upload" size="sm" className="mr-2" />
+                Опубликовать
               </Button>
             </div>
           </div>

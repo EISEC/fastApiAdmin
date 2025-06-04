@@ -1,5 +1,6 @@
 import React from 'react';
 import type { BlockConfig } from '../../types';
+import Icon from '../ui/Icon';
 
 // Импорт блоков
 import TextBlock from './blocks/TextBlock';
@@ -106,7 +107,7 @@ const BlockRenderer: React.FC<BlockRendererProps> = ({
             className="p-1 hover:bg-gray-100 rounded text-xs"
             title="Переместить вверх"
           >
-            ⬆️
+            <Icon name="arrowUp" size="xs" />
           </button>
           <button
             onClick={(e) => {
@@ -116,7 +117,7 @@ const BlockRenderer: React.FC<BlockRendererProps> = ({
             className="p-1 hover:bg-gray-100 rounded text-xs"
             title="Переместить вниз"
           >
-            ⬇️
+            <Icon name="arrowDown" size="xs" />
           </button>
           <button
             onClick={(e) => {
@@ -126,7 +127,7 @@ const BlockRenderer: React.FC<BlockRendererProps> = ({
             className="p-1 hover:bg-gray-100 rounded text-xs"
             title="Дублировать"
           >
-            📋
+            <Icon name="copy" size="xs" />
           </button>
           <button
             onClick={(e) => {
@@ -136,7 +137,7 @@ const BlockRenderer: React.FC<BlockRendererProps> = ({
             className="p-1 hover:bg-red-100 text-red-600 rounded text-xs"
             title="Удалить"
           >
-            🗑️
+            <Icon name="delete" size="xs" color="danger" />
           </button>
         </div>
       )}

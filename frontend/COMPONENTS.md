@@ -57,6 +57,82 @@ interface ButtonProps {
 
 ---
 
+### Icon - Система иконок HugeIcons
+
+**Расположение:** `src/components/ui/Icon.tsx`
+
+```typescript
+interface IconProps {
+  name: AvailableIconName;        // Название иконки (обязательно)
+  size?: IconSize;                // xs | sm | md | lg | xl | 2xl
+  color?: IconColor;              // primary | secondary | success | warning | danger | gray | white | current
+  strokeWidth?: number;           // Толщина обводки (по умолчанию 1.5)
+  className?: string;             // Дополнительные CSS классы
+  onClick?: () => void;           // Обработчик клика
+  title?: string;                 // Заголовок для доступности
+}
+
+type IconSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+type IconColor = 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'gray' | 'white' | 'current';
+```
+
+**Особенности:**
+- 🎨 **60+ иконок** из библиотеки HugeIcons
+- 📐 **6 размеров** от 12px до 48px
+- 🌈 **8 цветовых схем** включая текущий цвет
+- ✨ **TypeScript типизация** с автокомплитом
+- ♿ **Accessibility** поддержка
+- 🔄 **Fallback** для несуществующих иконок
+
+**Доступные категории иконок:**
+- **Основные:** home, dashboard, menu, close, search, settings
+- **Пользователи:** user, users, userAdd, userRemove, userEdit
+- **Действия:** add, edit, delete, copy, share, download, upload, refresh, filter
+- **Файлы:** file, folder, image, video, pdf, zip
+- **Веб:** globe, link, browser, code
+- **Статус:** check, cancel, alert, info, question, warning
+- **Навигация:** arrowUp, arrowDown, arrowLeft, arrowRight
+- И многие другие...
+
+**Примеры использования:**
+```typescript
+// Простая иконка
+<Icon name="home" />
+
+// С настройками размера и цвета
+<Icon name="user" size="lg" color="primary" />
+
+// В кнопке
+<Button>
+  <Icon name="add" size="sm" className="mr-2" />
+  Создать
+</Button>
+
+// Интерактивная иконка
+<Icon 
+  name="settings" 
+  size="md" 
+  onClick={() => openSettings()}
+  title="Открыть настройки"
+  className="cursor-pointer hover:text-primary-600"
+/>
+
+// В навигации
+<NavLink to="/users">
+  <Icon name="users" size="md" className="mr-3" />
+  Пользователи
+</NavLink>
+```
+
+**Страница демонстрации:**
+- 📍 Доступна по адресу `/icons`
+- 🔍 Поиск и фильтрация по категориям
+- 🎛 Настройка размера и цвета в реальном времени
+- 📋 Копирование кода в буфер обмена
+- 📱 Responsive дизайн
+
+---
+
 ### Table - Универсальная таблица данных
 
 **Расположение:** `src/components/ui/Table.tsx`
