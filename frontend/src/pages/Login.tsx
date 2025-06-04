@@ -3,6 +3,7 @@ import { useNavigate, Navigate } from 'react-router-dom';
 import { useAuthStore } from '../store';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
+import Icon from '../components/ui/Icon';
 
 /**
  * Страница входа в систему
@@ -74,16 +75,13 @@ const Login: React.FC = () => {
             <form className="space-y-6" onSubmit={handleSubmit}>
               {/* Error message */}
               {error && (
-                <div className="bg-red-50 border border-red-200 rounded-md p-4">
+                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                   <div className="flex">
                     <div className="flex-shrink-0">
-                      <span className="text-red-400">⚠️</span>
+                      <Icon name="warning" size="md" color="danger" />
                     </div>
                     <div className="ml-3">
-                      <h3 className="text-sm font-medium text-red-800">Ошибка входа</h3>
-                      <div className="mt-2 text-sm text-red-700">
-                        {error}
-                      </div>
+                      <p className="text-sm text-red-700">{error}</p>
                     </div>
                   </div>
                 </div>

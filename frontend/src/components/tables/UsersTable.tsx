@@ -2,18 +2,20 @@ import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Table from '../ui/Table';
 import Button from '../ui/Button';
+import Icon from '../ui/Icon';
 import { useUsersStore, useToastStore } from '../../store';
 import type { User } from '../../types';
 import type { TableColumn, SortConfig } from '../ui/Table';
 
 interface UsersTableProps {
   className?: string;
+  siteId?: number;
 }
 
 /**
  * Компонент таблицы пользователей с действиями
  */
-const UsersTable: React.FC<UsersTableProps> = ({ className }) => {
+const UsersTable: React.FC<UsersTableProps> = ({ className, siteId }) => {
   const navigate = useNavigate();
   const { users, isLoading, deleteUser, toggleUserStatus } = useUsersStore();
   const { success, error } = useToastStore();
@@ -23,11 +25,20 @@ const UsersTable: React.FC<UsersTableProps> = ({ className }) => {
     direction: 'desc'
   });
 
-  // Сортированные данные
+  // Сортированные и отфильтрованные данные
   const sortedUsers = useMemo(() => {
-    if (!sortConfig.field) return users;
+    let filteredUsers = users;
     
-    return [...users].sort((a, b) => {
+    // Фильтрация по сайту если указан (пока упрощенная логика)
+    if (siteId) {
+      // В будущем здесь можно добавить фильтрацию по assigned_sites
+      // если такое поле будет добавлено в модель User
+      filteredUsers = users; // пока показываем всех
+    }
+    
+    if (!sortConfig.field) return filteredUsers;
+    
+    return [...filteredUsers].sort((a, b) => {
       const aValue = a[sortConfig.field as keyof User];
       const bValue = b[sortConfig.field as keyof User];
       
@@ -47,7 +58,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ className }) => {
       }
       return 0;
     });
-  }, [users, sortConfig]);
+  }, [users, siteId, sortConfig]);
 
   const handleSort = (field: string) => {
     setSortConfig(prev => ({
@@ -100,11 +111,11 @@ const UsersTable: React.FC<UsersTableProps> = ({ className }) => {
     };
 
     const icons = {
-      superuser: '👑',
-      admin: '🛡️',
-      author: '✍️',
-      viewer: '👁️',
-    };
+      superuser: 'star',
+      admin: 'settings',
+      author: 'edit',
+      viewer: 'eye',
+    } as const;
 
     const labels = {
       superuser: 'Супер админ',
@@ -119,7 +130,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ className }) => {
 
     return (
       <span className={`inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full border transition-colors ${style}`}>
-        <span className="mr-1">{icon}</span>
+        <Icon name={icon} size="xs" className="mr-1" />
         {label}
       </span>
     );
@@ -152,8 +163,9 @@ const UsersTable: React.FC<UsersTableProps> = ({ className }) => {
             <div className="text-sm font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
               {String(value)}
             </div>
-            <div className="text-sm text-gray-500 group-hover:text-gray-600 transition-colors">
-              📧 {user.email}
+            <div className="text-sm text-gray-500 group-hover:text-gray-600 transition-colors flex items-center">
+              <Icon name="mail" size="xs" className="mr-1" />
+              {user.email}
             </div>
           </div>
         </div>
@@ -168,8 +180,18 @@ const UsersTable: React.FC<UsersTableProps> = ({ className }) => {
           <div className="text-sm font-medium text-gray-900">
             {user.first_name} {user.last_name}
           </div>
-          <div className="text-sm text-gray-500">
-            {user.first_name && user.last_name ? '👤 Полное имя' : '❓ Имя не указано'}
+          <div className="text-sm text-gray-500 flex items-center">
+            {user.first_name && user.last_name ? (
+              <>
+                <Icon name="user" size="xs" className="mr-1" />
+                Полное имя
+              </>
+            ) : (
+              <>
+                <Icon name="question" size="xs" className="mr-1" />
+                Имя не указано
+              </>
+            )}
           </div>
         </div>
       ),
@@ -200,7 +222,17 @@ const UsersTable: React.FC<UsersTableProps> = ({ className }) => {
           }`}
         >
           <span className={`w-2 h-2 mr-2 rounded-full ${value ? 'bg-green-500' : 'bg-red-500'}`}></span>
-          {value ? '✅ Активен' : '🚫 Заблокирован'}
+          {value ? (
+            <>
+              <Icon name="check" size="xs" className="mr-1" />
+              Активен
+            </>
+          ) : (
+            <>
+              <Icon name="cancel" size="xs" className="mr-1" />
+              Заблокирован
+            </>
+          )}
         </button>
       ),
     },
@@ -215,12 +247,16 @@ const UsersTable: React.FC<UsersTableProps> = ({ className }) => {
               <div className="text-gray-900 font-medium">
                 {formatDate(String(value))}
               </div>
-              <div className="text-gray-500 text-xs">
-                🕒 {new Date(String(value)).toLocaleDateString('ru-RU', { weekday: 'short' })}
+              <div className="text-gray-500 text-xs flex items-center">
+                <Icon name="clock" size="xs" className="mr-1" />
+                {new Date(String(value)).toLocaleDateString('ru-RU', { weekday: 'short' })}
               </div>
             </>
           ) : (
-            <span className="text-gray-400 italic">❌ Никогда</span>
+            <span className="text-gray-400 italic flex items-center">
+              <Icon name="cancel" size="xs" className="mr-1" />
+              Никогда
+            </span>
           )}
         </div>
       ),
@@ -234,8 +270,9 @@ const UsersTable: React.FC<UsersTableProps> = ({ className }) => {
           <div className="text-gray-900 font-medium">
             {formatDate(String(value))}
           </div>
-          <div className="text-gray-500 text-xs">
-            📅 {new Date(String(value)).toLocaleDateString('ru-RU', { weekday: 'short' })}
+          <div className="text-gray-500 text-xs flex items-center">
+            <Icon name="calendar" size="xs" className="mr-1" />
+            {new Date(String(value)).toLocaleDateString('ru-RU', { weekday: 'short' })}
           </div>
         </div>
       ),
@@ -253,7 +290,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ className }) => {
             onClick={() => handleEdit(user)}
             className="hover:bg-blue-50 hover:text-blue-600 hover:border-blue-300 transition-colors group"
           >
-            <span className="group-hover:scale-110 transition-transform inline-block">✏️</span>
+            <Icon name="edit" size="sm" className="mr-1" />
             Редактировать
           </Button>
           <Button
@@ -262,7 +299,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ className }) => {
             onClick={() => handleDelete(user)}
             className="hover:bg-red-50 hover:text-red-600 hover:border-red-300 transition-colors group"
           >
-            <span className="group-hover:scale-110 transition-transform inline-block">🗑️</span>
+            <Icon name="delete" size="sm" className="mr-1" />
             Удалить
           </Button>
         </div>

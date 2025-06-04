@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import type { BlockConfig, FormBlockData, FormFieldConfig } from '../../../types';
+import type { BlockConfig, FormBlockData, FormFieldConfig } from '../../../types/pageBuilder.types';
+import Icon from '../../ui/Icon';
 
 interface FormBlockProps {
   block: BlockConfig;
@@ -295,8 +296,9 @@ const FormBlock: React.FC<FormBlockProps> = ({
       )}
       
       {isSelected && (
-        <div className="absolute -top-8 left-0 bg-blue-500 text-white px-2 py-1 text-xs rounded">
-          📋 Форма
+        <div className="absolute -top-8 left-0 bg-blue-500 text-white px-2 py-1 text-xs rounded flex items-center">
+          <Icon name="edit" size="xs" className="mr-1" />
+          Форма
         </div>
       )}
     </div>

@@ -4,6 +4,7 @@ import type { BlockType, BlockConfig } from '../../types';
 import BlockRenderer from './BlockRenderer';
 import Button from '../ui/Button';
 import Card from '../ui/Card';
+import Icon from '../ui/Icon';
 
 interface PageBuilderProps {
   className?: string;
@@ -90,10 +91,10 @@ const PageBuilder: React.FC<PageBuilderProps> = ({ className = '' }) => {
   }, {} as Record<string, typeof blockTemplates>);
 
   const categoryNames = {
-    content: '📝 Контент',
-    media: '🖼️ Медиа',
-    layout: '📐 Макет',
-    interactive: '⚡ Интерактивные'
+    content: 'Контент',
+    media: 'Медиа',
+    layout: 'Макет',
+    interactive: 'Интерактивные'
   };
 
   return (
@@ -114,7 +115,8 @@ const PageBuilder: React.FC<PageBuilderProps> = ({ className = '' }) => {
                 onClick={() => setPreviewMode(true)}
                 className="w-full"
               >
-                👁️ Превью
+                <Icon name="eye" size="sm" className="mr-2" />
+                Превью
               </Button>
               <div className="flex gap-2">
                 <Button
@@ -123,7 +125,8 @@ const PageBuilder: React.FC<PageBuilderProps> = ({ className = '' }) => {
                   onClick={handleExport}
                   className="flex-1"
                 >
-                  📤 Экспорт
+                  <Icon name="upload" size="sm" className="mr-2" />
+                  Экспорт
                 </Button>
                 <Button
                   variant="secondary"
@@ -131,7 +134,8 @@ const PageBuilder: React.FC<PageBuilderProps> = ({ className = '' }) => {
                   onClick={handleImport}
                   className="flex-1"
                 >
-                  📥 Импорт
+                  <Icon name="download" size="sm" className="mr-2" />
+                  Импорт
                 </Button>
               </div>
               <Button
@@ -144,7 +148,8 @@ const PageBuilder: React.FC<PageBuilderProps> = ({ className = '' }) => {
                 }}
                 className="w-full"
               >
-                🗑️ Очистить
+                <Icon name="delete" size="sm" className="mr-2" />
+                Очистить
               </Button>
             </div>
           </div>
@@ -163,7 +168,9 @@ const PageBuilder: React.FC<PageBuilderProps> = ({ className = '' }) => {
                       onClick={() => handleAddBlock(template.type)}
                       className="p-3 text-left border border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors group"
                     >
-                      <div className="text-lg mb-1">{template.icon}</div>
+                      <div className="flex items-center justify-center mb-1">
+                        <Icon name={template.icon as any} size="lg" color="gray" />
+                      </div>
                       <div className="text-sm font-medium text-gray-900">
                         {template.name}
                       </div>
@@ -199,7 +206,8 @@ const PageBuilder: React.FC<PageBuilderProps> = ({ className = '' }) => {
                 size="sm"
                 onClick={() => setPreviewMode(false)}
               >
-                ✏️ Редактировать
+                <Icon name="edit" size="sm" className="mr-2" />
+                Редактировать
               </Button>
             ) : (
               <Button
@@ -207,7 +215,8 @@ const PageBuilder: React.FC<PageBuilderProps> = ({ className = '' }) => {
                 size="sm"
                 onClick={() => setPreviewMode(true)}
               >
-                👁️ Превью
+                <Icon name="eye" size="sm" className="mr-2" />
+                Превью
               </Button>
             )}
           </div>
@@ -220,7 +229,7 @@ const PageBuilder: React.FC<PageBuilderProps> = ({ className = '' }) => {
         >
           {blocks.length === 0 ? (
             <Card className="max-w-md mx-auto text-center py-12">
-              <div className="text-6xl mb-4">🎨</div>
+              <Icon name="edit" size="2xl" className="mx-auto mb-4 text-gray-400" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">
                 Начните создание страницы
               </h3>
@@ -234,14 +243,16 @@ const PageBuilder: React.FC<PageBuilderProps> = ({ className = '' }) => {
                     size="sm"
                     onClick={() => handleAddBlock('heading')}
                   >
-                    📰 Заголовок
+                    <Icon name="edit" size="sm" className="mr-2" />
+                    Заголовок
                   </Button>
                   <Button
                     variant="secondary"
                     size="sm"
                     onClick={() => handleAddBlock('text')}
                   >
-                    📝 Текст
+                    <Icon name="edit" size="sm" className="mr-2" />
+                    Текст
                   </Button>
                 </div>
               )}
@@ -275,21 +286,24 @@ const PageBuilder: React.FC<PageBuilderProps> = ({ className = '' }) => {
                       size="sm"
                       onClick={() => handleAddBlock('text')}
                     >
-                      📝 Текст
+                      <Icon name="edit" size="sm" className="mr-2" />
+                      Текст
                     </Button>
                     <Button
                       variant="secondary"
                       size="sm"
                       onClick={() => handleAddBlock('image')}
                     >
-                      🖼️ Изображение
+                      <Icon name="image" size="sm" className="mr-2" />
+                      Изображение
                     </Button>
                     <Button
                       variant="secondary"
                       size="sm"
                       onClick={() => handleAddBlock('button')}
                     >
-                      🔘 Кнопка
+                      <Icon name="add" size="sm" className="mr-2" />
+                      Кнопка
                     </Button>
                   </div>
                 </div>

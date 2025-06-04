@@ -2,6 +2,7 @@ import React, { useState, useRef, useCallback } from 'react';
 import type { FileUploadOptions, UploadProgress } from '../../types';
 import { useFilesStore } from '../../store/filesStore';
 import { MAX_FILE_SIZE, FILE_TYPE_EXTENSIONS } from '../../types/file.types';
+import Icon from '../ui/Icon';
 
 interface FileUploaderProps {
   folderId?: string;
@@ -169,7 +170,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
 
         {/* Иконка и текст */}
         <div className="space-y-2">
-          <div className="text-6xl">📁</div>
+          <Icon name="upload" size="2xl" className="mx-auto text-gray-400" />
           <div className="text-lg font-medium text-gray-900">
             {isDragOver ? 'Отпустите файлы для загрузки' : 'Перетащите файлы сюда'}
           </div>
@@ -214,15 +215,15 @@ const UploadProgressItem: React.FC<UploadProgressItemProps> = ({ progress }) => 
   const getStatusIcon = () => {
     switch (progress.status) {
       case 'uploading':
-        return '⏳';
+        return <Icon name="refresh" size="md" className="animate-spin text-blue-600" />;
       case 'processing':
-        return '⚙️';
+        return <Icon name="refresh" size="md" className="animate-spin text-blue-600" />;
       case 'completed':
-        return '✅';
+        return <Icon name="check" size="md" color="success" />;
       case 'error':
-        return '❌';
+        return <Icon name="cancel" size="md" color="danger" />;
       default:
-        return '📄';
+        return <Icon name="file" size="md" color="gray" />;
     }
   };
 
@@ -258,7 +259,7 @@ const UploadProgressItem: React.FC<UploadProgressItemProps> = ({ progress }) => 
   return (
     <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
       {/* Иконка статуса */}
-      <div className="text-lg">{getStatusIcon()}</div>
+      <div className="flex-shrink-0">{getStatusIcon()}</div>
       
       {/* Информация о файле */}
       <div className="flex-1 min-w-0">

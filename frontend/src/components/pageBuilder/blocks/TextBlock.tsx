@@ -1,5 +1,6 @@
 import React from 'react';
 import type { BlockConfig, TextBlockData } from '../../../types/pageBuilder.types';
+import Icon from '../../ui/Icon';
 
 interface TextBlockProps {
   block: BlockConfig;
@@ -56,8 +57,9 @@ const TextBlock: React.FC<TextBlockProps> = ({
           autoFocus
         />
         {isSelected && (
-          <div className="absolute -top-8 left-0 bg-blue-500 text-white px-2 py-1 text-xs rounded">
-            📝 Текст
+          <div className="absolute -top-8 left-0 bg-blue-500 text-white px-2 py-1 text-xs rounded flex items-center">
+            <Icon name="edit" size="xs" className="mr-1" />
+            Текст
           </div>
         )}
       </div>
@@ -74,8 +76,9 @@ const TextBlock: React.FC<TextBlockProps> = ({
         dangerouslySetInnerHTML={{ __html: data.content || 'Пустой текстовый блок' }}
       />
       {isSelected && (
-        <div className="absolute -top-8 left-0 bg-blue-500 text-white px-2 py-1 text-xs rounded">
-          📝 Текст
+        <div className="absolute -top-8 left-0 bg-blue-500 text-white px-2 py-1 text-xs rounded flex items-center">
+          <Icon name="edit" size="xs" className="mr-1" />
+          Текст
         </div>
       )}
     </div>

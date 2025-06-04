@@ -23,7 +23,7 @@ export const blockTemplates: BlockTemplate[] = [
     type: 'text',
     name: 'Текст',
     description: 'Обычный текстовый блок',
-    icon: '📝',
+    icon: 'edit',
     category: 'content',
     defaultData: {
       content: 'Введите ваш текст здесь...',
@@ -38,7 +38,7 @@ export const blockTemplates: BlockTemplate[] = [
     type: 'heading',
     name: 'Заголовок',
     description: 'Заголовок любого уровня',
-    icon: '📰',
+    icon: 'edit',
     category: 'content',
     defaultData: {
       content: 'Заголовок страницы',
@@ -53,7 +53,7 @@ export const blockTemplates: BlockTemplate[] = [
     type: 'image',
     name: 'Изображение',
     description: 'Картинка с настройками',
-    icon: '🖼️',
+    icon: 'image',
     category: 'media',
     defaultData: {
       src: 'https://via.placeholder.com/600x400',
@@ -70,7 +70,7 @@ export const blockTemplates: BlockTemplate[] = [
     type: 'button',
     name: 'Кнопка',
     description: 'Интерактивная кнопка',
-    icon: '🔘',
+    icon: 'add',
     category: 'interactive',
     defaultData: {
       text: 'Нажмите здесь',
@@ -87,7 +87,7 @@ export const blockTemplates: BlockTemplate[] = [
     type: 'spacer',
     name: 'Отступ',
     description: 'Пустое пространство',
-    icon: '📏',
+    icon: 'edit',
     category: 'layout',
     defaultData: {
       height: 40
@@ -97,7 +97,7 @@ export const blockTemplates: BlockTemplate[] = [
     type: 'divider',
     name: 'Разделитель',
     description: 'Линия-разделитель',
-    icon: '➖',
+    icon: 'edit',
     category: 'layout',
     defaultData: {
       style: 'solid',
@@ -112,7 +112,7 @@ export const blockTemplates: BlockTemplate[] = [
     type: 'gallery',
     name: 'Галерея',
     description: 'Коллекция изображений',
-    icon: '🖼️',
+    icon: 'image',
     category: 'media',
     defaultData: {
       images: [
@@ -138,7 +138,7 @@ export const blockTemplates: BlockTemplate[] = [
     type: 'form',
     name: 'Форма',
     description: 'Форма для ввода данных',
-    icon: '📋',
+    icon: 'edit',
     category: 'interactive',
     defaultData: {
       title: 'Контактная форма',

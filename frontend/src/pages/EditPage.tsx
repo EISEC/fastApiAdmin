@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import PageForm from '../components/forms/PageForm';
 import { api } from '../lib/axios.config';
+import Icon from '../components/ui/Icon';
 
 interface PageData {
   id: number;
@@ -84,7 +85,7 @@ const EditPage: React.FC = () => {
           <div className="bg-red-50 border border-red-200 rounded-md p-6">
             <div className="flex">
               <div className="flex-shrink-0">
-                <span className="text-red-400 text-xl">⚠️</span>
+                <Icon name="warning" size="lg" color="danger" />
               </div>
               <div className="ml-3">
                 <h3 className="text-lg font-medium text-red-800">Ошибка</h3>
@@ -113,9 +114,7 @@ const EditPage: React.FC = () => {
             onClick={() => navigate('/pages')}
             className="inline-flex items-center text-sm text-gray-500 hover:text-gray-700 transition-colors"
           >
-            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
+            <Icon name="arrowLeft" size="sm" className="mr-2" />
             Назад к списку страниц
           </button>
         </div>

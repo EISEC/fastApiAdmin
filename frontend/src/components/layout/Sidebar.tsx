@@ -2,52 +2,66 @@ import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { clsx } from 'clsx';
 import { useAuthStore } from '../../store/authStore';
+import Icon, { type AvailableIconName } from '../ui/Icon';
+
+interface NavigationItem {
+  name: string;
+  href: string;
+  icon: AvailableIconName;
+  roles: string[];
+}
 
 /**
  * Навигационные пункты меню
  */
-const navigationItems = [
+const navigationItems: NavigationItem[] = [
   {
     name: 'Дашборд',
     href: '/',
-    icon: '📊',
+    icon: 'dashboard',
     roles: ['superuser', 'admin', 'author'],
   },
   {
     name: 'Сайты',
     href: '/sites',
-    icon: '🌐',
+    icon: 'globe',
     roles: ['superuser', 'admin'],
   },
   {
     name: 'Посты',
     href: '/posts',
-    icon: '📝',
+    icon: 'edit',
     roles: ['superuser', 'admin', 'author'],
   },
   {
     name: 'Страницы',
     href: '/pages',
-    icon: '📄',
+    icon: 'file',
     roles: ['superuser', 'admin', 'author'],
   },
   {
     name: 'Медиа-библиотека',
     href: '/media',
-    icon: '📁',
+    icon: 'folder',
     roles: ['superuser', 'admin', 'author'],
   },
   {
     name: 'Пользователи',
     href: '/users',
-    icon: '👥',
+    icon: 'users',
     roles: ['superuser', 'admin'],
   },
   {
     name: 'Настройки',
     href: '/settings',
-    icon: '⚙️',
+    icon: 'settings',
     roles: ['superuser', 'admin'],
+  },
+  {
+    name: 'Иконки',
+    href: '/icons',
+    icon: 'star',
+    roles: ['superuser', 'admin', 'author'],
   },
 ];
 
@@ -129,9 +143,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             className="lg:hidden p-1 rounded-md hover:bg-gray-100"
           >
             <span className="sr-only">Закрыть меню</span>
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
+            <Icon name="close" size="lg" />
           </button>
         </div>
         
@@ -158,7 +170,9 @@ const Sidebar: React.FC<SidebarProps> = ({
                           : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                       )}
                     >
-                      <span className="mr-3 text-lg">{item.icon}</span>
+                      <span className="mr-3">
+                        <Icon name={item.icon} size="md" />
+                      </span>
                       {item.name}
                     </NavLink>
                   );
@@ -217,9 +231,7 @@ const Sidebar: React.FC<SidebarProps> = ({
               className="ml-2 p-1 rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-100"
               title="Выйти"
             >
-              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-              </svg>
+              <Icon name="logout" size="md" />
             </button>
           </div>
         </div>

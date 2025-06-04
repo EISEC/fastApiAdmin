@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import type { BlockConfig, GalleryBlockData } from '../../../types';
+import type { BlockConfig, GalleryBlockData } from '../../../types/pageBuilder.types';
+import Icon from '../../ui/Icon';
 
 interface GalleryBlockProps {
   block: BlockConfig;
@@ -229,7 +230,7 @@ const GalleryBlock: React.FC<GalleryBlockProps> = ({
         >
           {(galleryData.images || []).length === 0 ? (
             <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
-              <span className="text-gray-400 text-4xl block mb-2">🖼️</span>
+              <Icon name="image" size="2xl" color="gray" className="block mb-2" />
               <p className="text-gray-500 text-sm">
                 Галерея пуста
               </p>
@@ -269,8 +270,9 @@ const GalleryBlock: React.FC<GalleryBlockProps> = ({
       )}
       
       {isSelected && (
-        <div className="absolute -top-8 left-0 bg-blue-500 text-white px-2 py-1 text-xs rounded">
-          🖼️ Галерея
+        <div className="absolute -top-8 left-0 bg-blue-500 text-white px-2 py-1 text-xs rounded flex items-center">
+          <Icon name="image" size="xs" className="mr-1" />
+          Галерея
         </div>
       )}
     </div>

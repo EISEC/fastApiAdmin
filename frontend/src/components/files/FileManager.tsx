@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import type { FileItem, FolderItem, FileFilter, FileSort } from '../../types';
 import { useFilesStore } from '../../store/filesStore';
 import FileThumbnail from './FileThumbnail';
 import FileUploader from './FileUploader';
 import Button from '../ui/Button';
+import Icon from '../ui/Icon';
 
 interface FileManagerProps {
   onFileSelect?: (files: FileItem[]) => void;
@@ -151,7 +152,8 @@ const FileManager: React.FC<FileManagerProps> = ({
             size="sm"
             className="mt-2 w-full"
           >
-            📤 Загрузить файлы
+            <Icon name="upload" size="sm" className="mr-2" />
+            Загрузить файлы
           </Button>
         </div>
         
@@ -167,7 +169,8 @@ const FileManager: React.FC<FileManagerProps> = ({
               }`}
               onClick={() => selectFolder(null)}
             >
-              📁 Все файлы
+              <Icon name="folder" size="sm" className="mr-2 inline" />
+              Все файлы
             </div>
             
             {/* Дерево папок */}
@@ -188,7 +191,8 @@ const FileManager: React.FC<FileManagerProps> = ({
             size="sm"
             className="w-full"
           >
-            📁 Создать папку
+            <Icon name="folder" size="sm" className="mr-2" />
+            Создать папку
           </Button>
         </div>
       </div>
@@ -215,11 +219,20 @@ const FileManager: React.FC<FileManagerProps> = ({
               className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="all">Все типы</option>
-              <option value="image">🖼️ Изображения</option>
-              <option value="video">🎬 Видео</option>
-              <option value="audio">🎵 Аудио</option>
-              <option value="document">📄 Документы</option>
-              <option value="archive">🗜️ Архивы</option>
+              <option value="image">
+                <Icon name="image" size="xs" className="mr-2 inline" />
+                Изображения
+              </option>
+              <option value="video">
+                <Icon name="video" size="xs" className="mr-2 inline" />
+                Видео
+              </option>
+              <option value="audio">Аудио</option>
+              <option value="document">
+                <Icon name="file" size="xs" className="mr-2 inline" />
+                Документы
+              </option>
+              <option value="archive">Архивы</option>
             </select>
             
             <div className="flex items-center space-x-2">
@@ -227,13 +240,13 @@ const FileManager: React.FC<FileManagerProps> = ({
                 onClick={() => setViewMode('grid')}
                 className={`p-2 rounded ${viewMode === 'grid' ? 'bg-blue-100 text-blue-900' : 'text-gray-500 hover:bg-gray-100'}`}
               >
-                ⊞
+                <Icon name="settings" size="sm" />
               </button>
               <button
                 onClick={() => setViewMode('list')}
                 className={`p-2 rounded ${viewMode === 'list' ? 'bg-blue-100 text-blue-900' : 'text-gray-500 hover:bg-gray-100'}`}
               >
-                ☰
+                <Icon name="menu" size="sm" />
               </button>
             </div>
           </div>
@@ -250,7 +263,8 @@ const FileManager: React.FC<FileManagerProps> = ({
                   variant="danger"
                   size="sm"
                 >
-                  🗑️ Удалить
+                  <Icon name="delete" size="sm" className="mr-2" />
+                  Удалить
                 </Button>
                 <Button
                   onClick={clearSelection}
@@ -291,7 +305,7 @@ const FileManager: React.FC<FileManagerProps> = ({
                   onClick={clearError}
                   className="text-red-600 hover:text-red-800"
                 >
-                  ✕
+                  <Icon name="close" size="sm" />
                 </button>
               </div>
             </div>
@@ -303,7 +317,7 @@ const FileManager: React.FC<FileManagerProps> = ({
             </div>
           ) : filteredFiles.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-64 text-gray-500">
-              <div className="text-6xl mb-4">📁</div>
+              <Icon name="folder" size="2xl" color="gray" className="mb-4" />
               <div className="text-lg">Файлы не найдены</div>
               <div className="text-sm">
                 {filter.search ? 'Попробуйте изменить поисковый запрос' : 'Загрузите первые файлы'}
@@ -429,7 +443,8 @@ const FolderTreeNode: React.FC<FolderTreeNodeProps> = ({
               }`}
               onClick={() => onSelectFolder(folder.id)}
             >
-              📁 {folder.name} ({folder.filesCount})
+              <Icon name="folder" size="sm" className="mr-2 inline" />
+              {folder.name} ({folder.filesCount})
             </div>
           </div>
           

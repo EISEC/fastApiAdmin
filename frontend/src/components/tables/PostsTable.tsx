@@ -2,7 +2,8 @@ import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Table from '../ui/Table';
 import Button from '../ui/Button';
-import { usePostsStore, useToastStore } from '../../store';
+import Icon from '../ui/Icon';
+import { usePostsStore, useToastStore, useSitesStore } from '../../store';
 import type { PostListItem, PostStatus } from '../../types';
 import type { TableColumn, SortConfig } from '../ui/Table';
 
@@ -18,6 +19,7 @@ const PostsTable: React.FC<PostsTableProps> = ({ className, siteId }) => {
   const navigate = useNavigate();
   const { posts, isLoading, deletePost, duplicatePost, changeStatus } = usePostsStore();
   const { success, error } = useToastStore();
+  const { sites } = useSitesStore();
   
   const [sortConfig, setSortConfig] = useState<SortConfig>({
     field: 'created_at',
@@ -30,10 +32,10 @@ const PostsTable: React.FC<PostsTableProps> = ({ className, siteId }) => {
     
     // Фильтрация по сайту если указан
     if (siteId) {
-      filteredPosts = posts.filter(post => 
-        typeof post.site_name === 'string' ? 
-          post.site_name.includes(String(siteId)) : false
-      );
+      const selectedSite = sites.find(site => site.id === siteId);
+      if (selectedSite) {
+        filteredPosts = posts.filter(post => post.site_name === selectedSite.name);
+      }
     }
     
     // Сортировка
@@ -59,7 +61,7 @@ const PostsTable: React.FC<PostsTableProps> = ({ className, siteId }) => {
       }
       return 0;
     });
-  }, [posts, siteId, sortConfig]);
+  }, [posts, siteId, sites, sortConfig]);
 
   const handleSort = (field: string) => {
     setSortConfig(prev => ({
@@ -126,11 +128,11 @@ const PostsTable: React.FC<PostsTableProps> = ({ className, siteId }) => {
     };
 
     const icons = {
-      draft: '📝',
-      published: '🌟',
-      scheduled: '⏰',
-      archived: '📦',
-    };
+      draft: 'file',
+      published: 'check',
+      scheduled: 'clock',
+      archived: 'folder',
+    } as const;
 
     const labels = {
       draft: 'Черновик',
@@ -141,7 +143,7 @@ const PostsTable: React.FC<PostsTableProps> = ({ className, siteId }) => {
 
     return (
       <span className={`inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full border transition-colors ${styles[status]}`}>
-        <span className="mr-1">{icons[status]}</span>
+        <Icon name={icons[status]} size="xs" className="mr-1" />
         {labels[status]}
       </span>
     );
@@ -164,9 +166,7 @@ const PostsTable: React.FC<PostsTableProps> = ({ className, siteId }) => {
               />
             ) : (
               <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center border-2 border-gray-200 group-hover:border-blue-300 transition-all">
-                <span className="text-white font-bold text-lg">
-                  📄
-                </span>
+                <Icon name="file" color="white" />
               </div>
             )}
           </div>
@@ -174,8 +174,9 @@ const PostsTable: React.FC<PostsTableProps> = ({ className, siteId }) => {
             <div className="text-sm font-semibold text-gray-900 line-clamp-1 group-hover:text-blue-600 transition-colors">
               {String(value)}
             </div>
-            <div className="text-sm text-gray-500 group-hover:text-gray-600 transition-colors">
-              🔗 /{post.slug}
+            <div className="text-sm text-gray-500 group-hover:text-gray-600 transition-colors flex items-center">
+              <Icon name="link" size="xs" className="mr-1" />
+              /{post.slug}
             </div>
           </div>
         </div>
@@ -202,7 +203,8 @@ const PostsTable: React.FC<PostsTableProps> = ({ className, siteId }) => {
       sortable: true,
       render: (value) => (
         <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-medium bg-gray-100 text-gray-800 border border-gray-200">
-          🌐 {String(value)}
+          <Icon name="globe" size="xs" className="mr-1" />
+          {String(value)}
         </span>
       ),
     },
@@ -223,10 +225,10 @@ const PostsTable: React.FC<PostsTableProps> = ({ className, siteId }) => {
               'bg-yellow-50 text-yellow-700 border-yellow-300'
             }`}
           >
-            <option value="draft">📝 Черновик</option>
-            <option value="published">🌟 Опубликован</option>
-            <option value="scheduled">⏰ Запланирован</option>
-            <option value="archived">📦 Архивирован</option>
+            <option value="draft">Черновик</option>
+            <option value="published">Опубликован</option>
+            <option value="scheduled">Запланирован</option>
+            <option value="archived">Архивирован</option>
           </select>
         </div>
       ),
@@ -239,7 +241,10 @@ const PostsTable: React.FC<PostsTableProps> = ({ className, siteId }) => {
       render: (value) => (
         <div className="text-center">
           <div className="text-lg font-bold text-gray-900">{String(value) || '0'}</div>
-          <div className="text-xs text-gray-500">👁️ просмотров</div>
+          <div className="text-xs text-gray-500 flex items-center justify-center">
+            <Icon name="eye" size="xs" className="mr-1" />
+            просмотров
+          </div>
         </div>
       ),
     },
@@ -252,8 +257,9 @@ const PostsTable: React.FC<PostsTableProps> = ({ className, siteId }) => {
           <div className="text-gray-900 font-medium">
             {formatDate(String(value))}
           </div>
-          <div className="text-gray-500 text-xs">
-            📅 {new Date(String(value)).toLocaleDateString('ru-RU', { weekday: 'short' })}
+          <div className="text-gray-500 text-xs flex items-center">
+            <Icon name="calendar" size="xs" className="mr-1" />
+            {new Date(String(value)).toLocaleDateString('ru-RU', { weekday: 'short' })}
           </div>
         </div>
       ),
@@ -271,7 +277,7 @@ const PostsTable: React.FC<PostsTableProps> = ({ className, siteId }) => {
             onClick={() => handleEdit(post)}
             className="hover:bg-blue-50 hover:text-blue-600 hover:border-blue-300 transition-colors group"
           >
-            <span className="group-hover:scale-110 transition-transform inline-block">✏️</span>
+            <Icon name="edit" size="sm" className="mr-1" />
             Редактировать
           </Button>
           <Button
@@ -280,7 +286,7 @@ const PostsTable: React.FC<PostsTableProps> = ({ className, siteId }) => {
             onClick={() => handleDuplicate(post)}
             className="hover:bg-green-50 hover:text-green-600 hover:border-green-300 transition-colors group"
           >
-            <span className="group-hover:scale-110 transition-transform inline-block">📋</span>
+            <Icon name="copy" size="sm" className="mr-1" />
             Копировать
           </Button>
           <Button
@@ -289,7 +295,7 @@ const PostsTable: React.FC<PostsTableProps> = ({ className, siteId }) => {
             onClick={() => handleDelete(post)}
             className="hover:bg-red-50 hover:text-red-600 hover:border-red-300 transition-colors group"
           >
-            <span className="group-hover:scale-110 transition-transform inline-block">🗑️</span>
+            <Icon name="delete" size="sm" className="mr-1" />
             Удалить
           </Button>
         </div>

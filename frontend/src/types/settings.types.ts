@@ -378,42 +378,42 @@ export interface SettingsPreviewProps {
 export const SETTING_CATEGORIES: Record<SettingCategory, { name: string; icon: string; description: string }> = {
   general: {
     name: 'Общие настройки',
-    icon: '⚙️',
+    icon: 'settings',
     description: 'Основные настройки сайта и приложения'
   },
   appearance: {
     name: 'Оформление',
-    icon: '🎨',
+    icon: 'star',
     description: 'Внешний вид, темы и стилизация'
   },
   seo: {
     name: 'SEO',
-    icon: '🔍',
+    icon: 'search',
     description: 'Поисковая оптимизация и метаданные'
   },
   notifications: {
     name: 'Уведомления',
-    icon: '📧',
+    icon: 'mail',
     description: 'Email, push-уведомления и интеграции'
   },
   security: {
     name: 'Безопасность',
-    icon: '🔐',
+    icon: 'lock',
     description: 'Пароли, доступ и аудит'
   },
   integrations: {
     name: 'Интеграции',
-    icon: '🔗',
+    icon: 'link',
     description: 'Внешние сервисы и API'
   },
   performance: {
     name: 'Производительность',
-    icon: '⚡',
+    icon: 'fire',
     description: 'Кеширование и оптимизация'
   },
   developer: {
     name: 'Для разработчиков',
-    icon: '👨‍💻',
+    icon: 'code',
     description: 'Отладка и технические настройки'
   }
 };

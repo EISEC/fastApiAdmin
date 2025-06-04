@@ -5,6 +5,7 @@ import DashboardLayout from '../components/layout/DashboardLayout';
 import SettingsTabs from '../components/settings/SettingsTabs';
 import SettingsGroup from '../components/settings/SettingsGroup';
 import Button from '../components/ui/Button';
+import Icon from '../components/ui/Icon';
 
 /**
  * Главная страница настроек
@@ -119,7 +120,8 @@ const Settings: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">
-                  ⚙️ Настройки системы
+                  <Icon name="settings" size="lg" className="inline mr-2" />
+                  Настройки системы
                 </h1>
                 <p className="mt-1 text-sm text-gray-600">
                   Управление конфигурацией приложения
@@ -139,7 +141,8 @@ const Settings: React.FC = () => {
                   onClick={handleExport}
                   disabled={isLoading}
                 >
-                  📥 Экспорт
+                  <Icon name="download" size="sm" className="mr-2" />
+                  Экспорт
                 </Button>
 
                 <Button
@@ -148,7 +151,8 @@ const Settings: React.FC = () => {
                   onClick={() => setShowImportModal(true)}
                   disabled={isLoading}
                 >
-                  📤 Импорт
+                  <Icon name="upload" size="sm" className="mr-2" />
+                  Импорт
                 </Button>
 
                 {hasUnsavedChanges && (
@@ -159,7 +163,8 @@ const Settings: React.FC = () => {
                       onClick={resetAllSettings}
                       disabled={isSaving}
                     >
-                      ↺ Сбросить все
+                      <Icon name="refresh" size="sm" className="mr-2" />
+                      Сбросить все
                     </Button>
                     
                     <Button
@@ -169,7 +174,8 @@ const Settings: React.FC = () => {
                       disabled={isSaving}
                       loading={isSaving}
                     >
-                      💾 Сохранить все
+                      <Icon name="file" size="sm" className="mr-2" />
+                      Сохранить все
                     </Button>
                   </>
                 )}
@@ -183,9 +189,7 @@ const Settings: React.FC = () => {
           <div className="bg-red-50 border border-red-200 rounded-lg p-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <svg className="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                </svg>
+                <Icon name="alert" size="sm" color="danger" />
                 <span className="text-sm font-medium text-red-800">
                   {error}
                 </span>
@@ -194,9 +198,7 @@ const Settings: React.FC = () => {
                 onClick={clearErrors}
                 className="text-red-600 hover:text-red-700"
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
+                <Icon name="close" size="sm" />
               </button>
             </div>
           </div>
@@ -218,7 +220,7 @@ const Settings: React.FC = () => {
             <>
               <div className="bg-white shadow-sm rounded-lg border border-gray-200 p-6">
                 <h2 className="text-xl font-semibold text-gray-900 flex items-center space-x-2 mb-4">
-                  <span>{currentCategoryData.icon}</span>
+                  <Icon name={currentCategoryData.icon as any} size="md" />
                   <span>{currentCategoryData.name}</span>
                 </h2>
                 {currentCategoryData.description && (
@@ -258,7 +260,7 @@ const Settings: React.FC = () => {
               {currentCategoryData.groups.length === 0 && (
                 <div className="bg-white shadow-sm rounded-lg border border-gray-200 p-12">
                   <div className="text-center">
-                    <div className="text-gray-400 text-6xl mb-4">⚙️</div>
+                    <Icon name="settings" size="2xl" color="gray" className="mb-4" />
                     <h3 className="text-lg font-medium text-gray-900 mb-2">
                       Настройки не найдены
                     </h3>
@@ -272,7 +274,7 @@ const Settings: React.FC = () => {
           ) : (
             <div className="bg-white shadow-sm rounded-lg border border-gray-200 p-12">
               <div className="text-center">
-                <div className="text-gray-400 text-6xl mb-4">🔍</div>
+                <Icon name="search" size="2xl" color="gray" className="mb-4" />
                 <h3 className="text-lg font-medium text-gray-900 mb-2">
                   Категория не найдена
                 </h3>

@@ -3,7 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import StatsCard from '../components/ui/StatsCard';
 import Button from '../components/ui/Button';
-import { useSitesStore, usePostsStore, useUsersStore } from '../store';
+import Icon from '../components/ui/Icon';
+import { useSitesStore } from '../store/sitesStore';
+import { usePostsStore } from '../store/postsStore';
+import { useUsersStore } from '../store/usersStore';
 
 /**
  * Главная страница дашборда с общей статистикой
@@ -31,27 +34,22 @@ const Dashboard: React.FC = () => {
   const postsStats = {
     total: posts.length,
     published: posts.filter(post => post.status === 'published').length,
-    drafts: posts.filter(post => post.status === 'draft').length,
     views: posts.reduce((sum, post) => sum + (post.views_count || 0), 0),
   };
 
   const usersStats = {
     total: users.length,
     active: users.filter(user => user.is_active).length,
-    admins: users.filter(user => user.role?.name === 'admin').length,
-    authors: users.filter(user => user.role?.name === 'author').length,
   };
 
   return (
     <DashboardLayout>
-      <div className="space-y-8">
+      <div className="space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Добро пожаловать в панель управления! 👋
-          </h1>
-          <p className="text-lg text-gray-600">
-            Управляйте вашими сайтами, контентом и пользователями из единого места.
+          <h1 className="text-2xl font-bold text-gray-900">Дашборд</h1>
+          <p className="mt-2 text-sm text-gray-700">
+            Обзор системы управления сайтами
           </p>
         </div>
 
@@ -65,11 +63,7 @@ const Dashboard: React.FC = () => {
             value={sitesStats.total}
             change={{ value: `+${sitesStats.active} активных`, type: 'increase' }}
             color="blue"
-            icon={
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9" />
-              </svg>
-            }
+            icon={<Icon name="globe" size="lg" />}
           />
           
           <StatsCard
@@ -77,11 +71,7 @@ const Dashboard: React.FC = () => {
             value={postsStats.total}
             change={{ value: `${postsStats.published} опубликованных`, type: 'increase' }}
             color="green"
-            icon={
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-            }
+            icon={<Icon name="edit" size="lg" />}
           />
           
           <StatsCard
@@ -89,11 +79,7 @@ const Dashboard: React.FC = () => {
             value={usersStats.total}
             change={{ value: `${usersStats.active} активных`, type: 'increase' }}
             color="purple"
-            icon={
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
-              </svg>
-            }
+            icon={<Icon name="users" size="lg" />}
           />
           
           <StatsCard
@@ -101,12 +87,7 @@ const Dashboard: React.FC = () => {
             value={postsStats.views.toLocaleString()}
             change={{ value: '+12%', type: 'increase' }}
             color="yellow"
-            icon={
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-              </svg>
-            }
+            icon={<Icon name="eye" size="lg" />}
           />
         </div>
 
@@ -119,7 +100,7 @@ const Dashboard: React.FC = () => {
               onClick={() => navigate('/sites/create')}
               className="justify-center"
             >
-              <span className="mr-2">🌐</span>
+              <Icon name="globe" size="sm" className="mr-2" />
               Создать сайт
             </Button>
             
@@ -128,7 +109,7 @@ const Dashboard: React.FC = () => {
               onClick={() => navigate('/posts/create')}
               className="justify-center"
             >
-              <span className="mr-2">📝</span>
+              <Icon name="edit" size="sm" className="mr-2" />
               Написать пост
             </Button>
             
@@ -137,7 +118,7 @@ const Dashboard: React.FC = () => {
               onClick={() => navigate('/users/create')}
               className="justify-center"
             >
-              <span className="mr-2">👤</span>
+              <Icon name="user" size="sm" className="mr-2" />
               Добавить пользователя
             </Button>
             
@@ -146,7 +127,7 @@ const Dashboard: React.FC = () => {
               onClick={() => navigate('/pages/create')}
               className="justify-center"
             >
-              <span className="mr-2">📄</span>
+              <Icon name="file" size="sm" className="mr-2" />
               Создать страницу
             </Button>
           </div>
@@ -198,7 +179,7 @@ const Dashboard: React.FC = () => {
               </div>
             ) : (
               <div className="text-center py-8">
-                <div className="text-4xl mb-3">🌐</div>
+                <Icon name="globe" size="2xl" className="mx-auto text-gray-300 mb-4" />
                 <p className="text-gray-500">Нет созданных сайтов</p>
               </div>
             )}
@@ -226,7 +207,7 @@ const Dashboard: React.FC = () => {
                         />
                       ) : (
                         <div className="h-10 w-10 rounded-lg bg-purple-500 flex items-center justify-center">
-                          <span className="text-white text-lg">📄</span>
+                          <Icon name="file" color="white" />
                         </div>
                       )}
                     </div>
@@ -249,7 +230,7 @@ const Dashboard: React.FC = () => {
               </div>
             ) : (
               <div className="text-center py-8">
-                <div className="text-4xl mb-3">📝</div>
+                <Icon name="edit" size="2xl" className="mx-auto text-gray-300 mb-4" />
                 <p className="text-gray-500">Нет созданных постов</p>
               </div>
             )}

@@ -1,5 +1,6 @@
 import React from 'react';
 import type { ReactNode } from 'react';
+import Icon from './Icon';
 
 interface StatsCardProps {
   title: string;
@@ -70,24 +71,18 @@ const StatsCard: React.FC<StatsCardProps> = ({
     
     if (change.type === 'increase') {
       return (
-        <svg className="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-          <path fillRule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clipRule="evenodd" />
-        </svg>
+        <Icon name="arrowUp" size="sm" color="success" />
       );
     }
     
     if (change.type === 'decrease') {
       return (
-        <svg className="w-4 h-4 text-red-600" fill="currentColor" viewBox="0 0 20 20">
-          <path fillRule="evenodd" d="M14.707 10.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 12.586V5a1 1 0 012 0v7.586l2.293-2.293a1 1 0 011.414 0z" clipRule="evenodd" />
-        </svg>
+        <Icon name="arrowDown" size="sm" color="danger" />
       );
     }
     
     return (
-      <svg className="w-4 h-4 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
-        <path fillRule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
-      </svg>
+      <Icon name="menu" size="sm" color="gray" />
     );
   };
 

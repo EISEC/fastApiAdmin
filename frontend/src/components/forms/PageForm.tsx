@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Card from '../ui/Card';
 import Button from '../ui/Button';
+import Icon from '../ui/Icon';
 import { api } from '../../lib/axios.config';
 import { generateSlugFromText } from '../../utils/helpers';
 
@@ -228,9 +229,9 @@ const PageForm: React.FC<PageFormProps> = ({ page, onSuccess, onCancel }) => {
   };
 
   const tabs = [
-    { id: 'content', label: 'Содержание', icon: '📝' },
-    { id: 'seo', label: 'SEO', icon: '🔍' },
-    { id: 'settings', label: 'Настройки', icon: '⚙️' },
+    { id: 'content', label: 'Содержание', icon: 'edit' },
+    { id: 'seo', label: 'SEO', icon: 'search' },
+    { id: 'settings', label: 'Настройки', icon: 'settings' },
   ] as const;
 
   return (
@@ -238,8 +239,9 @@ const PageForm: React.FC<PageFormProps> = ({ page, onSuccess, onCancel }) => {
       <div className="p-6">
         {/* Header */}
         <div className="mb-8">
-          <h2 className="text-xl font-semibold text-gray-900">
-            {page ? '✏️ Редактировать страницу' : '✨ Создать новую страницу'}
+          <h2 className="text-xl font-semibold text-gray-900 flex items-center">
+            <Icon name={page ? "edit" : "add"} size="lg" className="mr-2" />
+            {page ? 'Редактировать страницу' : 'Создать новую страницу'}
           </h2>
           <p className="mt-2 text-sm text-gray-600">
             {page 
@@ -254,7 +256,7 @@ const PageForm: React.FC<PageFormProps> = ({ page, onSuccess, onCancel }) => {
           <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4">
             <div className="flex">
               <div className="flex-shrink-0">
-                <span className="text-red-400 text-xl">⚠️</span>
+                <Icon name="warning" size="lg" color="danger" />
               </div>
               <div className="ml-3">
                 <h3 className="text-sm font-medium text-red-800">Ошибка сохранения</h3>
@@ -279,10 +281,10 @@ const PageForm: React.FC<PageFormProps> = ({ page, onSuccess, onCancel }) => {
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                   }`}
                 >
-                  <span className={`mr-2 text-lg transition-transform duration-200 ${
+                  <span className={`mr-2 transition-transform duration-200 ${
                     activeTab === tab.id ? 'scale-110' : 'group-hover:scale-105'
                   }`}>
-                    {tab.icon}
+                    <Icon name={tab.icon as any} size="md" />
                   </span>
                   {tab.label}
                 </button>

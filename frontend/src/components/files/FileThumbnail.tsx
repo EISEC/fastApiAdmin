@@ -1,6 +1,15 @@
 import React from 'react';
+import Icon from '../ui/Icon';
 import type { FileItem, FileType } from '../../types';
-import { formatFileSize } from '../../store/filesStore';
+
+// Простая функция форматирования размера файла
+const formatFileSize = (bytes: number): string => {
+  if (bytes === 0) return '0 Bytes';
+  const k = 1024;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+};
 
 interface FileThumbnailProps {
   file: FileItem;
@@ -16,25 +25,37 @@ interface FileThumbnailProps {
 }
 
 // Иконки для разных типов файлов
-const getFileIcon = (type: FileType, mimeType?: string): string => {
+const getFileIcon = (type: FileType, mimeType?: string, size: 'sm' | 'md' | 'lg' = 'md') => {
+  let iconName: string;
+  
   switch (type) {
     case 'image':
-      return '🖼️';
+      iconName = 'image';
+      break;
     case 'video':
-      return '🎬';
+      iconName = 'video';
+      break;
     case 'audio':
-      return '🎵';
+      iconName = 'video'; // используем video как аналог
+      break;
     case 'document':
-      if (mimeType?.includes('pdf')) return '📄';
-      if (mimeType?.includes('word')) return '📝';
-      if (mimeType?.includes('excel') || mimeType?.includes('sheet')) return '📊';
-      if (mimeType?.includes('powerpoint') || mimeType?.includes('presentation')) return '📽️';
-      return '📄';
+      if (mimeType?.includes('pdf')) iconName = 'file';
+      else if (mimeType?.includes('word')) iconName = 'edit';
+      else if (mimeType?.includes('excel') || mimeType?.includes('sheet')) iconName = 'file';
+      else iconName = 'file';
+      break;
     case 'archive':
-      return '🗜️';
+      iconName = 'folder';
+      break;
+    case 'other':
+      iconName = 'file';
+      break;
     default:
-      return '📁';
+      iconName = 'file';
   }
+  
+  const iconSize = size === 'sm' ? 'lg' : size === 'md' ? 'xl' : '2xl';
+  return <Icon name={iconName as any} size={iconSize as any} color="gray" />;
 };
 
 const FileThumbnail: React.FC<FileThumbnailProps> = ({
@@ -111,9 +132,7 @@ const FileThumbnail: React.FC<FileThumbnailProps> = ({
     // Для всех остальных типов файлов показываем иконку
     return (
       <div className={`${previewSizes[size]} flex items-center justify-center bg-gray-100 rounded-lg border-2 border-gray-200`}>
-        <span className={iconSizes[size]} role="img" aria-label={file.type}>
-          {getFileIcon(file.type, file.mimeType)}
-        </span>
+        {getFileIcon(file.type, file.mimeType, size)}
       </div>
     );
   };
@@ -149,9 +168,7 @@ const FileThumbnail: React.FC<FileThumbnailProps> = ({
         {/* Скрытая иконка для fallback изображений */}
         {file.type === 'image' && (
           <div className={`${previewSizes[size]} hidden flex items-center justify-center bg-gray-100 rounded-lg border-2 border-gray-200`}>
-            <span className={iconSizes[size]} role="img" aria-label="broken image">
-              🖼️
-            </span>
+            <Icon name="image" size="2xl" color="gray" />
           </div>
         )}
       </div>
