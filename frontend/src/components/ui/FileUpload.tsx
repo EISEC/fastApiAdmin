@@ -74,7 +74,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
   return (
     <div className={clsx('w-full', className)}>
       {label && (
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+        <label className="block text-sm font-medium text-gray-700 mb-1">
           {label}
         </label>
       )}
@@ -84,7 +84,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
         <div
           onClick={handleClick}
           className={clsx(
-            'border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors',
+            'border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors bg-white',
             error 
               ? 'border-red-300 hover:border-red-400' 
               : 'border-gray-300 hover:border-gray-400',
@@ -103,7 +103,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
           <div className="space-y-2">
             <Icon name="upload" size="2xl" color="gray" className="mx-auto" />
             
-            <div className="text-sm text-gray-600 dark:text-gray-400">
+            <div className="text-sm text-gray-600">
               <span className="font-medium text-blue-600 hover:text-blue-500">
                 Нажмите для выбора файла
               </span>
@@ -120,7 +120,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
         
         {/* Превью загруженного файла */}
         {value && (
-          <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
             <div className="flex items-center space-x-3">
               {preview && fileUrl && accept?.includes('image') && (
                 <img 
@@ -131,7 +131,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
               )}
               
               <div>
-                <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                <p className="text-sm font-medium text-gray-900">
                   {fileName}
                 </p>
                 {value instanceof File && (
@@ -157,7 +157,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
       {helperText && (
         <p className={clsx(
           'mt-1 text-sm',
-          error ? 'text-red-600 dark:text-red-400' : 'text-gray-500 dark:text-gray-400'
+          error ? 'text-red-600' : 'text-gray-500'
         )}>
           {helperText}
         </p>

@@ -33,7 +33,7 @@ export interface PostCreateData {
   visibility: PostVisibility;
   site: number;
   categories?: number[];
-  tags?: string[];
+  tags?: number[];
   meta_title?: string;
   meta_description?: string;
   meta_keywords?: string;
@@ -50,7 +50,7 @@ export interface PostUpdateData {
   visibility?: PostVisibility;
   site?: number;
   categories?: number[];
-  tags?: string[];
+  tags?: number[];
   meta_title?: string;
   meta_description?: string;
   meta_keywords?: string;
@@ -83,8 +83,18 @@ export interface Category {
   description?: string;
   parent?: number;
   site: number;
+  color?: string;
   posts_count: number;
   created_at: string;
+}
+
+export interface CategoryCreateData {
+  name: string;
+  description?: string;
+  site: number;
+  parent?: number;
+  color?: string;
+  order?: number;
 }
 
 export interface Tag {
@@ -93,6 +103,12 @@ export interface Tag {
   slug: string;
   posts_count: number;
   created_at: string;
+}
+
+export interface TagCreateData {
+  name: string;
+  site: number;
+  color?: string;
 }
 
 export type PostStatus = 'draft' | 'published' | 'scheduled' | 'archived';
@@ -117,6 +133,8 @@ export interface PostsStore extends PostsState {
   changeStatus: (id: number, status: PostStatus) => Promise<void>;
   fetchCategories: (siteId?: number) => Promise<void>;
   fetchTags: (siteId?: number) => Promise<void>;
+  createCategory: (data: CategoryCreateData) => Promise<Category>;
+  createTag: (data: TagCreateData) => Promise<Tag>;
   clearError: () => void;
   setCurrentPost: (post: Post | null) => void;
 } 

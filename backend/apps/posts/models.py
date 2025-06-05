@@ -17,6 +17,7 @@ class Category(models.Model):
     site = models.ForeignKey(Site, on_delete=models.CASCADE, related_name='categories', verbose_name='Сайт')
     parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, 
                              related_name='children', verbose_name='Родительская категория')
+    color = models.CharField(max_length=7, default='#3B82F6', verbose_name='Цвет')
     order = models.PositiveIntegerField(default=0, verbose_name='Порядок')
     is_active = models.BooleanField(default=True, verbose_name='Активна')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
@@ -33,7 +34,16 @@ class Category(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.name)
+            base_slug = slugify(self.name)
+            slug = base_slug
+            counter = 1
+            
+            # Проверяем уникальность slug в рамках сайта
+            while Category.objects.filter(site=self.site, slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+                
+            self.slug = slug
         super().save(*args, **kwargs)
 
 
@@ -57,7 +67,16 @@ class Tag(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.name)
+            base_slug = slugify(self.name)
+            slug = base_slug
+            counter = 1
+            
+            # Проверяем уникальность slug в рамках сайта
+            while Tag.objects.filter(site=self.site, slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+                
+            self.slug = slug
         super().save(*args, **kwargs)
 
 

@@ -10,7 +10,9 @@ import type {
   Tag, 
   PostStatus, 
   PostsStore,
-  ApiErrorResponse 
+  ApiErrorResponse,
+  CategoryCreateData,
+  TagCreateData
 } from '../types';
 import { useToastStore } from './toastStore';
 
@@ -69,6 +71,10 @@ export const usePostsStore = create<PostsStore>()(
                 if (key === 'featured_image' && value instanceof File) {
                   formData.append(key, value);
                   console.log('Added file to FormData:', key, value.name);
+                } else if (Array.isArray(value)) {
+                  // Для массивов (categories, tags) добавляем каждый элемент отдельно
+                  value.forEach(item => formData.append(key, String(item)));
+                  console.log('Added array to FormData:', key, value);
                 } else {
                   formData.append(key, String(value));
                   console.log('Added field to FormData:', key, value);
@@ -134,6 +140,9 @@ export const usePostsStore = create<PostsStore>()(
               if (value !== undefined && value !== null) {
                 if (key === 'featured_image' && value instanceof File) {
                   formData.append(key, value);
+                } else if (Array.isArray(value)) {
+                  // Для массивов (categories, tags) добавляем каждый элемент отдельно
+                  value.forEach(item => formData.append(key, String(item)));
                 } else {
                   formData.append(key, String(value));
                 }
@@ -318,6 +327,44 @@ export const usePostsStore = create<PostsStore>()(
           const apiError = error as ApiErrorResponse;
           const errorMessage = apiError.message || 'Ошибка загрузки тегов';
           useToastStore.getState().error('Ошибка тегов', errorMessage);
+        }
+      },
+
+      createCategory: async (data: CategoryCreateData) => {
+        try {
+          const newCategory = await api.post<Category>('/posts/categories/', data);
+          
+          // Добавляем созданную категорию в store
+          set((state) => ({
+            categories: [...state.categories, newCategory]
+          }));
+          
+          useToastStore.getState().success('Категория создана', `Категория "${newCategory.name}" была создана`);
+          return newCategory;
+        } catch (error) {
+          const apiError = error as ApiErrorResponse;
+          const errorMessage = apiError.message || 'Ошибка создания категории';
+          useToastStore.getState().error('Ошибка создания', errorMessage);
+          throw error;
+        }
+      },
+
+      createTag: async (data: TagCreateData) => {
+        try {
+          const newTag = await api.post<Tag>('/posts/tags/', data);
+          
+          // Добавляем созданный тег в store
+          set((state) => ({
+            tags: [...state.tags, newTag]
+          }));
+          
+          useToastStore.getState().success('Тег создан', `Тег "${newTag.name}" был создан`);
+          return newTag;
+        } catch (error) {
+          const apiError = error as ApiErrorResponse;
+          const errorMessage = apiError.message || 'Ошибка создания тега';
+          useToastStore.getState().error('Ошибка создания', errorMessage);
+          throw error;
         }
       },
 

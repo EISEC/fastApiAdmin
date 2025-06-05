@@ -250,4 +250,7 @@ export interface ConfirmDialogProps {
   confirmText?: string;
   cancelText?: string;
   variant?: 'danger' | 'warning' | 'info';
-} 
+}
+
+// Dynamic Models
+export * from './dynamicModel.types'; 

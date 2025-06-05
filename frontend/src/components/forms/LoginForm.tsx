@@ -64,23 +64,33 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
               </div>
             )}
             
-            <Input
-              label="Email адрес"
-              type="email"
-              autoComplete="email"
-              fullWidth
-              error={errors.email?.message}
-              {...register('email')}
-            />
+            <div>
+              <Input
+                type="email"
+                {...register('email')}
+                placeholder="Введите email"
+                autoComplete="email"
+                error={!!errors.email}
+                className="w-full"
+              />
+              {errors.email && (
+                <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
+              )}
+            </div>
             
-            <Input
-              label="Пароль"
-              type="password"
-              autoComplete="current-password"
-              fullWidth
-              error={errors.password?.message}
-              {...register('password')}
-            />
+            <div>
+              <Input
+                type="password"
+                {...register('password')}
+                placeholder="Введите пароль"
+                autoComplete="current-password"
+                error={!!errors.password}
+                className="w-full"
+              />
+              {errors.password && (
+                <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
+              )}
+            </div>
             
             <div className="flex items-center justify-between">
               <div className="flex items-center">

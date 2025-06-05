@@ -15,10 +15,19 @@ export { usePagesStore } from './pagesStore';
 export { useUsersStore } from './usersStore';
 export { useToastStore } from './toastStore';
 export { usePageBuilderStore } from './pageBuilderStore';
+export { useDynamicModelsStore } from './dynamicModelsStore';
 
 // Re-export store types and interfaces for external usage
 export type { 
   UserCreateData, 
   UserUpdateData, 
   UserStats 
-} from './usersStore'; 
+} from './usersStore';
+
+export type {
+  DynamicModel,
+  DynamicModelCreateData,
+  DynamicModelUpdateData,
+  FieldSchema,
+  FieldType
+} from './dynamicModelsStore'; 
