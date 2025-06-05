@@ -56,11 +56,11 @@ const Switch: React.FC<SwitchProps> = ({
         onClick={handleChange}
         disabled={disabled}
         className={clsx(
-          'relative inline-flex items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
+          'relative inline-flex items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-white',
           currentSize.switch,
           checked 
             ? 'bg-blue-600' 
-            : 'bg-gray-200 dark:bg-gray-600',
+            : 'bg-gray-200',
           disabled && 'opacity-50 cursor-not-allowed'
         )}
         role="switch"
@@ -78,12 +78,12 @@ const Switch: React.FC<SwitchProps> = ({
       {(label || description) && (
         <div className="ml-3">
           {label && (
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <span className="text-sm font-medium text-gray-700">
               {label}
             </span>
           )}
           {description && (
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-sm text-gray-500">
               {description}
             </p>
           )}

@@ -1,0 +1,168 @@
+/* MDEditor главный контейнер - ТОЛЬКО СВЕТЛАЯ ТЕМА */
+.md-editor-wrapper {
+  border-radius: 0.5rem;
+  overflow: hidden;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+.md-editor-wrapper .w-md-editor {
+  background-color: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Панель инструментов */
+.md-editor-wrapper .w-md-editor-toolbar {
+  background-color: #f9fafb !important;
+  border-bottom: 1px solid #e5e7eb !important;
+  border-radius: 0.5rem 0.5rem 0 0 !important;
+  padding: 8px 12px !important;
+}
+
+.md-editor-wrapper .w-md-editor-toolbar-divider {
+  background-color: #d1d5db !important;
+  margin: 0 8px !important;
+}
+
+.md-editor-wrapper .w-md-editor-toolbar ul > li button {
+  color: #4b5563 !important;
+  border-radius: 4px !important;
+  padding: 4px 6px !important;
+  transition: all 0.15s ease !important;
+}
+
+.md-editor-wrapper .w-md-editor-toolbar ul > li button:hover {
+  background-color: #e5e7eb !important;
+  color: #1f2937 !important;
+}
+
+.md-editor-wrapper .w-md-editor-toolbar ul > li button.active {
+  background-color: #3b82f6 !important;
+  color: white !important;
+}
+
+/* Область редактирования - КРИТИЧЕСКИ ВАЖНО */
+.md-editor-wrapper .w-md-editor-text-container {
+  border: none !important;
+  border-radius: 0 0 0.5rem 0.5rem !important;
+  background-color: #ffffff !important;
+}
+
+.md-editor-wrapper .w-md-editor-text-textarea,
+.md-editor-wrapper .w-md-editor-text-input,
+.md-editor-wrapper .w-md-editor-text-areastate {
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+  color: #111827 !important;
+  background-color: #ffffff !important;
+  border: none !important;
+  padding: 16px !important;
+  resize: none !important;
+  -webkit-text-fill-color: #111827 !important;
+  text-shadow: none !important;
+}
+
+.md-editor-wrapper .w-md-editor-text-textarea:focus,
+.md-editor-wrapper .w-md-editor-text-input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  color: #111827 !important;
+  -webkit-text-fill-color: #111827 !important;
+}
+
+/* Принудительное переопределение любых стилей, которые могут скрыть текст */
+.md-editor-wrapper .w-md-editor-text-textarea,
+.md-editor-wrapper .w-md-editor-text-input {
+  opacity: 1 !important;
+  visibility: visible !important;
+  text-indent: 0 !important;
+  text-align: left !important;
+  direction: ltr !important;
+}
+
+/* Скроллбар - светлая тема */
+.md-editor-wrapper .w-md-editor-text-textarea::-webkit-scrollbar {
+  width: 6px;
+}
+
+.md-editor-wrapper .w-md-editor-text-textarea::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+.md-editor-wrapper .w-md-editor-text-textarea::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.md-editor-wrapper .w-md-editor-text-textarea::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Фокус состояние */
+.md-editor-wrapper:focus-within .w-md-editor {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+}
+
+/* Отключенное состояние */
+.md-editor-wrapper .w-md-editor-text-textarea:disabled,
+.md-editor-wrapper .w-md-editor-text-input:disabled {
+  background-color: #f9fafb !important;
+  color: #6b7280 !important;
+  cursor: not-allowed !important;
+}
+
+.md-editor-wrapper .w-md-editor-toolbar:has(+ .w-md-editor-text-container .w-md-editor-text-textarea:disabled) {
+  background-color: #f3f4f6 !important;
+  opacity: 0.7 !important;
+}
+
+/* Ошибка состояние */
+.md-editor-wrapper.border-red-500 .w-md-editor {
+  border-color: #ef4444 !important;
+}
+
+.md-editor-wrapper.border-red-500:focus-within .w-md-editor {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+}
+
+/* Плейсхолдер */
+.md-editor-wrapper .w-md-editor-text-textarea::placeholder {
+  color: #9ca3af !important;
+  font-style: normal !important;
+  opacity: 0.7 !important;
+}
+
+/* Курсор */
+.md-editor-wrapper .w-md-editor-text-textarea {
+  caret-color: #3b82f6 !important;
+}
+
+/* Дополнительные улучшения */
+.md-editor-wrapper .w-md-editor-text-container .w-md-editor-text {
+  font-family: Inter, system-ui, sans-serif !important;
+}
+
+/* Анимации */
+.md-editor-wrapper .w-md-editor {
+  transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+.md-editor-wrapper .w-md-editor-toolbar ul > li button {
+  transition: all 0.15s ease !important;
+}
+
+/* Дополнительные фиксы для видимости текста */
+.md-editor-wrapper * {
+  box-sizing: border-box;
+}
+
+/* Принудительное исправление любых проблем с видимостью */
+.md-editor-wrapper .w-md-editor-text-textarea::selection {
+  background-color: rgba(59, 130, 246, 0.2) !important;
+  color: #111827 !important;
+} 

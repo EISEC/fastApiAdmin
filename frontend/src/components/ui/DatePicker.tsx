@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { format, isValid, parse } from 'date-fns';
 import { ru } from 'date-fns/locale';
+import Icon from './Icon';
 
 interface DatePickerProps {
   id?: string;
@@ -197,7 +198,9 @@ const DatePicker: React.FC<DatePickerProps> = ({
             disabled={disabled}
             className="text-gray-400 hover:text-gray-600 transition-colors disabled:cursor-not-allowed"
           >
-            <span className="text-lg">📅</span>
+            <span className="text-lg">
+              <Icon name="calendar" />
+            </span>
           </button>
         </div>
       </div>
@@ -274,7 +277,8 @@ const DatePicker: React.FC<DatePickerProps> = ({
               }}
               className="w-full py-2 px-4 text-sm font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors"
             >
-              📅 Сегодня
+              <Icon name="calendar" className="mr-2" />
+              Сегодня
             </button>
           </div>
         </div>

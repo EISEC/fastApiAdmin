@@ -32,4 +32,5 @@ urlpatterns = [
     path('posts/', include('apps.posts.urls')),
     path('pages/', include('apps.pages.urls')),
     path('settings/', include('apps.settings.urls')),
+    path('dynamic-models/', include('apps.dynamic_models.urls')),
 ] 

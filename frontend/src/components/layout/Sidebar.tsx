@@ -52,6 +52,12 @@ const navigationItems: NavigationItem[] = [
     roles: ['superuser', 'admin'],
   },
   {
+    name: 'Динамические модели',
+    href: '/dynamic-models',
+    icon: 'database',
+    roles: ['superuser', 'admin'],
+  },
+  {
     name: 'Настройки',
     href: '/settings',
     icon: 'settings',

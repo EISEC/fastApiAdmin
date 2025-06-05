@@ -27,14 +27,14 @@ const Card: React.FC<CardProps> = ({
   };
   
   const classes = clsx(
-    // Базовые стили согласно STYLE_GUIDE.md
+    // Базовые стили согласно STYLE_GUIDE.md - только светлая тема
     'bg-white rounded-2xl shadow-sm border border-gray-100',
     // Градиентный фон если включен
-    gradient && 'relative overflow-hidden bg-gradient-to-br from-transparent to-gray-25',
+    gradient && 'relative overflow-hidden bg-gradient-to-br from-white to-gray-25',
     // Отступы
     paddingClasses[padding],
     // Hover эффекты согласно STYLE_GUIDE.md
-    hover && 'hover:shadow-md transition-all duration-200 cursor-pointer',
+    hover && 'hover:shadow-md hover:border-gray-200 transition-all duration-200 cursor-pointer',
     className
   );
   

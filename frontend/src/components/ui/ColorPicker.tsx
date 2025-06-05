@@ -36,7 +36,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
   return (
     <div className={clsx('w-full', className)}>
       {label && (
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+        <label className="block text-sm font-medium text-gray-700 mb-1">
           {label}
         </label>
       )}
@@ -49,7 +49,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
           onChange={handleColorChange}
           disabled={disabled}
           className={clsx(
-            'w-12 h-10 border border-gray-300 rounded-lg cursor-pointer overflow-hidden',
+            'w-12 h-10 border border-gray-300 rounded-lg cursor-pointer overflow-hidden bg-white',
             'disabled:cursor-not-allowed disabled:opacity-50',
             'focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
           )}
@@ -64,11 +64,10 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
           placeholder="#000000"
           disabled={disabled}
           className={clsx(
-            'flex-1 px-3 py-2 border border-gray-300 rounded-lg transition-colors',
+            'flex-1 px-3 py-2 border border-gray-300 rounded-lg transition-colors bg-white text-gray-900',
             'focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
-            'dark:bg-gray-700 dark:border-gray-600 dark:text-white',
             'disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed',
-            'font-mono text-sm'
+            'font-mono text-sm placeholder:text-gray-400'
           )}
           pattern="^#[0-9A-Fa-f]{6}$"
           maxLength={7}
@@ -83,7 +82,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
       </div>
       
       {helperText && (
-        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+        <p className="mt-1 text-sm text-gray-500">
           {helperText}
         </p>
       )}

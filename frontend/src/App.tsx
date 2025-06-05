@@ -20,6 +20,13 @@ import CreatePageWithBuilder from './pages/CreatePageWithBuilder';
 import MediaLibrary from './pages/MediaLibrary';
 import Settings from './pages/Settings';
 import IconsDemo from './pages/IconsDemo';
+import DynamicModelsPage from './pages/DynamicModelsPage';
+import CreateDynamicModelPage from './pages/CreateDynamicModelPage';
+import EditDynamicModelPage from './pages/EditDynamicModelPage';
+import DynamicModelDataPage from './pages/DynamicModelDataPage';
+import DynamicModelPreviewPage from './pages/DynamicModelPreviewPage';
+import CreateDynamicModelDataPage from './pages/CreateDynamicModelDataPage';
+import EditDynamicModelDataPage from './pages/EditDynamicModelDataPage';
 
 /**
  * Компонент для защищенных маршрутов
@@ -230,7 +237,65 @@ const App: React.FC = () => {
             } 
           />
           
-          {/* Демонстрация иконок */}
+          {/* Динамические модели */}
+          <Route 
+            path="/dynamic-models" 
+            element={
+              <ProtectedRoute>
+                <DynamicModelsPage />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/dynamic-models/create" 
+            element={
+              <ProtectedRoute>
+                <CreateDynamicModelPage />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/dynamic-models/:id/edit" 
+            element={
+              <ProtectedRoute>
+                <EditDynamicModelPage />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/dynamic-models/:id/data" 
+            element={
+              <ProtectedRoute>
+                <DynamicModelDataPage />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/dynamic-models/:id/preview" 
+            element={
+              <ProtectedRoute>
+                <DynamicModelPreviewPage />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/dynamic-models/:id/data/create" 
+            element={
+              <ProtectedRoute>
+                <CreateDynamicModelDataPage />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/dynamic-models/:id/data/:dataId/edit" 
+            element={
+              <ProtectedRoute>
+                <EditDynamicModelDataPage />
+              </ProtectedRoute>
+            } 
+          />
+          
+          {/* Динамические модели */}
           <Route 
             path="/icons" 
             element={
