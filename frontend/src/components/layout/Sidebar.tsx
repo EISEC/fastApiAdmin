@@ -44,7 +44,7 @@ const navigationItems: NavigationItem[] = [
     name: 'Медиа-библиотека',
     href: '/media',
     icon: 'folder',
-    roles: ['superuser', 'admin', 'author'],
+    roles: ['superuser'],
   },
   {
     name: 'Пользователи',
@@ -62,19 +62,19 @@ const navigationItems: NavigationItem[] = [
     name: 'Настройки',
     href: '/settings',
     icon: 'settings',
-    roles: ['superuser', 'admin'],
+    roles: ['superuser'],
   },
   {
     name: 'Иконки',
     href: '/icons',
     icon: 'star',
-    roles: ['superuser', 'admin', 'author'],
+    roles: ['superuser'],
   },
   {
     name: 'Тест соцсетей',
     href: '/test-social-networks',
     icon: 'mobile',
-    roles: ['superuser', 'admin', 'author'],
+    roles: ['superuser'],
   },
   {
     name: 'Диагностика',
