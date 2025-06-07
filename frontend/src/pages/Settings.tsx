@@ -8,6 +8,7 @@ import SettingsTabs from '../components/settings/SettingsTabs';
 import SettingsGroup from '../components/settings/SettingsGroup';
 import Button from '../components/ui/Button';
 import Icon from '../components/ui/Icon';
+import { getIconName } from '../utils/iconMapping';
 
 /**
  * Главная страница настроек (только для суперадминистраторов)
@@ -268,7 +269,7 @@ const Settings: React.FC = () => {
             <>
               <div className="bg-white shadow-sm rounded-lg border border-gray-200 p-6">
                 <h2 className="text-xl font-semibold text-gray-900 flex items-center space-x-2 mb-4">
-                  <Icon name={currentCategoryData.icon as any} size="md" />
+                  <Icon name={getIconName(currentCategoryData.icon)} size="md" />
                   <span>{currentCategoryData.name}</span>
                 </h2>
                 {currentCategoryData.description && (

@@ -28,6 +28,7 @@ import DynamicModelPreviewPage from './pages/DynamicModelPreviewPage';
 import CreateDynamicModelDataPage from './pages/CreateDynamicModelDataPage';
 import EditDynamicModelDataPage from './pages/EditDynamicModelDataPage';
 import TestSocialNetworks from './pages/TestSocialNetworks';
+import Debug from './pages/Debug';
 
 /**
  * Компонент для защищенных маршрутов
@@ -53,20 +54,21 @@ const App: React.FC = () => {
   const { checkAuth, isAuthenticated, isLoading } = useAuthStore();
   const { toasts, removeToast } = useToastStore();
   
-  const initAuth = useCallback(async () => {
-    const token = localStorage.getItem('access_token');
-    if (token) {
-      try {
-        await checkAuth();
-      } catch (error) {
-        console.error('Auth check failed:', error);
-      }
-    }
-  }, [checkAuth]);
-  
+  // Инициализация аутентификации только при первой загрузке
   useEffect(() => {
+    const initAuth = async () => {
+      const token = localStorage.getItem('access_token');
+      if (token) {
+        try {
+          await checkAuth();
+        } catch (error) {
+          console.error('Auth check failed:', error);
+        }
+      }
+    };
+    
     initAuth();
-  }, [initAuth]);
+  }, []); // Убираем checkAuth из зависимостей чтобы избежать бесконечного цикла
   
   // Показываем загрузку пока проверяется аутентификация
   if (isLoading) {
@@ -312,6 +314,16 @@ const App: React.FC = () => {
             element={
               <ProtectedRoute>
                 <TestSocialNetworks />
+              </ProtectedRoute>
+            } 
+          />
+          
+          {/* Диагностика */}
+          <Route 
+            path="/debug" 
+            element={
+              <ProtectedRoute>
+                <Debug />
               </ProtectedRoute>
             } 
           />

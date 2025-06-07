@@ -138,7 +138,7 @@ const GalleryBlock: React.FC<GalleryBlockProps> = ({
                 onClick={handleAddImage}
                 className="px-2 py-1 text-xs bg-green-500 text-white rounded hover:bg-green-600"
               >
-                + Добавить изображение
+                <Icon name="add" size="xs" className="mr-1" />Добавить изображение
               </button>
             </div>
             

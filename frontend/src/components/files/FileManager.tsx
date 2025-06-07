@@ -365,16 +365,16 @@ const FileManager: React.FC<FileManagerProps> = ({
                   )}
                 </div>
                 <div className="col-span-4 cursor-pointer" onClick={() => handleSortChange('name')}>
-                  Название {sort.field === 'name' && (sort.direction === 'asc' ? '↑' : '↓')}
+                  Название {sort.field === 'name' && <Icon name={sort.direction === 'asc' ? 'arrowUp' : 'arrowDown'} size="xs" className="ml-1 inline" />}
                 </div>
                 <div className="col-span-2 cursor-pointer" onClick={() => handleSortChange('type')}>
-                  Тип {sort.field === 'type' && (sort.direction === 'asc' ? '↑' : '↓')}
+                  Тип {sort.field === 'type' && <Icon name={sort.direction === 'asc' ? 'arrowUp' : 'arrowDown'} size="xs" className="ml-1 inline" />}
                 </div>
                 <div className="col-span-2 cursor-pointer" onClick={() => handleSortChange('size')}>
-                  Размер {sort.field === 'size' && (sort.direction === 'asc' ? '↑' : '↓')}
+                  Размер {sort.field === 'size' && <Icon name={sort.direction === 'asc' ? 'arrowUp' : 'arrowDown'} size="xs" className="ml-1 inline" />}
                 </div>
                 <div className="col-span-3 cursor-pointer" onClick={() => handleSortChange('createdAt')}>
-                  Дата создания {sort.field === 'createdAt' && (sort.direction === 'asc' ? '↑' : '↓')}
+                  Дата создания {sort.field === 'createdAt' && <Icon name={sort.direction === 'asc' ? 'arrowUp' : 'arrowDown'} size="xs" className="ml-1 inline" />}
                 </div>
               </div>
               
@@ -432,7 +432,7 @@ const FolderTreeNode: React.FC<FolderTreeNodeProps> = ({
                 onClick={() => toggleExpanded(folder.id)}
                 className="w-4 h-4 mr-1 text-gray-500 hover:text-gray-700"
               >
-                {expandedFolders.has(folder.id) ? '▼' : '▶'}
+                                    <Icon name={expandedFolders.has(folder.id) ? 'arrowDown' : 'arrowRight'} size="xs" />
               </button>
             )}
             <div

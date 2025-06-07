@@ -65,8 +65,8 @@ export const useGlobalSettings = create<GlobalSettingsState>((set, get) => ({
   // Загрузка настроек
   loadSettings: async () => {
     const state = get();
-    if (state.settingsLoaded) {
-      return; // Уже загружены (убираю проверку количества ключей)
+    if (state.settingsLoaded || state.isSettingsLoading) {
+      return; // Уже загружены или загружаются
     }
     
     set({ isSettingsLoading: true, settingsError: null });
@@ -100,8 +100,8 @@ export const useGlobalSettings = create<GlobalSettingsState>((set, get) => ({
   // Загрузка социальных сетей
   loadSocialNetworks: async () => {
     const state = get();
-    if (state.socialLoaded) {
-      return; // Уже загружены (убираю проверку длины массива)
+    if (state.socialLoaded || state.isSocialLoading) {
+      return; // Уже загружены или загружаются
     }
     
     set({ isSocialLoading: true, socialError: null });

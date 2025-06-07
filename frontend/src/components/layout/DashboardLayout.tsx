@@ -28,7 +28,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     if (!settingsLoaded || !socialLoaded) {
       loadAll();
     }
-  }, [loadAll, settingsLoaded, socialLoaded]);
+  }, []); // Убираем зависимости, чтобы избежать бесконечного цикла
 
   // Обновляем заголовок документа
   useEffect(() => {

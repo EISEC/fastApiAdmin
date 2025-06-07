@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import SiteForm from '../components/forms/SiteForm';
+import Icon from '../components/ui/Icon';
 
 /**
  * Страница создания нового сайта
@@ -26,7 +27,7 @@ const CreateSite: React.FC = () => {
             onClick={() => navigate('/sites')}
             className="mr-4 text-gray-400 hover:text-gray-600"
           >
-            ← Назад к сайтам
+            <Icon name="arrowLeft" className="mr-2" />Назад к сайтам
           </button>
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Создать новый сайт</h1>

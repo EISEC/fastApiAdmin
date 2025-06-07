@@ -189,7 +189,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
               }}
               className="text-gray-400 hover:text-gray-600 transition-colors"
             >
-              <span className="text-lg">✕</span>
+              <Icon name="close" size="sm" />
             </button>
           )}
           <button
@@ -215,7 +215,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
               onClick={handlePrevMonth}
               className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
             >
-              <span className="text-gray-600">←</span>
+              <Icon name="arrowLeft" size="sm" color="gray" />
             </button>
             
             <h3 className="text-lg font-semibold text-gray-900">
@@ -227,7 +227,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
               onClick={handleNextMonth}
               className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
             >
-              <span className="text-gray-600">→</span>
+              <Icon name="arrowRight" size="sm" color="gray" />
             </button>
           </div>
 
