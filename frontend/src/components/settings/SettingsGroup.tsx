@@ -2,6 +2,7 @@ import React from 'react';
 import type { SettingsGroup as SettingsGroupType, Setting } from '../../types/settings.types';
 import Button from '../ui/Button';
 import Icon from '../ui/Icon';
+import SocialNetworksManager from './SocialNetworksManager';
 
 interface SettingsGroupProps {
   group: SettingsGroupType;
@@ -27,6 +28,29 @@ const SettingsGroup: React.FC<SettingsGroupProps> = ({
   isLoading = false,
   hasChanges = false
 }) => {
+  // Специальная обработка для группы "Социальные сети" 
+  if (group.name === 'Социальные сети') {
+    return (
+      <div className="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
+        <div className="px-6 py-4 bg-gray-50 border-b border-gray-200">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <Icon name={group.icon as any} size="sm" />
+              <h3 className="text-lg font-semibold text-gray-900">{group.name}</h3>
+            </div>
+          </div>
+          {group.description && (
+            <p className="mt-2 text-sm text-gray-600">{group.description}</p>
+          )}
+        </div>
+        
+        <div className="p-6">
+          <SocialNetworksManager />
+        </div>
+      </div>
+    );
+  }
+
   const renderSettingField = (setting: Setting) => {
     const value = values[setting.key] !== undefined ? values[setting.key] : setting.value;
     const fieldErrors = errors[setting.key];

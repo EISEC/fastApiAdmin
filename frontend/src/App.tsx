@@ -27,6 +27,7 @@ import DynamicModelDataPage from './pages/DynamicModelDataPage';
 import DynamicModelPreviewPage from './pages/DynamicModelPreviewPage';
 import CreateDynamicModelDataPage from './pages/CreateDynamicModelDataPage';
 import EditDynamicModelDataPage from './pages/EditDynamicModelDataPage';
+import TestSocialNetworks from './pages/TestSocialNetworks';
 
 /**
  * Компонент для защищенных маршрутов
@@ -301,6 +302,16 @@ const App: React.FC = () => {
             element={
               <ProtectedRoute>
                 <IconsDemo />
+              </ProtectedRoute>
+            } 
+          />
+          
+          {/* Тестовая страница социальных сетей */}
+          <Route 
+            path="/test-social-networks" 
+            element={
+              <ProtectedRoute>
+                <TestSocialNetworks />
               </ProtectedRoute>
             } 
           />

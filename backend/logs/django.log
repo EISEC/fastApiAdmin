@@ -11249,3 +11249,1633 @@ INFO 2025-06-05 03:56:11,252 basehttp 1674 6157365248 "GET /api/v1/dynamic-model
 INFO 2025-06-05 03:56:11,261 basehttp 1674 6174191616 "GET /api/v1/sites/ HTTP/1.1" 200 606
 INFO 2025-06-05 03:56:11,267 basehttp 1674 6191017984 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 200 6057
 INFO 2025-06-05 03:56:11,555 basehttp 1674 6191017984 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 200 6057
+INFO 2025-06-05 04:00:58,446 basehttp 1674 6191017984 "GET /api/v1/dynamic-models/models/4/ HTTP/1.1" 200 763
+INFO 2025-06-05 04:00:58,452 basehttp 1674 6174191616 "GET /api/v1/dynamic-models/models/4/ HTTP/1.1" 200 763
+INFO 2025-06-05 04:00:58,541 basehttp 1674 6174191616 "GET /api/v1/dynamic-models/field-types/?is_active=true HTTP/1.1" 200 2733
+INFO 2025-06-05 04:00:58,550 basehttp 1674 6157365248 "GET /api/v1/dynamic-models/field-types/?is_active=true HTTP/1.1" 200 2733
+INFO 2025-06-05 04:00:58,550 basehttp 1674 6191017984 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-05 04:00:58,559 basehttp 1674 6157365248 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-05 04:01:02,877 basehttp 1674 6157365248 "PATCH /api/v1/dynamic-models/models/4/ HTTP/1.1" 200 772
+INFO 2025-06-05 04:01:03,047 basehttp 1674 6191017984 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-05 04:01:03,067 basehttp 1674 6157365248 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 200 6066
+INFO 2025-06-05 04:01:03,070 basehttp 1674 6174191616 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-05 04:01:03,078 basehttp 1674 6191017984 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 200 6066
+INFO 2025-06-05 04:01:03,324 basehttp 1674 6191017984 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 200 6066
+INFO 2025-06-05 04:01:07,838 basehttp 1674 6191017984 "OPTIONS /api/v1/dynamic-models/models/?site=3 HTTP/1.1" 200 0
+INFO 2025-06-05 04:01:07,851 basehttp 1674 6191017984 "GET /api/v1/dynamic-models/models/?site=3 HTTP/1.1" 200 5293
+INFO 2025-06-05 04:01:10,597 basehttp 1674 6191017984 "OPTIONS /api/v1/dynamic-models/models/?site=1 HTTP/1.1" 200 0
+INFO 2025-06-05 04:01:10,614 basehttp 1674 6191017984 "GET /api/v1/dynamic-models/models/?site=1 HTTP/1.1" 200 824
+INFO 2025-06-05 04:01:13,142 basehttp 1674 6191017984 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 200 6066
+INFO 2025-06-05 04:01:16,009 basehttp 1674 6191017984 "OPTIONS /api/v1/dynamic-models/models/?model_type=standalone HTTP/1.1" 200 0
+INFO 2025-06-05 04:01:16,019 basehttp 1674 6191017984 "GET /api/v1/dynamic-models/models/?model_type=standalone HTTP/1.1" 200 3651
+INFO 2025-06-05 04:01:19,501 basehttp 1674 6191017984 "OPTIONS /api/v1/dynamic-models/models/?model_type=extension HTTP/1.1" 200 0
+INFO 2025-06-05 04:01:19,508 basehttp 1674 6191017984 "GET /api/v1/dynamic-models/models/?model_type=extension HTTP/1.1" 200 2466
+INFO 2025-06-05 04:01:22,146 basehttp 1674 6191017984 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 200 6066
+INFO 2025-06-05 18:14:25,836 autoreload 25126 8710703168 Watching for file changes with StatReloader
+INFO 2025-06-05 18:14:39,200 basehttp 25126 6167293952 "OPTIONS /api/v1/auth/me/ HTTP/1.1" 200 0
+INFO 2025-06-05 18:14:39,220 basehttp 25126 12901707776 "OPTIONS /api/v1/auth/me/ HTTP/1.1" 200 0
+WARNING 2025-06-05 18:14:39,298 log 25126 6167293952 Unauthorized: /api/v1/auth/me/
+WARNING 2025-06-05 18:14:39,299 basehttp 25126 6167293952 "GET /api/v1/auth/me/ HTTP/1.1" 401 275
+WARNING 2025-06-05 18:14:39,300 log 25126 12901707776 Unauthorized: /api/v1/auth/me/
+WARNING 2025-06-05 18:14:39,300 basehttp 25126 12901707776 "GET /api/v1/auth/me/ HTTP/1.1" 401 275
+INFO 2025-06-05 18:14:39,303 basehttp 25126 12901707776 "OPTIONS /api/v1/auth/token/refresh/ HTTP/1.1" 200 0
+INFO 2025-06-05 18:14:39,305 basehttp 25126 6167293952 "OPTIONS /api/v1/auth/token/refresh/ HTTP/1.1" 200 0
+INFO 2025-06-05 18:14:39,307 basehttp 25126 12901707776 "POST /api/v1/auth/token/refresh/ HTTP/1.1" 200 1075
+INFO 2025-06-05 18:14:39,308 basehttp 25126 6167293952 "POST /api/v1/auth/token/refresh/ HTTP/1.1" 200 1075
+INFO 2025-06-05 18:14:39,315 basehttp 25126 12901707776 "GET /api/v1/auth/me/ HTTP/1.1" 200 694
+INFO 2025-06-05 18:14:39,319 basehttp 25126 6167293952 "GET /api/v1/auth/me/ HTTP/1.1" 200 694
+INFO 2025-06-05 18:18:01,494 basehttp 25126 12901707776 "OPTIONS /api/v1/sites/ HTTP/1.1" 200 0
+INFO 2025-06-05 18:18:01,494 basehttp 25126 6167293952 "OPTIONS /api/v1/sites/ HTTP/1.1" 200 0
+INFO 2025-06-05 18:18:01,511 basehttp 25126 12901707776 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-05 18:18:01,519 basehttp 25126 6167293952 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-05 18:18:03,962 basehttp 25126 12901707776 "OPTIONS /api/v1/posts/ HTTP/1.1" 200 0
+INFO 2025-06-05 18:18:03,963 basehttp 25126 12918534144 "OPTIONS /api/v1/auth/users/ HTTP/1.1" 200 0
+INFO 2025-06-05 18:18:03,964 basehttp 25126 12935360512 "OPTIONS /api/v1/posts/ HTTP/1.1" 200 0
+INFO 2025-06-05 18:18:03,968 basehttp 25126 12952186880 "OPTIONS /api/v1/auth/users/ HTTP/1.1" 200 0
+INFO 2025-06-05 18:18:04,007 basehttp 25126 6167293952 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-05 18:18:04,015 basehttp 25126 12901707776 "GET /api/v1/auth/users/ HTTP/1.1" 200 1432
+INFO 2025-06-05 18:18:04,018 basehttp 25126 12918534144 "GET /api/v1/posts/ HTTP/1.1" 200 2208
+INFO 2025-06-05 18:18:04,029 basehttp 25126 12952186880 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-05 18:18:04,030 basehttp 25126 6167293952 "GET /api/v1/auth/users/ HTTP/1.1" 200 1432
+INFO 2025-06-05 18:18:04,034 basehttp 25126 12901707776 "GET /api/v1/posts/ HTTP/1.1" 200 2208
+INFO 2025-06-05 18:18:04,046 basehttp 25126 12969013248 "GET /media/posts/featured/Screenshot.png HTTP/1.1" 304 0
+INFO 2025-06-05 18:18:09,125 basehttp 25126 12901707776 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-05 18:18:09,133 basehttp 25126 6167293952 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-05 18:18:10,046 basehttp 25126 6167293952 "GET /api/v1/posts/ HTTP/1.1" 200 2208
+INFO 2025-06-05 18:18:10,054 basehttp 25126 12901707776 "GET /api/v1/posts/ HTTP/1.1" 200 2208
+INFO 2025-06-05 18:18:15,256 basehttp 25126 12901707776 "OPTIONS /api/v1/pages/ HTTP/1.1" 200 0
+INFO 2025-06-05 18:18:15,257 basehttp 25126 6167293952 "OPTIONS /api/v1/pages/ HTTP/1.1" 200 0
+INFO 2025-06-05 18:18:15,276 basehttp 25126 6167293952 "GET /api/v1/pages/ HTTP/1.1" 200 683
+INFO 2025-06-05 18:18:15,281 basehttp 25126 12901707776 "GET /api/v1/pages/ HTTP/1.1" 200 683
+INFO 2025-06-05 18:18:20,885 basehttp 25126 12901707776 "GET /api/v1/auth/users/ HTTP/1.1" 200 1432
+INFO 2025-06-05 18:18:20,891 basehttp 25126 6167293952 "GET /api/v1/auth/users/ HTTP/1.1" 200 1432
+INFO 2025-06-05 18:18:24,325 basehttp 25126 12952186880 "OPTIONS /api/v1/dynamic-models/models/ HTTP/1.1" 200 0
+INFO 2025-06-05 18:18:24,325 basehttp 25126 6167293952 "OPTIONS /api/v1/dynamic-models/models/ HTTP/1.1" 200 0
+INFO 2025-06-05 18:18:24,334 basehttp 25126 12901707776 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-05 18:18:24,350 basehttp 25126 6167293952 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 200 6066
+INFO 2025-06-05 18:18:24,350 basehttp 25126 12952186880 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-05 18:18:24,363 basehttp 25126 12901707776 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 200 6066
+INFO 2025-06-05 18:18:24,651 basehttp 25126 12901707776 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 200 6066
+INFO 2025-06-05 18:18:34,609 basehttp 25126 12952186880 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-05 18:18:34,621 basehttp 25126 12901707776 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 200 6066
+INFO 2025-06-05 18:18:34,621 basehttp 25126 6167293952 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-05 18:18:34,632 basehttp 25126 12952186880 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 200 6066
+INFO 2025-06-05 18:18:34,898 basehttp 25126 12952186880 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 200 6066
+INFO 2025-06-05 18:18:36,096 basehttp 25126 12952186880 "GET /api/v1/auth/users/ HTTP/1.1" 200 1432
+INFO 2025-06-05 18:18:36,102 basehttp 25126 6167293952 "GET /api/v1/auth/users/ HTTP/1.1" 200 1432
+INFO 2025-06-05 18:18:38,409 basehttp 25126 6167293952 "GET /api/v1/pages/ HTTP/1.1" 200 683
+INFO 2025-06-05 18:18:38,413 basehttp 25126 12952186880 "GET /api/v1/pages/ HTTP/1.1" 200 683
+INFO 2025-06-05 18:18:39,081 basehttp 25126 12952186880 "GET /api/v1/posts/ HTTP/1.1" 200 2208
+INFO 2025-06-05 18:18:39,087 basehttp 25126 6167293952 "GET /api/v1/posts/ HTTP/1.1" 200 2208
+INFO 2025-06-05 18:18:39,811 basehttp 25126 6167293952 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-05 18:18:39,820 basehttp 25126 12952186880 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-05 18:18:41,478 basehttp 25126 6167293952 "GET /api/v1/posts/ HTTP/1.1" 200 2208
+INFO 2025-06-05 18:18:41,478 basehttp 25126 12901707776 "GET /api/v1/auth/users/ HTTP/1.1" 200 1432
+INFO 2025-06-05 18:18:41,480 basehttp 25126 12952186880 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-05 18:18:41,498 basehttp 25126 6167293952 "GET /api/v1/auth/users/ HTTP/1.1" 200 1432
+INFO 2025-06-05 18:18:41,499 basehttp 25126 12918534144 "GET /api/v1/posts/ HTTP/1.1" 200 2208
+INFO 2025-06-05 18:18:41,500 basehttp 25126 12935360512 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-05 18:19:06,710 basehttp 25126 12935360512 "GET /api/v1/posts/ HTTP/1.1" 200 2208
+INFO 2025-06-05 18:19:06,719 basehttp 25126 12918534144 "GET /api/v1/posts/ HTTP/1.1" 200 2208
+INFO 2025-06-05 18:19:10,893 basehttp 25126 6167293952 "OPTIONS /api/v1/posts/tags/?site=3 HTTP/1.1" 200 0
+INFO 2025-06-05 18:19:10,893 basehttp 25126 12935360512 "OPTIONS /api/v1/posts/categories/?site=3 HTTP/1.1" 200 0
+INFO 2025-06-05 18:19:10,908 basehttp 25126 6167293952 "GET /api/v1/posts/tags/?site=3 HTTP/1.1" 200 233
+INFO 2025-06-05 18:19:10,909 basehttp 25126 12935360512 "GET /api/v1/posts/categories/?site=3 HTTP/1.1" 200 319
+INFO 2025-06-05 18:19:10,912 basehttp 25126 12918534144 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-05 18:19:10,925 basehttp 25126 12935360512 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-05 18:19:28,917 basehttp 25126 12935360512 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-05 18:19:28,924 basehttp 25126 12918534144 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-05 18:19:32,557 basehttp 25126 6167293952 "GET /api/v1/auth/users/ HTTP/1.1" 200 1432
+INFO 2025-06-05 18:19:32,561 basehttp 25126 12935360512 "GET /api/v1/posts/ HTTP/1.1" 200 2208
+INFO 2025-06-05 18:19:32,562 basehttp 25126 12918534144 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-05 18:19:32,571 basehttp 25126 12952186880 "GET /api/v1/auth/users/ HTTP/1.1" 200 1432
+INFO 2025-06-05 18:19:32,576 basehttp 25126 6167293952 "GET /api/v1/posts/ HTTP/1.1" 200 2208
+INFO 2025-06-05 18:19:32,579 basehttp 25126 12935360512 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-05 18:19:44,665 basehttp 25126 12935360512 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-05 18:19:44,671 basehttp 25126 6167293952 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-05 18:19:59,885 basehttp 25126 12935360512 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-05 18:19:59,894 basehttp 25126 6167293952 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 200 6066
+INFO 2025-06-05 18:19:59,898 basehttp 25126 12952186880 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-05 18:19:59,908 basehttp 25126 12935360512 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 200 6066
+INFO 2025-06-05 18:20:00,184 basehttp 25126 12935360512 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 200 6066
+INFO 2025-06-05 22:44:04,054 basehttp 25126 6167293952 "OPTIONS /api/v1/dynamic-models/models/ HTTP/1.1" 200 0
+INFO 2025-06-05 22:44:04,054 basehttp 25126 12901707776 "OPTIONS /api/v1/sites/ HTTP/1.1" 200 0
+WARNING 2025-06-05 22:44:04,064 log 25126 6167293952 Unauthorized: /api/v1/dynamic-models/models/
+INFO 2025-06-05 22:44:04,064 basehttp 25126 12935360512 "OPTIONS /api/v1/dynamic-models/models/ HTTP/1.1" 200 0
+WARNING 2025-06-05 22:44:04,071 log 25126 12901707776 Unauthorized: /api/v1/sites/
+WARNING 2025-06-05 22:44:04,072 basehttp 25126 6167293952 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 401 275
+INFO 2025-06-05 22:44:04,072 basehttp 25126 12918534144 "OPTIONS /api/v1/auth/me/ HTTP/1.1" 200 0
+INFO 2025-06-05 22:44:04,072 basehttp 25126 12952186880 "OPTIONS /api/v1/sites/ HTTP/1.1" 200 0
+INFO 2025-06-05 22:44:04,074 basehttp 25126 12969013248 "OPTIONS /api/v1/auth/me/ HTTP/1.1" 200 0
+WARNING 2025-06-05 22:44:04,075 basehttp 25126 12901707776 "GET /api/v1/sites/ HTTP/1.1" 401 275
+WARNING 2025-06-05 22:44:04,077 log 25126 12918534144 Unauthorized: /api/v1/auth/me/
+WARNING 2025-06-05 22:44:04,080 log 25126 12952186880 Unauthorized: /api/v1/dynamic-models/models/
+WARNING 2025-06-05 22:44:04,081 log 25126 12969013248 Unauthorized: /api/v1/sites/
+INFO 2025-06-05 22:44:04,084 basehttp 25126 6167293952 "OPTIONS /api/v1/auth/token/refresh/ HTTP/1.1" 200 0
+INFO 2025-06-05 22:44:04,085 basehttp 25126 12901707776 "OPTIONS /api/v1/auth/token/refresh/ HTTP/1.1" 200 0
+WARNING 2025-06-05 22:44:04,086 basehttp 25126 12952186880 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 401 275
+WARNING 2025-06-05 22:44:04,086 basehttp 25126 12918534144 "GET /api/v1/auth/me/ HTTP/1.1" 401 275
+WARNING 2025-06-05 22:44:04,086 basehttp 25126 12969013248 "GET /api/v1/sites/ HTTP/1.1" 401 275
+WARNING 2025-06-05 22:44:04,094 log 25126 6167293952 Unauthorized: /api/v1/auth/me/
+INFO 2025-06-05 22:44:04,099 basehttp 25126 12901707776 "POST /api/v1/auth/token/refresh/ HTTP/1.1" 200 1075
+INFO 2025-06-05 22:44:04,100 basehttp 25126 12935360512 "POST /api/v1/auth/token/refresh/ HTTP/1.1" 200 1075
+INFO 2025-06-05 22:44:04,102 basehttp 25126 12952186880 "POST /api/v1/auth/token/refresh/ HTTP/1.1" 200 1075
+INFO 2025-06-05 22:44:04,106 basehttp 25126 12918534144 "POST /api/v1/auth/token/refresh/ HTTP/1.1" 200 1075
+WARNING 2025-06-05 22:44:04,107 basehttp 25126 6167293952 "GET /api/v1/auth/me/ HTTP/1.1" 401 275
+INFO 2025-06-05 22:44:04,109 basehttp 25126 12969013248 "POST /api/v1/auth/token/refresh/ HTTP/1.1" 200 1075
+INFO 2025-06-05 22:44:04,118 basehttp 25126 12952186880 "POST /api/v1/auth/token/refresh/ HTTP/1.1" 200 1075
+INFO 2025-06-05 22:44:04,136 basehttp 25126 12918534144 "GET /api/v1/auth/me/ HTTP/1.1" 200 694
+INFO 2025-06-05 22:44:04,147 basehttp 25126 12952186880 "GET /api/v1/auth/me/ HTTP/1.1" 200 694
+INFO 2025-06-05 22:44:04,148 basehttp 25126 12969013248 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-05 22:44:04,171 basehttp 25126 6167293952 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 200 6066
+INFO 2025-06-05 22:44:04,178 basehttp 25126 12952186880 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-05 22:44:04,208 basehttp 25126 12952186880 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-05 22:44:04,218 basehttp 25126 12969013248 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 200 6066
+INFO 2025-06-05 22:44:04,233 basehttp 25126 6167293952 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-05 22:44:04,246 basehttp 25126 12952186880 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 200 6066
+INFO 2025-06-05 22:44:04,268 basehttp 25126 6167293952 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 200 6066
+INFO 2025-06-05 22:44:06,526 basehttp 25126 6167293952 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 200 6066
+INFO 2025-06-07 21:03:41,927 autoreload 95754 8710703168 Watching for file changes with StatReloader
+INFO 2025-06-07 21:04:00,226 basehttp 95754 6199242752 "OPTIONS /api/v1/dynamic-models/models/ HTTP/1.1" 200 0
+INFO 2025-06-07 21:04:00,227 basehttp 95754 6216069120 "OPTIONS /api/v1/sites/ HTTP/1.1" 200 0
+INFO 2025-06-07 21:04:00,227 basehttp 95754 6232895488 "OPTIONS /api/v1/auth/me/ HTTP/1.1" 200 0
+INFO 2025-06-07 21:04:00,228 basehttp 95754 6249721856 "OPTIONS /api/v1/dynamic-models/models/ HTTP/1.1" 200 0
+INFO 2025-06-07 21:04:00,229 basehttp 95754 6266548224 "OPTIONS /api/v1/sites/ HTTP/1.1" 200 0
+INFO 2025-06-07 21:04:00,230 basehttp 95754 6283374592 "OPTIONS /api/v1/auth/me/ HTTP/1.1" 200 0
+WARNING 2025-06-07 21:04:00,296 log 95754 6199242752 Unauthorized: /api/v1/dynamic-models/models/
+WARNING 2025-06-07 21:04:00,297 log 95754 6216069120 Unauthorized: /api/v1/sites/
+WARNING 2025-06-07 21:04:00,297 log 95754 6249721856 Unauthorized: /api/v1/auth/me/
+WARNING 2025-06-07 21:04:00,297 basehttp 95754 6216069120 "GET /api/v1/sites/ HTTP/1.1" 401 275
+WARNING 2025-06-07 21:04:00,297 basehttp 95754 6249721856 "GET /api/v1/auth/me/ HTTP/1.1" 401 275
+WARNING 2025-06-07 21:04:00,297 basehttp 95754 6199242752 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 401 275
+WARNING 2025-06-07 21:04:00,299 log 95754 6283374592 Unauthorized: /api/v1/sites/
+WARNING 2025-06-07 21:04:00,300 log 95754 6266548224 Unauthorized: /api/v1/dynamic-models/models/
+WARNING 2025-06-07 21:04:00,301 log 95754 6232895488 Unauthorized: /api/v1/auth/me/
+INFO 2025-06-07 21:04:00,302 basehttp 95754 6249721856 "OPTIONS /api/v1/auth/token/refresh/ HTTP/1.1" 200 0
+WARNING 2025-06-07 21:04:00,302 basehttp 95754 6283374592 "GET /api/v1/sites/ HTTP/1.1" 401 275
+WARNING 2025-06-07 21:04:00,302 basehttp 95754 6266548224 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 401 275
+WARNING 2025-06-07 21:04:00,302 basehttp 95754 6232895488 "GET /api/v1/auth/me/ HTTP/1.1" 401 275
+INFO 2025-06-07 21:04:00,302 basehttp 95754 6216069120 "OPTIONS /api/v1/auth/token/refresh/ HTTP/1.1" 200 0
+INFO 2025-06-07 21:04:00,302 basehttp 95754 6199242752 "OPTIONS /api/v1/auth/token/refresh/ HTTP/1.1" 200 0
+INFO 2025-06-07 21:04:00,309 basehttp 95754 6232895488 "POST /api/v1/auth/token/refresh/ HTTP/1.1" 200 1075
+INFO 2025-06-07 21:04:00,309 basehttp 95754 6249721856 "POST /api/v1/auth/token/refresh/ HTTP/1.1" 200 1075
+INFO 2025-06-07 21:04:00,309 basehttp 95754 6199242752 "POST /api/v1/auth/token/refresh/ HTTP/1.1" 200 1075
+INFO 2025-06-07 21:04:00,310 basehttp 95754 6283374592 "POST /api/v1/auth/token/refresh/ HTTP/1.1" 200 1075
+INFO 2025-06-07 21:04:00,310 basehttp 95754 6266548224 "POST /api/v1/auth/token/refresh/ HTTP/1.1" 200 1075
+INFO 2025-06-07 21:04:00,310 basehttp 95754 6216069120 "POST /api/v1/auth/token/refresh/ HTTP/1.1" 200 1075
+INFO 2025-06-07 21:04:00,328 basehttp 95754 6216069120 "GET /api/v1/auth/me/ HTTP/1.1" 200 694
+INFO 2025-06-07 21:04:00,337 basehttp 95754 6266548224 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-07 21:04:00,338 basehttp 95754 6249721856 "GET /api/v1/auth/me/ HTTP/1.1" 200 694
+INFO 2025-06-07 21:04:00,349 basehttp 95754 6283374592 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 200 6066
+INFO 2025-06-07 21:04:00,351 basehttp 95754 6216069120 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-07 21:04:00,365 basehttp 95754 6283374592 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-07 21:04:00,371 basehttp 95754 6249721856 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 200 6066
+INFO 2025-06-07 21:04:00,399 basehttp 95754 6216069120 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-07 21:04:00,406 basehttp 95754 6283374592 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 200 6066
+INFO 2025-06-07 21:04:00,415 basehttp 95754 6216069120 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 200 6066
+INFO 2025-06-07 21:04:00,670 basehttp 95754 6216069120 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 200 6066
+INFO 2025-06-07 21:04:03,595 basehttp 95754 6216069120 "OPTIONS /api/v1/dynamic-models/models/?site=3 HTTP/1.1" 200 0
+INFO 2025-06-07 21:04:03,611 basehttp 95754 6216069120 "GET /api/v1/dynamic-models/models/?site=3 HTTP/1.1" 200 5293
+INFO 2025-06-07 21:04:06,542 basehttp 95754 6216069120 "OPTIONS /api/v1/dynamic-models/models/?site=1 HTTP/1.1" 200 0
+INFO 2025-06-07 21:04:06,556 basehttp 95754 6216069120 "GET /api/v1/dynamic-models/models/?site=1 HTTP/1.1" 200 824
+INFO 2025-06-07 21:04:11,865 basehttp 95754 6216069120 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 200 6066
+INFO 2025-06-07 21:04:34,534 basehttp 95754 6300200960 "GET /api/v1/swagger/ HTTP/1.1" 200 2179
+INFO 2025-06-07 21:04:34,563 basehttp 95754 12901707776 "GET /static/drf-yasg/swagger-ui-dist/swagger-ui.css HTTP/1.1" 304 0
+INFO 2025-06-07 21:04:34,564 basehttp 95754 6300200960 "GET /static/drf-yasg/swagger-ui-init.js HTTP/1.1" 304 0
+INFO 2025-06-07 21:04:34,565 basehttp 95754 12918534144 "GET /static/drf-yasg/style.css HTTP/1.1" 304 0
+INFO 2025-06-07 21:04:34,567 basehttp 95754 12901707776 "GET /static/drf-yasg/insQ.min.js HTTP/1.1" 304 0
+INFO 2025-06-07 21:04:34,568 basehttp 95754 12935360512 "GET /static/drf-yasg/swagger-ui-dist/swagger-ui-bundle.js HTTP/1.1" 304 0
+INFO 2025-06-07 21:04:34,570 basehttp 95754 12969013248 "GET /static/drf-yasg/swagger-ui-dist/swagger-ui-standalone-preset.js HTTP/1.1" 304 0
+INFO 2025-06-07 21:04:34,571 basehttp 95754 12952186880 "GET /static/drf-yasg/immutable.min.js HTTP/1.1" 304 0
+INFO 2025-06-07 21:04:34,693 basehttp 95754 12969013248 "GET /static/drf-yasg/swagger-ui-dist/favicon-32x32.png HTTP/1.1" 304 0
+INFO 2025-06-07 21:04:34,764 basehttp 95754 12952186880 "GET /api/v1/swagger/?format=openapi HTTP/1.1" 200 121953
+WARNING 2025-06-07 21:04:41,419 log 95754 12952186880 Not Found: /
+WARNING 2025-06-07 21:04:41,419 basehttp 95754 12952186880 "GET / HTTP/1.1" 404 2417
+WARNING 2025-06-07 21:04:41,470 log 95754 12952186880 Not Found: /favicon.ico
+WARNING 2025-06-07 21:04:41,470 basehttp 95754 12952186880 "GET /favicon.ico HTTP/1.1" 404 2468
+INFO 2025-06-07 21:13:50,225 basehttp 95754 6199242752 "GET /api/v1/auth/me/ HTTP/1.1" 200 694
+INFO 2025-06-07 21:13:50,230 basehttp 95754 6199242752 "GET /api/v1/auth/me/ HTTP/1.1" 200 694
+INFO 2025-06-07 21:13:55,625 basehttp 95754 6199242752 "GET /api/v1/auth/me/ HTTP/1.1" 200 694
+INFO 2025-06-07 21:13:55,629 basehttp 95754 6199242752 "GET /api/v1/auth/me/ HTTP/1.1" 200 694
+INFO 2025-06-07 21:13:55,664 basehttp 95754 6216069120 "OPTIONS /api/v1/posts/ HTTP/1.1" 200 0
+INFO 2025-06-07 21:13:55,664 basehttp 95754 6249721856 "OPTIONS /api/v1/posts/ HTTP/1.1" 200 0
+INFO 2025-06-07 21:13:55,665 basehttp 95754 6232895488 "OPTIONS /api/v1/auth/users/ HTTP/1.1" 200 0
+INFO 2025-06-07 21:13:55,666 basehttp 95754 6266548224 "OPTIONS /api/v1/auth/users/ HTTP/1.1" 200 0
+INFO 2025-06-07 21:13:55,683 basehttp 95754 6232895488 "GET /api/v1/auth/users/ HTTP/1.1" 200 1432
+INFO 2025-06-07 21:13:55,687 basehttp 95754 6199242752 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-07 21:13:55,690 basehttp 95754 6216069120 "GET /api/v1/posts/ HTTP/1.1" 200 2208
+INFO 2025-06-07 21:13:55,700 basehttp 95754 6266548224 "GET /api/v1/auth/users/ HTTP/1.1" 200 1432
+INFO 2025-06-07 21:13:55,706 basehttp 95754 6232895488 "GET /api/v1/sites/ HTTP/1.1" 200 606
+INFO 2025-06-07 21:13:55,708 basehttp 95754 6199242752 "GET /api/v1/posts/ HTTP/1.1" 200 2208
+INFO 2025-06-07 21:13:55,738 basehttp 95754 6283374592 "GET /media/posts/featured/Screenshot.png HTTP/1.1" 304 0
+INFO 2025-06-07 21:14:00,847 basehttp 95754 6199242752 "GET /api/v1/auth/users/ HTTP/1.1" 200 1432
+INFO 2025-06-07 21:14:00,854 basehttp 95754 6232895488 "GET /api/v1/auth/users/ HTTP/1.1" 200 1432
+INFO 2025-06-07 21:14:07,185 basehttp 95754 6199242752 "OPTIONS /api/v1/auth/users/1/ HTTP/1.1" 200 0
+INFO 2025-06-07 21:14:07,185 basehttp 95754 6232895488 "OPTIONS /api/v1/auth/users/1/ HTTP/1.1" 200 0
+INFO 2025-06-07 21:14:07,200 basehttp 95754 6232895488 "GET /api/v1/auth/users/1/ HTTP/1.1" 200 694
+INFO 2025-06-07 21:14:07,204 basehttp 95754 6199242752 "GET /api/v1/auth/users/1/ HTTP/1.1" 200 694
+INFO 2025-06-07 21:14:07,227 basehttp 95754 6232895488 "OPTIONS /api/v1/auth/roles/ HTTP/1.1" 200 0
+INFO 2025-06-07 21:14:07,228 basehttp 95754 6199242752 "OPTIONS /api/v1/auth/roles/ HTTP/1.1" 200 0
+INFO 2025-06-07 21:14:07,232 basehttp 95754 6232895488 "GET /api/v1/auth/roles/ HTTP/1.1" 200 1042
+INFO 2025-06-07 21:14:07,235 basehttp 95754 6199242752 "GET /api/v1/auth/roles/ HTTP/1.1" 200 1042
+INFO 2025-06-07 21:15:40,831 basehttp 95754 6199242752 "PATCH /api/v1/auth/users/1/ HTTP/1.1" 200 728
+INFO 2025-06-07 21:15:40,860 basehttp 95754 6199242752 "GET /api/v1/auth/roles/ HTTP/1.1" 200 1042
+INFO 2025-06-07 21:15:40,875 basehttp 95754 6232895488 "GET /api/v1/auth/roles/ HTTP/1.1" 200 1042
+INFO 2025-06-07 21:15:40,903 basehttp 95754 6232895488 "GET /api/v1/auth/users/ HTTP/1.1" 200 1413
+INFO 2025-06-07 21:15:40,910 basehttp 95754 6232895488 "GET /api/v1/auth/users/ HTTP/1.1" 200 1413
+INFO 2025-06-07 21:15:48,614 basehttp 95754 6232895488 "GET /api/v1/auth/users/1/ HTTP/1.1" 200 728
+INFO 2025-06-07 21:15:48,618 basehttp 95754 6199242752 "GET /api/v1/auth/users/1/ HTTP/1.1" 200 728
+INFO 2025-06-07 21:15:48,690 basehttp 95754 6199242752 "GET /api/v1/auth/roles/ HTTP/1.1" 200 1042
+INFO 2025-06-07 21:15:48,694 basehttp 95754 6232895488 "GET /api/v1/auth/roles/ HTTP/1.1" 200 1042
+INFO 2025-06-07 21:15:57,155 basehttp 95754 6266548224 "GET /api/v1/auth/users/ HTTP/1.1" 200 1413
+INFO 2025-06-07 21:15:57,160 basehttp 95754 6199242752 "GET /api/v1/posts/ HTTP/1.1" 200 2208
+INFO 2025-06-07 21:15:57,163 basehttp 95754 6232895488 "GET /api/v1/sites/ HTTP/1.1" 200 592
+INFO 2025-06-07 21:15:57,171 basehttp 95754 6216069120 "GET /api/v1/auth/users/ HTTP/1.1" 200 1413
+INFO 2025-06-07 21:15:57,177 basehttp 95754 6266548224 "GET /api/v1/posts/ HTTP/1.1" 200 2208
+INFO 2025-06-07 21:15:57,179 basehttp 95754 6199242752 "GET /api/v1/sites/ HTTP/1.1" 200 592
+INFO 2025-06-07 21:16:01,111 basehttp 95754 6232895488 "GET /api/v1/auth/me/ HTTP/1.1" 200 728
+INFO 2025-06-07 21:16:01,130 basehttp 95754 6249721856 "GET /api/v1/auth/me/ HTTP/1.1" 200 728
+INFO 2025-06-07 21:16:01,130 basehttp 95754 6266548224 "GET /api/v1/posts/ HTTP/1.1" 200 2208
+INFO 2025-06-07 21:16:01,130 basehttp 95754 6216069120 "GET /api/v1/auth/users/ HTTP/1.1" 200 1413
+INFO 2025-06-07 21:16:01,135 basehttp 95754 6199242752 "GET /api/v1/sites/ HTTP/1.1" 200 592
+INFO 2025-06-07 21:16:01,147 basehttp 95754 6216069120 "GET /api/v1/auth/users/ HTTP/1.1" 200 1413
+INFO 2025-06-07 21:16:01,152 basehttp 95754 6249721856 "GET /api/v1/posts/ HTTP/1.1" 200 2208
+INFO 2025-06-07 21:16:01,154 basehttp 95754 6266548224 "GET /api/v1/sites/ HTTP/1.1" 200 592
+INFO 2025-06-07 21:16:01,203 basehttp 95754 6216069120 "GET /api/v1/auth/users/ HTTP/1.1" 200 1413
+INFO 2025-06-07 21:16:01,205 basehttp 95754 6249721856 "GET /api/v1/posts/ HTTP/1.1" 200 2208
+INFO 2025-06-07 21:16:01,206 basehttp 95754 6266548224 "GET /api/v1/sites/ HTTP/1.1" 200 592
+INFO 2025-06-07 21:16:01,218 basehttp 95754 6199242752 "GET /api/v1/auth/users/ HTTP/1.1" 200 1413
+INFO 2025-06-07 21:16:01,225 basehttp 95754 6216069120 "GET /api/v1/posts/ HTTP/1.1" 200 2208
+INFO 2025-06-07 21:16:01,225 basehttp 95754 6249721856 "GET /api/v1/sites/ HTTP/1.1" 200 592
+INFO 2025-06-07 21:16:11,626 basehttp 95754 6249721856 "GET /api/v1/sites/ HTTP/1.1" 200 592
+INFO 2025-06-07 21:16:11,634 basehttp 95754 6216069120 "GET /api/v1/sites/ HTTP/1.1" 200 592
+INFO 2025-06-07 21:19:28,191 autoreload 95754 8710703168 /Users/eisec/fastApiAdmin/backend/apps/sites/apps.py changed, reloading.
+INFO 2025-06-07 21:19:28,675 autoreload 96503 8710703168 Watching for file changes with StatReloader
+INFO 2025-06-07 21:20:39,594 autoreload 96503 8710703168 /Users/eisec/fastApiAdmin/backend/apps/sites/views.py changed, reloading.
+INFO 2025-06-07 21:20:40,006 autoreload 96648 8710703168 Watching for file changes with StatReloader
+INFO 2025-06-07 21:22:04,225 signals 96737 8710703168 Начинается удаление сайта: Тестовый сайт (ID: 1)
+INFO 2025-06-07 21:22:04,226 signals 96737 8710703168 Будут удалены связанные объекты: {'posts': 2, 'pages': 2, 'categories': 2, 'tags': 2, 'dynamic_models': 1}
+INFO 2025-06-07 21:22:04,226 signals 96737 8710703168 Очищаем связи с 1 назначенными пользователями
+WARNING 2025-06-07 21:22:04,227 signals 96737 8710703168 Удаляется последний сайт пользователя admin. Пользователь останется без сайтов.
+INFO 2025-06-07 21:22:04,229 signals 96737 8710703168 Сайт удален: Тестовый сайт (ID: 1)
+INFO 2025-06-07 21:22:04,229 signals 96737 8710703168 Каскадное удаление сайта Тестовый сайт завершено успешно
+INFO 2025-06-07 21:22:04,229 signals 96737 8710703168 Сайт Тестовый сайт успешно удален со всеми зависимостями
+ERROR 2025-06-07 21:22:04,234 signals 96737 8710703168 Ошибка при удалении сайта 1: Симуляция ошибки
+ERROR 2025-06-07 21:22:04,237 signals 96737 8710703168 Сайт с ID 99999 не найден
+INFO 2025-06-07 21:22:04,243 signals 96737 8710703168 Начинается удаление сайта: Тестовый сайт (ID: 1)
+INFO 2025-06-07 21:22:04,244 signals 96737 8710703168 Будут удалены связанные объекты: {'posts': 2, 'pages': 2, 'categories': 2, 'tags': 2, 'dynamic_models': 1}
+INFO 2025-06-07 21:22:04,245 signals 96737 8710703168 Очищаем связи с 1 назначенными пользователями
+WARNING 2025-06-07 21:22:04,245 signals 96737 8710703168 Удаляется последний сайт пользователя admin. Пользователь останется без сайтов.
+INFO 2025-06-07 21:22:04,247 signals 96737 8710703168 Сайт удален: Тестовый сайт (ID: 1)
+INFO 2025-06-07 21:22:04,247 signals 96737 8710703168 Каскадное удаление сайта Тестовый сайт завершено успешно
+INFO 2025-06-07 21:22:04,247 signals 96737 8710703168 Сайт Тестовый сайт успешно удален со всеми зависимостями
+INFO 2025-06-07 21:22:04,255 signals 96737 8710703168 Начинается удаление сайта: Тестовый сайт (ID: 1)
+INFO 2025-06-07 21:22:04,257 signals 96737 8710703168 Будут удалены связанные объекты: {'posts': 2, 'pages': 2, 'categories': 2, 'tags': 2, 'dynamic_models': 1}
+INFO 2025-06-07 21:22:04,257 signals 96737 8710703168 Очищаем связи с 1 назначенными пользователями
+WARNING 2025-06-07 21:22:04,257 signals 96737 8710703168 Удаляется последний сайт пользователя admin. Пользователь останется без сайтов.
+INFO 2025-06-07 21:22:04,259 signals 96737 8710703168 Сайт удален: Тестовый сайт (ID: 1)
+INFO 2025-06-07 21:22:04,259 signals 96737 8710703168 Каскадное удаление сайта Тестовый сайт завершено успешно
+INFO 2025-06-07 21:22:04,259 signals 96737 8710703168 Сайт Тестовый сайт успешно удален со всеми зависимостями
+INFO 2025-06-07 21:22:04,266 signals 96737 8710703168 Начинается удаление сайта: Тестовый сайт (ID: 1)
+INFO 2025-06-07 21:22:04,267 signals 96737 8710703168 Будут удалены связанные объекты: {'posts': 3, 'pages': 2, 'categories': 2, 'tags': 2, 'dynamic_models': 1}
+INFO 2025-06-07 21:22:04,267 signals 96737 8710703168 Очищаем связи с 1 назначенными пользователями
+WARNING 2025-06-07 21:22:04,268 signals 96737 8710703168 Удаляется последний сайт пользователя admin. Пользователь останется без сайтов.
+INFO 2025-06-07 21:22:04,269 signals 96737 8710703168 Сайт удален: Тестовый сайт (ID: 1)
+INFO 2025-06-07 21:22:04,269 signals 96737 8710703168 Каскадное удаление сайта Тестовый сайт завершено успешно
+INFO 2025-06-07 21:22:04,269 signals 96737 8710703168 Сайт Тестовый сайт успешно удален со всеми зависимостями
+INFO 2025-06-07 21:22:04,275 signals 96737 8710703168 Начинается удаление сайта: Пустой сайт (ID: 2)
+INFO 2025-06-07 21:22:04,275 signals 96737 8710703168 Будут удалены связанные объекты: {'posts': 0, 'pages': 0, 'categories': 0, 'tags': 0, 'dynamic_models': 0}
+INFO 2025-06-07 21:22:04,277 signals 96737 8710703168 Сайт удален: Пустой сайт (ID: 2)
+INFO 2025-06-07 21:22:04,277 signals 96737 8710703168 Каскадное удаление сайта Пустой сайт завершено успешно
+INFO 2025-06-07 21:22:04,277 signals 96737 8710703168 Сайт Пустой сайт успешно удален со всеми зависимостями
+INFO 2025-06-07 21:22:04,283 signals 96737 8710703168 Начинается удаление сайта: Тестовый сайт (ID: 1)
+INFO 2025-06-07 21:22:04,284 signals 96737 8710703168 Будут удалены связанные объекты: {'posts': 2, 'pages': 2, 'categories': 2, 'tags': 2, 'dynamic_models': 1}
+INFO 2025-06-07 21:22:04,284 signals 96737 8710703168 Очищаем связи с 1 назначенными пользователями
+WARNING 2025-06-07 21:22:04,285 signals 96737 8710703168 Удаляется последний сайт пользователя admin. Пользователь останется без сайтов.
+INFO 2025-06-07 21:22:04,286 signals 96737 8710703168 Сайт удален: Тестовый сайт (ID: 1)
+INFO 2025-06-07 21:22:04,286 signals 96737 8710703168 Каскадное удаление сайта Тестовый сайт завершено успешно
+INFO 2025-06-07 21:22:04,286 signals 96737 8710703168 Сайт Тестовый сайт успешно удален со всеми зависимостями
+INFO 2025-06-07 21:22:04,290 signals 96737 8710703168 Начинается удаление сайта: Второй сайт (ID: 2)
+INFO 2025-06-07 21:22:04,291 signals 96737 8710703168 Будут удалены связанные объекты: {'posts': 1, 'pages': 0, 'categories': 0, 'tags': 0, 'dynamic_models': 0}
+INFO 2025-06-07 21:22:04,293 signals 96737 8710703168 Сайт удален: Второй сайт (ID: 2)
+INFO 2025-06-07 21:22:04,293 signals 96737 8710703168 Каскадное удаление сайта Второй сайт завершено успешно
+INFO 2025-06-07 21:22:04,296 signals 96737 8710703168 Начинается удаление сайта: Тестовый сайт (ID: 1)
+INFO 2025-06-07 21:22:04,297 signals 96737 8710703168 Будут удалены связанные объекты: {'posts': 2, 'pages': 2, 'categories': 2, 'tags': 2, 'dynamic_models': 1}
+INFO 2025-06-07 21:22:04,298 signals 96737 8710703168 Очищаем связи с 1 назначенными пользователями
+WARNING 2025-06-07 21:22:04,298 signals 96737 8710703168 Удаляется последний сайт пользователя admin. Пользователь останется без сайтов.
+INFO 2025-06-07 21:22:04,299 signals 96737 8710703168 Сайт удален: Тестовый сайт (ID: 1)
+INFO 2025-06-07 21:22:04,299 signals 96737 8710703168 Каскадное удаление сайта Тестовый сайт завершено успешно
+INFO 2025-06-07 21:22:04,300 signals 96737 8710703168 Сайт Тестовый сайт успешно удален со всеми зависимостями
+INFO 2025-06-07 21:27:19,361 basehttp 96648 6148468736 "GET /api/v1/auth/me/ HTTP/1.1" 200 728
+INFO 2025-06-07 21:27:19,364 basehttp 96648 6131642368 "GET /api/v1/sites/ HTTP/1.1" 200 592
+INFO 2025-06-07 21:27:19,369 basehttp 96648 6148468736 "GET /api/v1/auth/me/ HTTP/1.1" 200 728
+INFO 2025-06-07 21:27:19,373 basehttp 96648 6165295104 "GET /api/v1/sites/ HTTP/1.1" 200 592
+INFO 2025-06-07 21:27:19,387 basehttp 96648 6165295104 "GET /api/v1/sites/ HTTP/1.1" 200 592
+INFO 2025-06-07 21:27:19,392 basehttp 96648 6148468736 "GET /api/v1/sites/ HTTP/1.1" 200 592
+INFO 2025-06-07 21:27:52,903 basehttp 96648 6165295104 "GET /api/v1/auth/me/ HTTP/1.1" 200 728
+INFO 2025-06-07 21:27:52,908 basehttp 96648 6148468736 "GET /api/v1/sites/ HTTP/1.1" 200 592
+INFO 2025-06-07 21:27:52,927 basehttp 96648 6148468736 "GET /api/v1/sites/ HTTP/1.1" 200 592
+INFO 2025-06-07 21:27:52,956 basehttp 96648 6165295104 "GET /api/v1/sites/ HTTP/1.1" 200 592
+INFO 2025-06-07 21:30:33,373 basehttp 96648 6148468736 "GET /api/v1/auth/me/ HTTP/1.1" 200 728
+INFO 2025-06-07 21:30:33,378 basehttp 96648 6165295104 "GET /api/v1/sites/ HTTP/1.1" 200 592
+INFO 2025-06-07 21:30:33,381 basehttp 96648 6131642368 "GET /api/v1/auth/me/ HTTP/1.1" 200 728
+INFO 2025-06-07 21:30:33,388 basehttp 96648 6148468736 "GET /api/v1/sites/ HTTP/1.1" 200 592
+INFO 2025-06-07 21:30:33,399 basehttp 96648 6148468736 "GET /api/v1/sites/ HTTP/1.1" 200 592
+INFO 2025-06-07 21:30:33,404 basehttp 96648 6131642368 "GET /api/v1/sites/ HTTP/1.1" 200 592
+INFO 2025-06-07 21:30:35,685 basehttp 96648 6148468736 "OPTIONS /api/v1/sites/1/delete_preview/ HTTP/1.1" 200 0
+INFO 2025-06-07 21:30:35,685 basehttp 96648 6131642368 "OPTIONS /api/v1/sites/1/delete_preview/ HTTP/1.1" 200 0
+INFO 2025-06-07 21:30:35,697 basehttp 96648 6131642368 "GET /api/v1/sites/1/delete_preview/ HTTP/1.1" 200 362
+INFO 2025-06-07 21:30:35,705 basehttp 96648 6148468736 "GET /api/v1/sites/1/delete_preview/ HTTP/1.1" 200 362
+INFO 2025-06-07 21:30:52,772 basehttp 96648 6148468736 "GET /api/v1/sites/1/delete_preview/ HTTP/1.1" 200 362
+INFO 2025-06-07 21:30:52,779 basehttp 96648 6131642368 "GET /api/v1/sites/1/delete_preview/ HTTP/1.1" 200 362
+INFO 2025-06-07 21:31:06,334 basehttp 96648 6148468736 "GET /api/v1/auth/me/ HTTP/1.1" 200 728
+INFO 2025-06-07 21:31:06,341 basehttp 96648 6131642368 "GET /api/v1/sites/ HTTP/1.1" 200 592
+INFO 2025-06-07 21:31:06,343 basehttp 96648 6165295104 "GET /api/v1/auth/me/ HTTP/1.1" 200 728
+INFO 2025-06-07 21:31:06,349 basehttp 96648 6148468736 "GET /api/v1/sites/ HTTP/1.1" 200 592
+INFO 2025-06-07 21:31:06,361 basehttp 96648 6148468736 "GET /api/v1/sites/ HTTP/1.1" 200 592
+INFO 2025-06-07 21:31:06,367 basehttp 96648 6165295104 "GET /api/v1/sites/ HTTP/1.1" 200 592
+INFO 2025-06-07 21:31:08,612 basehttp 96648 6165295104 "GET /api/v1/sites/1/delete_preview/ HTTP/1.1" 200 362
+INFO 2025-06-07 21:31:08,619 basehttp 96648 6148468736 "GET /api/v1/sites/1/delete_preview/ HTTP/1.1" 200 362
+INFO 2025-06-07 21:31:12,463 basehttp 96648 6148468736 "OPTIONS /api/v1/sites/3/delete_preview/ HTTP/1.1" 200 0
+INFO 2025-06-07 21:31:12,463 basehttp 96648 6165295104 "OPTIONS /api/v1/sites/3/delete_preview/ HTTP/1.1" 200 0
+INFO 2025-06-07 21:31:12,469 basehttp 96648 6148468736 "GET /api/v1/sites/3/delete_preview/ HTTP/1.1" 200 350
+INFO 2025-06-07 21:31:12,475 basehttp 96648 6165295104 "GET /api/v1/sites/3/delete_preview/ HTTP/1.1" 200 350
+INFO 2025-06-07 21:31:29,295 basehttp 96648 6165295104 "GET /api/v1/sites/3/delete_preview/ HTTP/1.1" 200 350
+INFO 2025-06-07 21:31:29,302 basehttp 96648 6148468736 "GET /api/v1/sites/3/delete_preview/ HTTP/1.1" 200 350
+INFO 2025-06-07 21:31:34,900 basehttp 96648 6148468736 "OPTIONS /api/v1/sites/3/cascade_delete/ HTTP/1.1" 200 0
+INFO 2025-06-07 21:31:34,916 signals 96648 6148468736 Начинается удаление сайта: Сасайт (ID: 3)
+INFO 2025-06-07 21:31:34,918 signals 96648 6148468736 Будут удалены связанные объекты: {'posts': 1, 'pages': 0, 'categories': 1, 'tags': 1, 'dynamic_models': 3}
+WARNING 2025-06-07 21:31:34,919 signals 96648 6148468736 Удаляется последний сайт пользователя admin. Пользователь останется без сайтов.
+INFO 2025-06-07 21:31:34,923 signals 96648 6148468736 Сайт удален: Сасайт (ID: 3)
+INFO 2025-06-07 21:31:34,923 signals 96648 6148468736 Каскадное удаление сайта Сасайт завершено успешно
+INFO 2025-06-07 21:31:34,923 signals 96648 6148468736 Сайт Сасайт успешно удален со всеми зависимостями
+INFO 2025-06-07 21:31:34,925 basehttp 96648 6148468736 "DELETE /api/v1/sites/3/cascade_delete/ HTTP/1.1" 200 218
+INFO 2025-06-07 21:31:41,673 basehttp 96648 6165295104 "GET /api/v1/sites/ HTTP/1.1" 200 321
+INFO 2025-06-07 21:31:41,676 basehttp 96648 6148468736 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 200 824
+INFO 2025-06-07 21:31:41,687 basehttp 96648 6131642368 "GET /api/v1/sites/ HTTP/1.1" 200 321
+INFO 2025-06-07 21:31:41,688 basehttp 96648 6165295104 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 200 824
+INFO 2025-06-07 21:31:41,979 basehttp 96648 6165295104 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 200 824
+INFO 2025-06-07 21:31:45,622 basehttp 96648 6165295104 "GET /api/v1/dynamic-models/models/?site=1 HTTP/1.1" 200 824
+INFO 2025-06-07 21:31:47,098 basehttp 96648 6165295104 "GET /api/v1/auth/users/ HTTP/1.1" 200 1413
+INFO 2025-06-07 21:31:47,106 basehttp 96648 6131642368 "GET /api/v1/auth/users/ HTTP/1.1" 200 1413
+INFO 2025-06-07 21:32:00,909 basehttp 96648 6165295104 "OPTIONS /api/v1/pages/ HTTP/1.1" 200 0
+INFO 2025-06-07 21:32:00,910 basehttp 96648 6131642368 "OPTIONS /api/v1/pages/ HTTP/1.1" 200 0
+INFO 2025-06-07 21:32:00,917 basehttp 96648 6131642368 "GET /api/v1/pages/ HTTP/1.1" 200 683
+INFO 2025-06-07 21:32:00,922 basehttp 96648 6165295104 "GET /api/v1/pages/ HTTP/1.1" 200 683
+INFO 2025-06-07 21:32:05,920 basehttp 96648 6165295104 "GET /api/v1/posts/ HTTP/1.1" 200 1087
+INFO 2025-06-07 21:32:05,926 basehttp 96648 6131642368 "GET /api/v1/posts/ HTTP/1.1" 200 1087
+INFO 2025-06-07 21:32:07,943 basehttp 96648 6165295104 "GET /api/v1/posts/ HTTP/1.1" 200 1087
+INFO 2025-06-07 21:32:07,943 basehttp 96648 6131642368 "GET /api/v1/sites/ HTTP/1.1" 200 321
+INFO 2025-06-07 21:32:07,945 basehttp 96648 6148468736 "GET /api/v1/auth/users/ HTTP/1.1" 200 1413
+INFO 2025-06-07 21:32:07,961 basehttp 96648 6165295104 "GET /api/v1/posts/ HTTP/1.1" 200 1087
+INFO 2025-06-07 21:32:07,963 basehttp 96648 13304360960 "GET /api/v1/auth/users/ HTTP/1.1" 200 1413
+INFO 2025-06-07 21:32:07,963 basehttp 96648 6131642368 "GET /api/v1/sites/ HTTP/1.1" 200 321
+INFO 2025-06-07 21:32:14,068 basehttp 96648 6131642368 "GET /api/v1/sites/ HTTP/1.1" 200 321
+INFO 2025-06-07 21:32:14,076 basehttp 96648 13304360960 "GET /api/v1/sites/ HTTP/1.1" 200 321
+INFO 2025-06-07 21:32:15,458 basehttp 96648 6131642368 "GET /api/v1/posts/ HTTP/1.1" 200 1087
+INFO 2025-06-07 21:32:15,461 basehttp 96648 13304360960 "GET /api/v1/sites/ HTTP/1.1" 200 321
+INFO 2025-06-07 21:32:15,462 basehttp 96648 6165295104 "GET /api/v1/auth/users/ HTTP/1.1" 200 1413
+INFO 2025-06-07 21:32:15,472 basehttp 96648 6148468736 "GET /api/v1/posts/ HTTP/1.1" 200 1087
+INFO 2025-06-07 21:32:15,476 basehttp 96648 13304360960 "GET /api/v1/auth/users/ HTTP/1.1" 200 1413
+INFO 2025-06-07 21:32:15,476 basehttp 96648 6131642368 "GET /api/v1/sites/ HTTP/1.1" 200 321
+INFO 2025-06-07 21:36:58,756 autoreload 96648 8710703168 /Users/eisec/fastApiAdmin/backend/apps/settings/views.py changed, reloading.
+INFO 2025-06-07 21:36:59,215 autoreload 97561 8710703168 Watching for file changes with StatReloader
+INFO 2025-06-07 21:39:42,388 autoreload 97561 8710703168 /Users/eisec/fastApiAdmin/backend/apps/settings/permissions.py changed, reloading.
+INFO 2025-06-07 21:39:42,773 autoreload 97678 8710703168 Watching for file changes with StatReloader
+INFO 2025-06-07 21:42:44,535 basehttp 97678 6126284800 "OPTIONS /api/v1/settings/all/ HTTP/1.1" 200 0
+INFO 2025-06-07 21:42:44,603 basehttp 97678 6126284800 "GET /api/v1/settings/all/ HTTP/1.1" 200 8988
+INFO 2025-06-07 21:42:44,619 basehttp 97678 6126284800 "OPTIONS /api/v1/settings/categories/ HTTP/1.1" 200 0
+INFO 2025-06-07 21:42:44,637 basehttp 97678 6126284800 "GET /api/v1/settings/categories/ HTTP/1.1" 200 15964
+INFO 2025-06-07 21:43:03,182 basehttp 97678 6126284800 "GET /api/v1/settings/all/ HTTP/1.1" 200 8988
+INFO 2025-06-07 21:43:03,214 basehttp 97678 6126284800 "GET /api/v1/settings/categories/ HTTP/1.1" 200 15964
+INFO 2025-06-07 21:43:41,444 basehttp 97678 6143111168 "GET /api/v1/posts/ HTTP/1.1" 200 1087
+INFO 2025-06-07 21:43:41,445 basehttp 97678 6126284800 "GET /api/v1/sites/ HTTP/1.1" 200 321
+INFO 2025-06-07 21:43:41,450 basehttp 97678 6159937536 "GET /api/v1/auth/users/ HTTP/1.1" 200 1413
+INFO 2025-06-07 21:43:41,465 basehttp 97678 6176763904 "GET /api/v1/sites/ HTTP/1.1" 200 321
+INFO 2025-06-07 21:43:41,468 basehttp 97678 6143111168 "GET /api/v1/posts/ HTTP/1.1" 200 1087
+INFO 2025-06-07 21:43:41,470 basehttp 97678 6126284800 "GET /api/v1/auth/users/ HTTP/1.1" 200 1413
+INFO 2025-06-07 22:01:38,133 autoreload 98815 8710703168 Watching for file changes with StatReloader
+INFO 2025-06-07 22:01:46,591 basehttp 98815 6221066240 "GET /api/v1/auth/me/ HTTP/1.1" 200 728
+INFO 2025-06-07 22:01:46,603 basehttp 98815 6187413504 "GET /api/v1/posts/ HTTP/1.1" 200 1087
+INFO 2025-06-07 22:01:46,606 basehttp 98815 6204239872 "GET /api/v1/auth/users/ HTTP/1.1" 200 1413
+INFO 2025-06-07 22:01:46,608 basehttp 98815 6170587136 "GET /api/v1/sites/ HTTP/1.1" 200 321
+INFO 2025-06-07 22:01:46,611 basehttp 98815 6221066240 "GET /api/v1/auth/me/ HTTP/1.1" 200 728
+INFO 2025-06-07 22:01:46,619 basehttp 98815 6237892608 "GET /api/v1/posts/ HTTP/1.1" 200 1087
+INFO 2025-06-07 22:01:46,624 basehttp 98815 6187413504 "GET /api/v1/auth/users/ HTTP/1.1" 200 1413
+INFO 2025-06-07 22:01:46,633 basehttp 98815 6204239872 "GET /api/v1/sites/ HTTP/1.1" 200 321
+INFO 2025-06-07 22:01:46,655 basehttp 98815 6237892608 "GET /api/v1/posts/ HTTP/1.1" 200 1087
+INFO 2025-06-07 22:01:46,664 basehttp 98815 6221066240 "GET /api/v1/auth/users/ HTTP/1.1" 200 1413
+INFO 2025-06-07 22:01:46,672 basehttp 98815 6204239872 "GET /api/v1/posts/ HTTP/1.1" 200 1087
+INFO 2025-06-07 22:01:46,672 basehttp 98815 6187413504 "GET /api/v1/sites/ HTTP/1.1" 200 321
+INFO 2025-06-07 22:01:46,677 basehttp 98815 6237892608 "GET /api/v1/auth/users/ HTTP/1.1" 200 1413
+INFO 2025-06-07 22:01:46,682 basehttp 98815 6204239872 "GET /api/v1/sites/ HTTP/1.1" 200 321
+INFO 2025-06-07 22:02:44,483 basehttp 98815 6237892608 "OPTIONS /api/v1/settings/list_all/ HTTP/1.1" 200 0
+INFO 2025-06-07 22:02:44,483 basehttp 98815 6204239872 "OPTIONS /api/v1/settings/list_all/ HTTP/1.1" 200 0
+INFO 2025-06-07 22:02:44,490 basehttp 98815 6204239872 "GET /api/v1/settings/list_all/ HTTP/1.1" 200 8988
+INFO 2025-06-07 22:02:44,495 basehttp 98815 6237892608 "GET /api/v1/settings/list_all/ HTTP/1.1" 200 8988
+INFO 2025-06-07 22:02:44,521 basehttp 98815 6237892608 "GET /api/v1/settings/categories/ HTTP/1.1" 200 15964
+INFO 2025-06-07 22:02:44,537 basehttp 98815 6237892608 "GET /api/v1/settings/categories/ HTTP/1.1" 200 15964
+INFO 2025-06-07 22:02:52,167 basehttp 98815 6237892608 "GET /api/v1/auth/me/ HTTP/1.1" 200 728
+INFO 2025-06-07 22:02:52,173 basehttp 98815 6204239872 "GET /api/v1/auth/me/ HTTP/1.1" 200 728
+INFO 2025-06-07 22:02:52,225 basehttp 98815 6237892608 "GET /api/v1/posts/ HTTP/1.1" 200 1087
+INFO 2025-06-07 22:02:52,228 basehttp 98815 6204239872 "GET /api/v1/sites/ HTTP/1.1" 200 321
+INFO 2025-06-07 22:02:52,230 basehttp 98815 6187413504 "GET /api/v1/auth/users/ HTTP/1.1" 200 1413
+INFO 2025-06-07 22:02:52,237 basehttp 98815 6221066240 "GET /api/v1/posts/ HTTP/1.1" 200 1087
+INFO 2025-06-07 22:02:52,248 basehttp 98815 6237892608 "GET /api/v1/sites/ HTTP/1.1" 200 321
+INFO 2025-06-07 22:02:52,248 basehttp 98815 6204239872 "GET /api/v1/auth/users/ HTTP/1.1" 200 1413
+INFO 2025-06-07 22:02:54,123 basehttp 98815 6204239872 "GET /api/v1/settings/list_all/ HTTP/1.1" 200 8988
+INFO 2025-06-07 22:02:54,127 basehttp 98815 6237892608 "GET /api/v1/settings/list_all/ HTTP/1.1" 200 8988
+INFO 2025-06-07 22:02:54,157 basehttp 98815 6237892608 "GET /api/v1/settings/categories/ HTTP/1.1" 200 15964
+INFO 2025-06-07 22:02:54,171 basehttp 98815 6204239872 "GET /api/v1/settings/categories/ HTTP/1.1" 200 15964
+WARNING 2025-06-07 22:05:18,138 log 98815 6170587136 Unauthorized: /api/v1/settings/list_all/
+WARNING 2025-06-07 22:05:18,138 basehttp 98815 6170587136 "GET /api/v1/settings/list_all/ HTTP/1.1" 401 275
+INFO 2025-06-07 22:05:18,142 basehttp 98815 6170587136 "POST /api/v1/auth/token/refresh/ HTTP/1.1" 200 1075
+INFO 2025-06-07 22:05:18,148 basehttp 98815 6170587136 "GET /api/v1/settings/list_all/ HTTP/1.1" 200 8988
+INFO 2025-06-07 22:05:18,177 basehttp 98815 6170587136 "GET /api/v1/settings/categories/ HTTP/1.1" 200 15964
+INFO 2025-06-07 22:05:36,941 autoreload 98815 8710703168 /Users/eisec/fastApiAdmin/backend/apps/settings/views.py changed, reloading.
+INFO 2025-06-07 22:05:37,462 autoreload 99227 8710703168 Watching for file changes with StatReloader
+INFO 2025-06-07 22:05:45,955 basehttp 99227 6160166912 "GET /api/v1/settings/list_all/ HTTP/1.1" 200 8988
+INFO 2025-06-07 22:05:45,979 basehttp 99227 6160166912 "OPTIONS /api/v1/settings/categories/list_all/ HTTP/1.1" 200 0
+INFO 2025-06-07 22:05:45,993 basehttp 99227 6160166912 "GET /api/v1/settings/categories/list_all/ HTTP/1.1" 200 12184
+INFO 2025-06-07 22:05:58,232 basehttp 99227 6160166912 "GET /api/v1/settings/list_all/ HTTP/1.1" 200 8988
+INFO 2025-06-07 22:05:58,257 basehttp 99227 6160166912 "GET /api/v1/settings/categories/list_all/ HTTP/1.1" 200 12184
+INFO 2025-06-07 22:11:44,658 basehttp 99227 6160166912 "OPTIONS /api/v1/settings/bulk_update/ HTTP/1.1" 200 0
+INFO 2025-06-07 22:11:44,676 basehttp 99227 6160166912 "PUT /api/v1/settings/bulk_update/ HTTP/1.1" 200 140
+INFO 2025-06-07 22:11:51,951 basehttp 99227 6160166912 "GET /api/v1/auth/me/ HTTP/1.1" 200 728
+INFO 2025-06-07 22:11:51,959 basehttp 99227 6176993280 "GET /api/v1/auth/me/ HTTP/1.1" 200 728
+INFO 2025-06-07 22:11:52,016 basehttp 99227 6160166912 "GET /api/v1/posts/ HTTP/1.1" 200 1087
+INFO 2025-06-07 22:11:52,017 basehttp 99227 6193819648 "GET /api/v1/auth/users/ HTTP/1.1" 200 1413
+INFO 2025-06-07 22:11:52,017 basehttp 99227 6176993280 "GET /api/v1/sites/ HTTP/1.1" 200 321
+INFO 2025-06-07 22:11:52,033 basehttp 99227 6160166912 "GET /api/v1/posts/ HTTP/1.1" 200 1087
+INFO 2025-06-07 22:11:52,034 basehttp 99227 6210646016 "GET /api/v1/auth/users/ HTTP/1.1" 200 1413
+INFO 2025-06-07 22:11:52,035 basehttp 99227 6193819648 "GET /api/v1/sites/ HTTP/1.1" 200 321
+INFO 2025-06-07 22:11:53,686 basehttp 99227 6193819648 "GET /api/v1/settings/list_all/ HTTP/1.1" 200 8998
+INFO 2025-06-07 22:11:53,692 basehttp 99227 6210646016 "GET /api/v1/settings/list_all/ HTTP/1.1" 200 8998
+INFO 2025-06-07 22:11:53,714 basehttp 99227 6210646016 "GET /api/v1/settings/categories/list_all/ HTTP/1.1" 200 12194
+INFO 2025-06-07 22:11:53,728 basehttp 99227 6210646016 "GET /api/v1/settings/categories/list_all/ HTTP/1.1" 200 12194
+INFO 2025-06-07 22:12:06,104 basehttp 99227 6160166912 "PUT /api/v1/settings/bulk_update/ HTTP/1.1" 200 122
+INFO 2025-06-07 22:13:55,075 basehttp 99227 6160166912 "PUT /api/v1/settings/bulk_update/ HTTP/1.1" 200 402
+INFO 2025-06-07 22:14:00,320 basehttp 99227 6160166912 "GET /api/v1/auth/me/ HTTP/1.1" 200 728
+INFO 2025-06-07 22:14:00,324 basehttp 99227 6176993280 "GET /api/v1/auth/me/ HTTP/1.1" 200 728
+INFO 2025-06-07 22:14:00,371 basehttp 99227 6160166912 "GET /api/v1/posts/ HTTP/1.1" 200 1087
+INFO 2025-06-07 22:14:00,371 basehttp 99227 6193819648 "GET /api/v1/auth/users/ HTTP/1.1" 200 1413
+INFO 2025-06-07 22:14:00,374 basehttp 99227 6176993280 "GET /api/v1/sites/ HTTP/1.1" 200 321
+INFO 2025-06-07 22:14:00,382 basehttp 99227 6210646016 "GET /api/v1/posts/ HTTP/1.1" 200 1087
+INFO 2025-06-07 22:14:00,388 basehttp 99227 6160166912 "GET /api/v1/auth/users/ HTTP/1.1" 200 1413
+INFO 2025-06-07 22:14:00,388 basehttp 99227 6193819648 "GET /api/v1/sites/ HTTP/1.1" 200 321
+INFO 2025-06-07 22:14:01,609 basehttp 99227 6160166912 "GET /api/v1/settings/list_all/ HTTP/1.1" 200 9010
+INFO 2025-06-07 22:14:01,613 basehttp 99227 6176993280 "GET /api/v1/settings/list_all/ HTTP/1.1" 200 9010
+INFO 2025-06-07 22:14:01,637 basehttp 99227 6176993280 "GET /api/v1/settings/categories/list_all/ HTTP/1.1" 200 12206
+INFO 2025-06-07 22:14:01,648 basehttp 99227 6160166912 "GET /api/v1/settings/categories/list_all/ HTTP/1.1" 200 12206
+INFO 2025-06-07 22:18:54,154 basehttp 99227 6160166912 "GET /api/v1/settings/list_all/ HTTP/1.1" 200 9010
+INFO 2025-06-07 22:18:54,198 basehttp 99227 6160166912 "GET /api/v1/settings/categories/list_all/ HTTP/1.1" 200 12206
+INFO 2025-06-07 22:19:05,523 basehttp 99227 6160166912 "GET /api/v1/settings/list_all/ HTTP/1.1" 200 9010
+INFO 2025-06-07 22:19:05,562 basehttp 99227 6160166912 "GET /api/v1/settings/categories/list_all/ HTTP/1.1" 200 12206
+INFO 2025-06-07 22:19:37,564 basehttp 99227 6160166912 "GET /api/v1/settings/list_all/ HTTP/1.1" 200 9010
+INFO 2025-06-07 22:19:37,589 basehttp 99227 6160166912 "GET /api/v1/settings/categories/list_all/ HTTP/1.1" 200 12206
+INFO 2025-06-07 22:20:54,996 basehttp 99227 6160166912 "GET /api/v1/auth/users/ HTTP/1.1" 200 1413
+INFO 2025-06-07 22:20:55,004 basehttp 99227 6160166912 "GET /api/v1/auth/users/ HTTP/1.1" 200 1413
+INFO 2025-06-07 22:20:56,074 basehttp 99227 6160166912 "GET /api/v1/settings/list_all/ HTTP/1.1" 200 9010
+INFO 2025-06-07 22:20:56,078 basehttp 99227 6176993280 "GET /api/v1/settings/list_all/ HTTP/1.1" 200 9010
+INFO 2025-06-07 22:20:56,123 basehttp 99227 6176993280 "GET /api/v1/settings/categories/list_all/ HTTP/1.1" 200 12215
+INFO 2025-06-07 22:20:56,154 basehttp 99227 6176993280 "GET /api/v1/settings/categories/list_all/ HTTP/1.1" 200 12215
+INFO 2025-06-07 22:21:53,923 basehttp 99227 6176993280 "GET /api/v1/sites/ HTTP/1.1" 200 321
+INFO 2025-06-07 22:21:53,923 basehttp 99227 6160166912 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 200 824
+INFO 2025-06-07 22:21:53,937 basehttp 99227 6193819648 "GET /api/v1/sites/ HTTP/1.1" 200 321
+INFO 2025-06-07 22:21:53,937 basehttp 99227 6160166912 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 200 824
+INFO 2025-06-07 22:21:54,201 basehttp 99227 6160166912 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 200 824
+INFO 2025-06-07 22:21:54,746 basehttp 99227 6160166912 "GET /api/v1/settings/list_all/ HTTP/1.1" 200 9010
+INFO 2025-06-07 22:21:54,750 basehttp 99227 6193819648 "GET /api/v1/settings/list_all/ HTTP/1.1" 200 9010
+INFO 2025-06-07 22:21:54,791 basehttp 99227 6193819648 "GET /api/v1/settings/categories/list_all/ HTTP/1.1" 200 12215
+INFO 2025-06-07 22:21:54,815 basehttp 99227 6193819648 "GET /api/v1/settings/categories/list_all/ HTTP/1.1" 200 12215
+INFO 2025-06-07 22:23:43,747 autoreload 99227 8710703168 /Users/eisec/fastApiAdmin/backend/apps/settings/models.py changed, reloading.
+INFO 2025-06-07 22:23:44,154 autoreload 293 8710703168 Watching for file changes with StatReloader
+INFO 2025-06-07 22:23:51,550 autoreload 293 8710703168 /Users/eisec/fastApiAdmin/backend/apps/settings/models.py changed, reloading.
+INFO 2025-06-07 22:23:51,954 autoreload 310 8710703168 Watching for file changes with StatReloader
+INFO 2025-06-07 22:44:01,342 autoreload 2066 8710703168 Watching for file changes with StatReloader
+INFO 2025-06-07 22:45:06,231 basehttp 2066 6325039104 "OPTIONS /api/v1/auth/token/ HTTP/1.1" 200 0
+INFO 2025-06-07 22:45:06,407 basehttp 2066 6325039104 "POST /api/v1/auth/token/ HTTP/1.1" 200 1258
+INFO 2025-06-07 22:45:06,441 basehttp 2066 6325039104 "GET /api/v1/auth/me/ HTTP/1.1" 200 728
+INFO 2025-06-07 22:45:06,492 basehttp 2066 6325039104 "OPTIONS /api/v1/settings/settings/list_all/ HTTP/1.1" 200 0
+INFO 2025-06-07 22:45:06,495 basehttp 2066 6341865472 "OPTIONS /api/v1/settings/settings/list_all/ HTTP/1.1" 200 0
+INFO 2025-06-07 22:45:06,496 basehttp 2066 6358691840 "OPTIONS /api/v1/settings/settings/list_all/ HTTP/1.1" 200 0
+INFO 2025-06-07 22:45:06,497 basehttp 2066 6341865472 "OPTIONS /api/v1/settings/settings/list_all/ HTTP/1.1" 200 0
+INFO 2025-06-07 22:45:06,497 basehttp 2066 6375518208 "OPTIONS /api/v1/settings/settings/list_all/ HTTP/1.1" 200 0
+INFO 2025-06-07 22:45:06,498 basehttp 2066 6358691840 "OPTIONS /api/v1/settings/settings/list_all/ HTTP/1.1" 200 0
+INFO 2025-06-07 22:45:06,500 basehttp 2066 6341865472 "OPTIONS /api/v1/settings/settings/list_all/ HTTP/1.1" 200 0
+INFO 2025-06-07 22:45:06,501 basehttp 2066 6358691840 "OPTIONS /api/v1/settings/settings/list_all/ HTTP/1.1" 200 0
+INFO 2025-06-07 22:45:06,502 basehttp 2066 6375518208 "OPTIONS /api/v1/settings/settings/list_all/ HTTP/1.1" 200 0
+INFO 2025-06-07 22:45:06,503 basehttp 2066 6341865472 "OPTIONS /api/v1/settings/settings/list_all/ HTTP/1.1" 200 0
+INFO 2025-06-07 22:45:06,518 basehttp 2066 6325039104 "GET /api/v1/auth/users/ HTTP/1.1" 200 1413
+INFO 2025-06-07 22:45:06,518 basehttp 2066 6409170944 "GET /api/v1/posts/ HTTP/1.1" 200 1087
+INFO 2025-06-07 22:45:06,520 basehttp 2066 6392344576 "GET /api/v1/sites/ HTTP/1.1" 200 321
+INFO 2025-06-07 22:45:06,557 basehttp 2066 6409170944 "GET /api/v1/posts/ HTTP/1.1" 200 1087
+INFO 2025-06-07 22:45:06,560 basehttp 2066 6325039104 "GET /api/v1/sites/ HTTP/1.1" 200 321
+INFO 2025-06-07 22:45:06,560 basehttp 2066 6341865472 "GET /api/v1/auth/users/ HTTP/1.1" 200 1413
+WARNING 2025-06-07 22:45:06,564 log 2066 6358691840 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:06,564 basehttp 2066 6358691840 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:06,570 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:06,570 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:06,574 log 2066 6358691840 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:06,575 basehttp 2066 6358691840 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:06,580 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:06,581 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:06,587 log 2066 6358691840 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:06,587 basehttp 2066 6358691840 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:06,594 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:06,595 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:06,599 log 2066 6358691840 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:06,599 basehttp 2066 6358691840 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:06,606 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:06,606 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:06,612 log 2066 6358691840 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:06,613 basehttp 2066 6358691840 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:06,621 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:06,621 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:06,627 log 2066 6358691840 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:06,627 basehttp 2066 6358691840 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:06,631 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:06,632 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:06,636 log 2066 6358691840 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:06,637 basehttp 2066 6358691840 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:06,641 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:06,642 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:06,646 log 2066 6358691840 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:06,647 basehttp 2066 6358691840 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:06,651 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:06,651 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:06,656 log 2066 6358691840 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:06,656 basehttp 2066 6358691840 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:06,661 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:06,661 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:06,666 log 2066 6358691840 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:06,666 basehttp 2066 6358691840 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:06,671 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:06,671 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:06,675 log 2066 6358691840 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:06,676 basehttp 2066 6358691840 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:06,681 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:06,681 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:06,686 log 2066 6358691840 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:06,687 basehttp 2066 6358691840 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:06,691 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:06,691 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:26,653 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+INFO 2025-06-07 22:45:26,654 basehttp 2066 6341865472 "GET /api/v1/settings/list_all/ HTTP/1.1" 200 9010
+WARNING 2025-06-07 22:45:26,654 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:26,664 log 2066 6358691840 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:26,665 basehttp 2066 6358691840 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+INFO 2025-06-07 22:45:26,696 basehttp 2066 6325039104 "GET /api/v1/settings/list_all/ HTTP/1.1" 200 9010
+WARNING 2025-06-07 22:45:26,750 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:26,751 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:26,762 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:26,762 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+INFO 2025-06-07 22:45:26,776 basehttp 2066 6358691840 "GET /api/v1/settings/categories/list_all/ HTTP/1.1" 200 12215
+WARNING 2025-06-07 22:45:26,780 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:26,780 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:26,785 log 2066 6358691840 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:26,786 basehttp 2066 6358691840 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:26,792 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:26,793 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:26,801 log 2066 6358691840 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:26,803 basehttp 2066 6358691840 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+INFO 2025-06-07 22:45:26,807 basehttp 2066 6325039104 "GET /api/v1/settings/categories/list_all/ HTTP/1.1" 200 12215
+WARNING 2025-06-07 22:45:26,810 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:26,811 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:26,814 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:26,814 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:26,820 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:26,820 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:26,825 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:26,825 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:26,833 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:26,833 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:26,838 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:26,838 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:26,842 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:26,842 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:26,846 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:26,846 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:26,849 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:26,850 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:26,853 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:26,853 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:26,856 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:26,856 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:26,860 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:26,860 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:26,863 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:26,863 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:26,867 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:26,867 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:45,991 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:45,992 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:45:45,997 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:45:45,997 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:46:03,388 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:46:03,389 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:46:03,394 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:46:03,394 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:46:05,896 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:46:05,896 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:46:05,902 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:46:05,903 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:46:08,887 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:46:08,888 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:46:08,893 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:46:08,893 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+INFO 2025-06-07 22:46:12,588 basehttp 2066 6341865472 "OPTIONS /api/v1/settings/social-networks/ HTTP/1.1" 200 0
+INFO 2025-06-07 22:46:12,588 basehttp 2066 6358691840 "OPTIONS /api/v1/settings/social-networks/ HTTP/1.1" 200 0
+WARNING 2025-06-07 22:46:12,592 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:46:12,592 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:46:12,599 log 2066 6358691840 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:46:12,599 basehttp 2066 6358691840 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+ERROR 2025-06-07 22:46:12,612 log 2066 6341865472 Internal Server Error: /api/v1/settings/social-networks/
+Traceback (most recent call last):
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/rest_framework/viewsets.py", line 124, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+                                    ^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/fastApiAdmin/backend/apps/settings/views.py", line 362, in get_queryset
+    queryset = queryset.filter(site__isnull=True)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/query.py", line 1476, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/query.py", line 1494, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/query.py", line 1501, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/sql/query.py", line 1613, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/sql/query.py", line 1645, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/sql/query.py", line 1495, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg, summarize)
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/sql/query.py", line 1307, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/sql/query.py", line 1772, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'site' into field. Choices are: created_at, created_by, created_by_id, id, is_enabled, name, order, updated_at, url
+ERROR 2025-06-07 22:46:12,614 basehttp 2066 6341865472 "GET /api/v1/settings/social-networks/ HTTP/1.1" 500 23472
+ERROR 2025-06-07 22:46:12,627 log 2066 6358691840 Internal Server Error: /api/v1/settings/social-networks/
+Traceback (most recent call last):
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/rest_framework/viewsets.py", line 124, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+                                    ^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/fastApiAdmin/backend/apps/settings/views.py", line 362, in get_queryset
+    queryset = queryset.filter(site__isnull=True)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/query.py", line 1476, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/query.py", line 1494, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/query.py", line 1501, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/sql/query.py", line 1613, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/sql/query.py", line 1645, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/sql/query.py", line 1495, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg, summarize)
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/sql/query.py", line 1307, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/sql/query.py", line 1772, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'site' into field. Choices are: created_at, created_by, created_by_id, id, is_enabled, name, order, updated_at, url
+ERROR 2025-06-07 22:46:12,628 basehttp 2066 6358691840 "GET /api/v1/settings/social-networks/ HTTP/1.1" 500 23472
+WARNING 2025-06-07 22:46:12,636 log 2066 6358691840 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:46:12,636 basehttp 2066 6358691840 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:46:12,642 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:46:12,642 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:46:12,653 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:46:12,653 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:46:12,658 log 2066 6358691840 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:46:12,658 basehttp 2066 6358691840 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:46:19,959 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:46:19,959 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:46:19,965 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:46:19,965 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:46:19,972 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:46:19,972 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:46:19,976 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:46:19,977 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:46:20,141 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:46:20,142 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:46:20,146 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:46:20,146 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:46:20,158 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:46:20,158 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:46:20,162 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:46:20,162 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+INFO 2025-06-07 22:46:48,531 utils 2066 6325039104 Settings cache invalidated
+INFO 2025-06-07 22:46:48,532 basehttp 2066 6325039104 "POST /api/v1/settings/social-networks/ HTTP/1.1" 201 270
+WARNING 2025-06-07 22:46:48,561 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:46:48,562 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:46:48,567 log 2066 6358691840 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:46:48,567 basehttp 2066 6358691840 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+ERROR 2025-06-07 22:46:48,575 log 2066 6325039104 Internal Server Error: /api/v1/settings/social-networks/
+Traceback (most recent call last):
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/rest_framework/viewsets.py", line 124, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+                                    ^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/fastApiAdmin/backend/apps/settings/views.py", line 362, in get_queryset
+    queryset = queryset.filter(site__isnull=True)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/query.py", line 1476, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/query.py", line 1494, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/query.py", line 1501, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/sql/query.py", line 1613, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/sql/query.py", line 1645, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/sql/query.py", line 1495, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg, summarize)
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/sql/query.py", line 1307, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/sql/query.py", line 1772, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'site' into field. Choices are: created_at, created_by, created_by_id, id, is_enabled, name, order, updated_at, url
+ERROR 2025-06-07 22:46:48,576 basehttp 2066 6325039104 "GET /api/v1/settings/social-networks/ HTTP/1.1" 500 23472
+WARNING 2025-06-07 22:46:48,595 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:46:48,595 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:46:48,604 log 2066 6358691840 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:46:48,604 basehttp 2066 6358691840 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:46:53,883 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:46:53,883 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:46:53,888 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:46:53,889 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:46:54,068 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:46:54,068 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:46:54,073 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:46:54,073 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:46:55,926 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:46:55,926 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:46:55,932 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:46:55,932 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:46:56,114 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:46:56,115 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:46:56,120 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:46:56,120 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:46:57,673 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:46:57,673 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:46:57,679 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:46:57,679 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:46:59,524 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:46:59,524 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:46:59,530 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:46:59,530 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:01,111 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:01,111 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:01,116 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:01,116 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:01,569 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:01,571 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+INFO 2025-06-07 22:47:01,581 basehttp 2066 6358691840 "GET /api/v1/sites/ HTTP/1.1" 200 321
+INFO 2025-06-07 22:47:01,582 basehttp 2066 6341865472 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 200 824
+WARNING 2025-06-07 22:47:01,585 log 2066 6375518208 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:01,585 basehttp 2066 6375518208 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:01,597 log 2066 6358691840 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:01,599 basehttp 2066 6358691840 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+INFO 2025-06-07 22:47:01,600 basehttp 2066 6325039104 "GET /api/v1/sites/ HTTP/1.1" 200 321
+INFO 2025-06-07 22:47:01,604 basehttp 2066 6341865472 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 200 824
+WARNING 2025-06-07 22:47:01,606 log 2066 6375518208 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:01,607 basehttp 2066 6375518208 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:01,610 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:01,610 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:01,615 log 2066 6375518208 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:01,615 basehttp 2066 6375518208 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:01,619 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:01,619 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:01,623 log 2066 6375518208 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:01,624 basehttp 2066 6375518208 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:01,627 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:01,628 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:01,631 log 2066 6375518208 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:01,632 basehttp 2066 6375518208 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:01,636 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:01,636 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:01,640 log 2066 6375518208 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:01,641 basehttp 2066 6375518208 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:01,644 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:01,644 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:01,647 log 2066 6375518208 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:01,647 basehttp 2066 6375518208 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:01,651 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:01,651 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:01,654 log 2066 6375518208 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:01,654 basehttp 2066 6375518208 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:01,876 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:01,876 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:01,884 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:01,885 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+INFO 2025-06-07 22:47:01,887 basehttp 2066 6375518208 "GET /api/v1/dynamic-models/models/ HTTP/1.1" 200 824
+WARNING 2025-06-07 22:47:01,905 log 2066 6375518208 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:01,905 basehttp 2066 6375518208 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:01,909 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:01,909 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:02,509 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:02,509 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+INFO 2025-06-07 22:47:02,511 basehttp 2066 6375518208 "GET /api/v1/settings/list_all/ HTTP/1.1" 200 9010
+WARNING 2025-06-07 22:47:02,517 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:02,517 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+INFO 2025-06-07 22:47:02,523 basehttp 2066 6325039104 "GET /api/v1/settings/list_all/ HTTP/1.1" 200 9010
+WARNING 2025-06-07 22:47:02,525 log 2066 6375518208 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:02,526 basehttp 2066 6375518208 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:02,530 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:02,531 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:02,535 log 2066 6375518208 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:02,535 basehttp 2066 6375518208 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:02,540 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:02,541 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:02,546 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:02,548 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:02,553 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:02,556 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:02,563 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:02,564 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+INFO 2025-06-07 22:47:02,570 basehttp 2066 6375518208 "GET /api/v1/settings/categories/list_all/ HTTP/1.1" 200 12215
+WARNING 2025-06-07 22:47:02,575 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:02,575 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:02,585 log 2066 6375518208 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:02,586 basehttp 2066 6375518208 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:02,593 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:02,594 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+INFO 2025-06-07 22:47:02,599 basehttp 2066 6341865472 "GET /api/v1/settings/categories/list_all/ HTTP/1.1" 200 12215
+WARNING 2025-06-07 22:47:02,601 log 2066 6375518208 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:02,601 basehttp 2066 6375518208 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:02,605 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:02,605 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:02,610 log 2066 6375518208 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:02,610 basehttp 2066 6375518208 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:02,615 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:02,615 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:02,618 log 2066 6375518208 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:02,618 basehttp 2066 6375518208 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:02,622 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:02,622 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:02,626 log 2066 6375518208 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:02,626 basehttp 2066 6375518208 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:02,629 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:02,629 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:02,633 log 2066 6375518208 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:02,633 basehttp 2066 6375518208 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:02,637 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:02,637 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:04,496 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:04,496 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:04,502 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:04,502 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:07,347 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:07,349 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+INFO 2025-06-07 22:47:07,353 basehttp 2066 6325039104 "GET /api/v1/auth/me/ HTTP/1.1" 200 728
+WARNING 2025-06-07 22:47:07,361 log 2066 6358691840 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:07,363 basehttp 2066 6358691840 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+INFO 2025-06-07 22:47:07,365 basehttp 2066 6341865472 "GET /api/v1/auth/me/ HTTP/1.1" 200 728
+WARNING 2025-06-07 22:47:07,371 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:07,372 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:07,377 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:07,377 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:07,412 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:07,414 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+INFO 2025-06-07 22:47:07,416 basehttp 2066 6358691840 "GET /api/v1/posts/ HTTP/1.1" 200 1087
+INFO 2025-06-07 22:47:07,423 basehttp 2066 6325039104 "GET /api/v1/sites/ HTTP/1.1" 200 321
+INFO 2025-06-07 22:47:07,427 basehttp 2066 6375518208 "GET /api/v1/auth/users/ HTTP/1.1" 200 1413
+WARNING 2025-06-07 22:47:07,429 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:07,430 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+INFO 2025-06-07 22:47:07,438 basehttp 2066 6392344576 "GET /api/v1/posts/ HTTP/1.1" 200 1087
+INFO 2025-06-07 22:47:07,445 basehttp 2066 6325039104 "GET /api/v1/auth/users/ HTTP/1.1" 200 1413
+INFO 2025-06-07 22:47:07,446 basehttp 2066 6358691840 "GET /api/v1/sites/ HTTP/1.1" 200 321
+WARNING 2025-06-07 22:47:07,447 log 2066 6375518208 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:07,448 basehttp 2066 6375518208 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:07,453 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:07,453 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:07,458 log 2066 6375518208 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:07,458 basehttp 2066 6375518208 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:07,462 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:07,462 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:07,467 log 2066 6375518208 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:07,467 basehttp 2066 6375518208 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:07,472 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:07,473 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:07,478 log 2066 6375518208 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:07,478 basehttp 2066 6375518208 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:07,485 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:07,485 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:07,490 log 2066 6375518208 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:07,491 basehttp 2066 6375518208 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:07,495 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:07,495 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:07,503 log 2066 6375518208 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:07,503 basehttp 2066 6375518208 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:07,510 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:07,511 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:07,518 log 2066 6375518208 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:07,518 basehttp 2066 6375518208 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:07,522 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:07,522 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:07,526 log 2066 6375518208 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:07,526 basehttp 2066 6375518208 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:07,530 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:07,530 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:07,534 log 2066 6375518208 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:07,534 basehttp 2066 6375518208 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:07,539 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:07,539 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:07,543 log 2066 6375518208 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:07,544 basehttp 2066 6375518208 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:07,548 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:07,548 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:07,553 log 2066 6375518208 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:07,553 basehttp 2066 6375518208 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:07,557 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:07,557 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:07,562 log 2066 6375518208 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:07,562 basehttp 2066 6375518208 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:07,568 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:07,569 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:10,576 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:10,577 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:10,582 log 2066 6358691840 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:10,583 basehttp 2066 6358691840 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+INFO 2025-06-07 22:47:10,584 basehttp 2066 6341865472 "GET /api/v1/settings/list_all/ HTTP/1.1" 200 9010
+WARNING 2025-06-07 22:47:10,589 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:10,591 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+INFO 2025-06-07 22:47:10,595 basehttp 2066 6358691840 "GET /api/v1/settings/list_all/ HTTP/1.1" 200 9010
+WARNING 2025-06-07 22:47:10,597 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:10,598 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:10,603 log 2066 6358691840 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:10,603 basehttp 2066 6358691840 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:10,609 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:10,611 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:10,619 log 2066 6358691840 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:10,620 basehttp 2066 6358691840 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+INFO 2025-06-07 22:47:10,627 basehttp 2066 6341865472 "GET /api/v1/settings/categories/list_all/ HTTP/1.1" 200 12215
+WARNING 2025-06-07 22:47:10,628 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:10,629 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:10,634 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:10,635 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:10,643 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:10,643 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:10,652 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:10,654 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+INFO 2025-06-07 22:47:10,657 basehttp 2066 6358691840 "GET /api/v1/settings/categories/list_all/ HTTP/1.1" 200 12215
+WARNING 2025-06-07 22:47:10,659 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:10,660 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:10,663 log 2066 6358691840 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:10,664 basehttp 2066 6358691840 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:10,667 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:10,667 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:10,672 log 2066 6358691840 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:10,672 basehttp 2066 6358691840 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:10,676 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:10,676 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:10,679 log 2066 6358691840 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:10,679 basehttp 2066 6358691840 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:10,682 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:10,683 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:10,687 log 2066 6358691840 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:10,687 basehttp 2066 6358691840 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:10,691 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:10,691 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:10,695 log 2066 6358691840 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:10,695 basehttp 2066 6358691840 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:10,700 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:10,700 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:13,691 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:13,692 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:13,698 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:13,698 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+ERROR 2025-06-07 22:47:13,709 log 2066 6358691840 Internal Server Error: /api/v1/settings/social-networks/
+Traceback (most recent call last):
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/rest_framework/viewsets.py", line 124, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+                                    ^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/fastApiAdmin/backend/apps/settings/views.py", line 362, in get_queryset
+    queryset = queryset.filter(site__isnull=True)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/query.py", line 1476, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/query.py", line 1494, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/query.py", line 1501, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/sql/query.py", line 1613, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/sql/query.py", line 1645, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/sql/query.py", line 1495, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg, summarize)
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/sql/query.py", line 1307, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/sql/query.py", line 1772, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'site' into field. Choices are: created_at, created_by, created_by_id, id, is_enabled, name, order, updated_at, url
+ERROR 2025-06-07 22:47:13,710 basehttp 2066 6358691840 "GET /api/v1/settings/social-networks/ HTTP/1.1" 500 23472
+ERROR 2025-06-07 22:47:13,724 log 2066 6341865472 Internal Server Error: /api/v1/settings/social-networks/
+Traceback (most recent call last):
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/rest_framework/viewsets.py", line 124, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+                                    ^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/fastApiAdmin/backend/apps/settings/views.py", line 362, in get_queryset
+    queryset = queryset.filter(site__isnull=True)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/query.py", line 1476, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/query.py", line 1494, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/query.py", line 1501, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/sql/query.py", line 1613, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/sql/query.py", line 1645, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/sql/query.py", line 1495, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg, summarize)
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/sql/query.py", line 1307, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eisec/Library/Python/3.11/lib/python/site-packages/django/db/models/sql/query.py", line 1772, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'site' into field. Choices are: created_at, created_by, created_by_id, id, is_enabled, name, order, updated_at, url
+ERROR 2025-06-07 22:47:13,725 basehttp 2066 6341865472 "GET /api/v1/settings/social-networks/ HTTP/1.1" 500 23472
+WARNING 2025-06-07 22:47:13,734 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:13,735 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:13,740 log 2066 6358691840 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:13,740 basehttp 2066 6358691840 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:13,751 log 2066 6358691840 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:13,751 basehttp 2066 6358691840 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:13,756 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:13,756 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:21,076 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:21,077 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:21,082 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:21,082 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:21,087 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:21,087 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:21,091 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:21,091 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:21,240 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:21,240 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:21,246 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:21,246 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:21,259 log 2066 6325039104 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:21,259 basehttp 2066 6325039104 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:47:21,263 log 2066 6341865472 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:47:21,263 basehttp 2066 6341865472 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+INFO 2025-06-07 22:49:02,762 autoreload 2465 8710703168 Watching for file changes with StatReloader
+INFO 2025-06-07 22:49:15,339 autoreload 2465 8710703168 /Users/eisec/fastApiAdmin/backend/apps/settings/views.py changed, reloading.
+INFO 2025-06-07 22:49:15,805 autoreload 2478 8710703168 Watching for file changes with StatReloader
+WARNING 2025-06-07 22:49:25,186 log 2478 6127464448 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:49:25,187 basehttp 2478 6127464448 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:49:25,191 log 2478 6127464448 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:49:25,191 basehttp 2478 6127464448 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:49:32,465 log 2478 6127464448 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:49:32,465 basehttp 2478 6127464448 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:49:32,470 log 2478 6144290816 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:49:32,470 basehttp 2478 6144290816 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:49:40,210 log 2478 6127464448 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:49:40,213 basehttp 2478 6127464448 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+WARNING 2025-06-07 22:49:40,216 log 2478 6127464448 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:49:40,217 basehttp 2478 6127464448 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 15982
+INFO 2025-06-07 22:50:37,209 autoreload 2478 8710703168 /Users/eisec/fastApiAdmin/backend/apps/settings/views.py changed, reloading.
+INFO 2025-06-07 22:50:37,637 autoreload 2610 8710703168 Watching for file changes with StatReloader
+WARNING 2025-06-07 22:50:46,786 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:50:46,786 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:50:46,790 log 2610 6188347392 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:50:46,790 basehttp 2610 6188347392 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:29,693 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:29,694 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:29,699 log 2610 6205173760 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:29,700 basehttp 2610 6205173760 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+INFO 2025-06-07 22:52:29,751 basehttp 2610 6188347392 "GET /api/v1/auth/me/ HTTP/1.1" 200 728
+INFO 2025-06-07 22:52:29,811 basehttp 2610 6205173760 "GET /api/v1/settings/social-networks/ HTTP/1.1" 200 872
+INFO 2025-06-07 22:52:29,814 basehttp 2610 6171521024 "GET /api/v1/settings/list_all/ HTTP/1.1" 200 9010
+WARNING 2025-06-07 22:52:29,816 log 2610 6188347392 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:29,818 basehttp 2610 6188347392 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+INFO 2025-06-07 22:52:29,826 basehttp 2610 6205173760 "GET /api/v1/settings/social-networks/ HTTP/1.1" 200 872
+INFO 2025-06-07 22:52:29,826 basehttp 2610 6222000128 "GET /api/v1/settings/list_all/ HTTP/1.1" 200 9010
+WARNING 2025-06-07 22:52:29,828 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:29,828 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:29,833 log 2610 6222000128 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:29,834 basehttp 2610 6222000128 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:29,839 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:29,840 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:29,845 log 2610 6205173760 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:29,845 basehttp 2610 6205173760 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:29,852 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:29,853 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:29,862 log 2610 6205173760 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:29,865 basehttp 2610 6205173760 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:29,874 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+INFO 2025-06-07 22:52:29,875 basehttp 2610 6222000128 "GET /api/v1/settings/categories/list_all/ HTTP/1.1" 200 12215
+WARNING 2025-06-07 22:52:29,875 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:29,882 log 2610 6188347392 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:29,885 basehttp 2610 6188347392 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:29,904 log 2610 6222000128 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:29,908 basehttp 2610 6222000128 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+INFO 2025-06-07 22:52:29,916 basehttp 2610 6205173760 "GET /api/v1/settings/categories/list_all/ HTTP/1.1" 200 12215
+WARNING 2025-06-07 22:52:29,917 log 2610 6188347392 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:29,917 basehttp 2610 6188347392 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:29,921 log 2610 6205173760 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:29,922 basehttp 2610 6205173760 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:29,927 log 2610 6188347392 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:29,928 basehttp 2610 6188347392 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:29,932 log 2610 6205173760 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:29,932 basehttp 2610 6205173760 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:29,938 log 2610 6188347392 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:29,939 basehttp 2610 6188347392 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:29,943 log 2610 6205173760 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:29,944 basehttp 2610 6205173760 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:29,948 log 2610 6188347392 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:29,948 basehttp 2610 6188347392 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:29,953 log 2610 6205173760 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:29,953 basehttp 2610 6205173760 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:29,957 log 2610 6188347392 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:29,958 basehttp 2610 6188347392 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:29,962 log 2610 6205173760 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:29,962 basehttp 2610 6205173760 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:29,968 log 2610 6188347392 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:29,968 basehttp 2610 6188347392 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:29,974 log 2610 6205173760 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:29,974 basehttp 2610 6205173760 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:43,561 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:43,562 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+INFO 2025-06-07 22:52:43,562 basehttp 2610 6188347392 "GET /api/v1/auth/me/ HTTP/1.1" 200 728
+WARNING 2025-06-07 22:52:43,567 log 2610 6188347392 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:43,567 basehttp 2610 6188347392 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:43,600 log 2610 6188347392 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:43,601 basehttp 2610 6188347392 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+INFO 2025-06-07 22:52:43,603 basehttp 2610 6171521024 "GET /api/v1/settings/social-networks/ HTTP/1.1" 200 872
+INFO 2025-06-07 22:52:43,606 basehttp 2610 6205173760 "GET /api/v1/settings/list_all/ HTTP/1.1" 200 9010
+WARNING 2025-06-07 22:52:43,613 log 2610 6222000128 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:43,615 basehttp 2610 6222000128 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+INFO 2025-06-07 22:52:43,615 basehttp 2610 6188347392 "GET /api/v1/settings/social-networks/ HTTP/1.1" 200 872
+INFO 2025-06-07 22:52:43,618 basehttp 2610 6171521024 "GET /api/v1/settings/list_all/ HTTP/1.1" 200 9010
+WARNING 2025-06-07 22:52:43,622 log 2610 6205173760 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:43,622 basehttp 2610 6205173760 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:43,626 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:43,626 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:43,630 log 2610 6205173760 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:43,632 basehttp 2610 6205173760 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:43,638 log 2610 6222000128 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:43,639 basehttp 2610 6222000128 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:43,650 log 2610 6205173760 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:43,651 basehttp 2610 6205173760 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+INFO 2025-06-07 22:52:43,660 basehttp 2610 6171521024 "GET /api/v1/settings/categories/list_all/ HTTP/1.1" 200 12215
+WARNING 2025-06-07 22:52:43,663 log 2610 6222000128 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:43,664 basehttp 2610 6222000128 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:43,671 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:43,672 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:43,689 log 2610 6222000128 Not Found: /api/v1/settings/settings/list_all/
+INFO 2025-06-07 22:52:43,692 basehttp 2610 6205173760 "GET /api/v1/settings/categories/list_all/ HTTP/1.1" 200 12215
+WARNING 2025-06-07 22:52:43,692 basehttp 2610 6222000128 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:43,696 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:43,696 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:43,699 log 2610 6222000128 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:43,699 basehttp 2610 6222000128 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:43,703 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:43,703 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:43,707 log 2610 6222000128 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:43,707 basehttp 2610 6222000128 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:43,711 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:43,711 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:43,714 log 2610 6222000128 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:43,715 basehttp 2610 6222000128 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:43,718 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:43,718 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:43,722 log 2610 6222000128 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:43,722 basehttp 2610 6222000128 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:43,725 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:43,725 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:43,729 log 2610 6222000128 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:43,730 basehttp 2610 6222000128 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:43,733 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:43,733 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:43,738 log 2610 6222000128 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:43,738 basehttp 2610 6222000128 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:55,434 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:55,434 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:52:55,439 log 2610 6188347392 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:52:55,439 basehttp 2610 6188347392 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:33,235 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:33,237 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+INFO 2025-06-07 22:54:33,238 basehttp 2610 6188347392 "GET /api/v1/auth/me/ HTTP/1.1" 200 728
+WARNING 2025-06-07 22:54:33,243 log 2610 6205173760 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:33,245 basehttp 2610 6205173760 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+INFO 2025-06-07 22:54:33,254 basehttp 2610 6171521024 "GET /api/v1/auth/me/ HTTP/1.1" 200 728
+WARNING 2025-06-07 22:54:33,259 log 2610 6188347392 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:33,259 basehttp 2610 6188347392 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:33,270 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:33,270 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:33,296 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:33,296 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+INFO 2025-06-07 22:54:33,311 basehttp 2610 6205173760 "GET /api/v1/posts/ HTTP/1.1" 200 1087
+WARNING 2025-06-07 22:54:33,315 log 2610 6238826496 Not Found: /api/v1/settings/settings/list_all/
+INFO 2025-06-07 22:54:33,315 basehttp 2610 6188347392 "GET /api/v1/sites/ HTTP/1.1" 200 321
+WARNING 2025-06-07 22:54:33,316 basehttp 2610 6238826496 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+INFO 2025-06-07 22:54:33,316 basehttp 2610 6222000128 "GET /api/v1/auth/users/ HTTP/1.1" 200 1413
+INFO 2025-06-07 22:54:33,327 basehttp 2610 6171521024 "GET /api/v1/posts/ HTTP/1.1" 200 1087
+WARNING 2025-06-07 22:54:33,331 log 2610 6222000128 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:33,334 basehttp 2610 6222000128 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+INFO 2025-06-07 22:54:33,339 basehttp 2610 6205173760 "GET /api/v1/sites/ HTTP/1.1" 200 321
+INFO 2025-06-07 22:54:33,339 basehttp 2610 6188347392 "GET /api/v1/auth/users/ HTTP/1.1" 200 1413
+WARNING 2025-06-07 22:54:33,343 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:33,343 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:33,347 log 2610 6205173760 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:33,347 basehttp 2610 6205173760 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:33,352 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:33,352 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:33,356 log 2610 6205173760 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:33,357 basehttp 2610 6205173760 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:33,361 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:33,361 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:33,366 log 2610 6205173760 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:33,366 basehttp 2610 6205173760 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:33,370 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:33,370 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:33,374 log 2610 6205173760 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:33,374 basehttp 2610 6205173760 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:33,383 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:33,384 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:33,388 log 2610 6205173760 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:33,389 basehttp 2610 6205173760 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:33,393 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:33,393 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:33,400 log 2610 6205173760 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:33,401 basehttp 2610 6205173760 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:33,405 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:33,405 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:33,411 log 2610 6205173760 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:33,411 basehttp 2610 6205173760 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:33,416 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:33,416 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:33,421 log 2610 6205173760 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:33,421 basehttp 2610 6205173760 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:33,425 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:33,425 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:33,429 log 2610 6205173760 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:33,430 basehttp 2610 6205173760 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:33,434 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:33,434 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:33,438 log 2610 6205173760 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:33,438 basehttp 2610 6205173760 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:33,443 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:33,443 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:35,432 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:35,432 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:35,438 log 2610 6188347392 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:35,438 basehttp 2610 6188347392 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:35,444 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:35,444 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:35,451 log 2610 6188347392 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:35,451 basehttp 2610 6188347392 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:35,456 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:35,456 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:35,460 log 2610 6188347392 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:35,460 basehttp 2610 6188347392 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:35,466 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:35,466 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:35,470 log 2610 6188347392 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:35,470 basehttp 2610 6188347392 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:35,474 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:35,474 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:35,479 log 2610 6188347392 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:35,479 basehttp 2610 6188347392 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:35,483 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:35,483 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:35,488 log 2610 6188347392 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:35,489 basehttp 2610 6188347392 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:35,494 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:35,494 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:35,498 log 2610 6188347392 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:35,498 basehttp 2610 6188347392 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:35,503 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:35,503 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:35,507 log 2610 6188347392 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:35,507 basehttp 2610 6188347392 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:35,512 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:35,512 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:35,517 log 2610 6188347392 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:35,517 basehttp 2610 6188347392 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:35,521 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:35,521 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:35,526 log 2610 6188347392 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:35,526 basehttp 2610 6188347392 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:48,567 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:48,568 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:48,582 log 2610 6188347392 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:48,582 basehttp 2610 6188347392 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:55,223 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:55,223 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:55,230 log 2610 6188347392 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:55,230 basehttp 2610 6188347392 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:55,236 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:55,236 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:55,245 log 2610 6188347392 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:55,247 basehttp 2610 6188347392 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:55,254 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:55,254 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:55,259 log 2610 6188347392 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:55,259 basehttp 2610 6188347392 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:55,273 log 2610 6188347392 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:55,273 basehttp 2610 6188347392 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:55,278 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:55,278 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:57,135 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:57,136 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+INFO 2025-06-07 22:54:57,141 basehttp 2610 6188347392 "GET /api/v1/settings/list_all/ HTTP/1.1" 200 9010
+WARNING 2025-06-07 22:54:57,144 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:57,145 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:57,153 log 2610 6188347392 Not Found: /api/v1/settings/settings/list_all/
+INFO 2025-06-07 22:54:57,153 basehttp 2610 6205173760 "GET /api/v1/settings/list_all/ HTTP/1.1" 200 9010
+WARNING 2025-06-07 22:54:57,153 basehttp 2610 6188347392 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:57,158 log 2610 6205173760 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:57,158 basehttp 2610 6205173760 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:57,163 log 2610 6188347392 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:57,164 basehttp 2610 6188347392 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:57,169 log 2610 6205173760 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:57,169 basehttp 2610 6205173760 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:57,174 log 2610 6188347392 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:57,174 basehttp 2610 6188347392 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:57,179 log 2610 6205173760 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:57,182 basehttp 2610 6205173760 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:57,187 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:57,190 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:57,198 log 2610 6205173760 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:57,199 basehttp 2610 6205173760 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:57,206 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:57,207 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:57,215 log 2610 6205173760 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:57,216 basehttp 2610 6205173760 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+INFO 2025-06-07 22:54:57,216 basehttp 2610 6188347392 "GET /api/v1/settings/categories/list_all/ HTTP/1.1" 200 12215
+WARNING 2025-06-07 22:54:57,228 log 2610 6205173760 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:57,230 basehttp 2610 6205173760 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:57,238 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:57,242 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:57,254 log 2610 6205173760 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:57,258 basehttp 2610 6205173760 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+INFO 2025-06-07 22:54:57,265 basehttp 2610 6188347392 "GET /api/v1/settings/categories/list_all/ HTTP/1.1" 200 12215
+WARNING 2025-06-07 22:54:57,267 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:57,267 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:57,290 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:57,291 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:57,297 log 2610 6188347392 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:57,298 basehttp 2610 6188347392 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:57,305 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:57,305 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:57,310 log 2610 6188347392 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:57,311 basehttp 2610 6188347392 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:57,332 log 2610 6188347392 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:57,333 basehttp 2610 6188347392 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 22:54:57,339 log 2610 6171521024 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 22:54:57,339 basehttp 2610 6171521024 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+INFO 2025-06-07 22:56:26,890 autoreload 2610 8710703168 /Users/eisec/fastApiAdmin/backend/apps/settings/views.py changed, reloading.
+INFO 2025-06-07 22:56:27,725 autoreload 2930 8710703168 Watching for file changes with StatReloader
+WARNING 2025-06-07 23:00:00,454 log 2930 6166573056 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 23:00:00,455 basehttp 2930 6166573056 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 23:00:00,459 log 2930 6166573056 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 23:00:00,459 basehttp 2930 6166573056 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 23:00:02,757 log 2930 6166573056 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 23:00:02,757 basehttp 2930 6166573056 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 23:00:02,764 log 2930 6183399424 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 23:00:02,764 basehttp 2930 6183399424 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+INFO 2025-06-07 23:00:17,537 basehttp 2930 6166573056 "GET /api/v1/swagger/ HTTP/1.1" 200 2179
+INFO 2025-06-07 23:00:17,577 basehttp 2930 6183399424 "GET /static/drf-yasg/swagger-ui-dist/swagger-ui.css HTTP/1.1" 304 0
+INFO 2025-06-07 23:00:17,577 basehttp 2930 6166573056 "GET /static/drf-yasg/style.css HTTP/1.1" 304 0
+INFO 2025-06-07 23:00:17,579 basehttp 2930 6200225792 "GET /static/drf-yasg/swagger-ui-dist/swagger-ui-bundle.js HTTP/1.1" 304 0
+INFO 2025-06-07 23:00:17,580 basehttp 2930 6233878528 "GET /static/drf-yasg/immutable.min.js HTTP/1.1" 304 0
+INFO 2025-06-07 23:00:17,581 basehttp 2930 6183399424 "GET /static/drf-yasg/insQ.min.js HTTP/1.1" 304 0
+INFO 2025-06-07 23:00:17,583 basehttp 2930 6217052160 "GET /static/drf-yasg/swagger-ui-dist/swagger-ui-standalone-preset.js HTTP/1.1" 304 0
+INFO 2025-06-07 23:00:17,583 basehttp 2930 6250704896 "GET /static/drf-yasg/swagger-ui-init.js HTTP/1.1" 304 0
+INFO 2025-06-07 23:00:17,656 basehttp 2930 6217052160 "GET /static/drf-yasg/swagger-ui-dist/favicon-32x32.png HTTP/1.1" 304 0
+INFO 2025-06-07 23:00:17,750 basehttp 2930 6250704896 "GET /api/v1/swagger/?format=openapi HTTP/1.1" 200 131009
+WARNING 2025-06-07 23:01:00,384 log 2930 6166573056 Unauthorized: /api/v1/settings/all/
+WARNING 2025-06-07 23:01:00,387 basehttp 2930 6166573056 "GET /api/v1/settings/all/ HTTP/1.1" 401 82
+WARNING 2025-06-07 23:01:38,671 log 2930 6166573056 Unauthorized: /api/v1/settings/all/
+WARNING 2025-06-07 23:01:38,673 basehttp 2930 6166573056 "GET /api/v1/settings/all/ HTTP/1.1" 401 82
+WARNING 2025-06-07 23:01:42,382 log 2930 6166573056 Unauthorized: /api/v1/settings/all/
+WARNING 2025-06-07 23:01:42,382 basehttp 2930 6166573056 "GET /api/v1/settings/all/ HTTP/1.1" 401 82
+WARNING 2025-06-07 23:02:45,824 log 2930 6166573056 Unauthorized: /api/v1/settings/list_all/
+WARNING 2025-06-07 23:02:45,825 basehttp 2930 6166573056 "GET /api/v1/settings/list_all/ HTTP/1.1" 401 82
+INFO 2025-06-07 23:06:59,266 basehttp 2930 6183399424 "OPTIONS /api/v1/settings/social-networks/public_list/ HTTP/1.1" 200 0
+INFO 2025-06-07 23:06:59,269 basehttp 2930 6183399424 "OPTIONS /api/v1/auth/me/ HTTP/1.1" 200 0
+INFO 2025-06-07 23:06:59,269 basehttp 2930 6200225792 "OPTIONS /api/v1/settings/social-networks/public_list/ HTTP/1.1" 200 0
+INFO 2025-06-07 23:06:59,270 basehttp 2930 6217052160 "OPTIONS /api/v1/settings/social-networks/public_list/ HTTP/1.1" 200 0
+INFO 2025-06-07 23:06:59,270 basehttp 2930 6233878528 "OPTIONS /api/v1/settings/social-networks/public_list/ HTTP/1.1" 200 0
+INFO 2025-06-07 23:06:59,274 basehttp 2930 6183399424 "OPTIONS /api/v1/settings/social-networks/public_list/ HTTP/1.1" 200 0
+INFO 2025-06-07 23:06:59,274 basehttp 2930 6217052160 "OPTIONS /api/v1/settings/social-networks/public_list/ HTTP/1.1" 200 0
+WARNING 2025-06-07 23:06:59,277 log 2930 6166573056 Not Found: /api/v1/settings/settings/list_all/
+INFO 2025-06-07 23:06:59,277 basehttp 2930 6200225792 "OPTIONS /api/v1/settings/social-networks/public_list/ HTTP/1.1" 200 0
+INFO 2025-06-07 23:06:59,278 basehttp 2930 6233878528 "OPTIONS /api/v1/settings/social-networks/public_list/ HTTP/1.1" 200 0
+INFO 2025-06-07 23:06:59,278 basehttp 2930 6183399424 "OPTIONS /api/v1/auth/me/ HTTP/1.1" 200 0
+WARNING 2025-06-07 23:06:59,279 basehttp 2930 6166573056 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 23:06:59,286 log 2930 6183399424 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 23:06:59,286 basehttp 2930 6183399424 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 23:06:59,293 log 2930 6166573056 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 23:06:59,293 basehttp 2930 6166573056 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 23:06:59,302 log 2930 6183399424 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 23:06:59,302 basehttp 2930 6183399424 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 23:06:59,308 log 2930 6166573056 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 23:06:59,308 basehttp 2930 6166573056 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 23:06:59,314 log 2930 6183399424 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 23:06:59,314 basehttp 2930 6183399424 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 23:06:59,340 log 2930 6166573056 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 23:06:59,340 basehttp 2930 6166573056 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+WARNING 2025-06-07 23:06:59,347 log 2930 6183399424 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 23:06:59,347 basehttp 2930 6183399424 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+INFO 2025-06-07 23:06:59,373 basehttp 2930 6250704896 "GET /api/v1/settings/list_all/ HTTP/1.1" 200 9010
+INFO 2025-06-07 23:06:59,374 basehttp 2930 6217052160 "GET /api/v1/settings/social-networks/public_list/ HTTP/1.1" 200 822
+INFO 2025-06-07 23:06:59,375 basehttp 2930 6200225792 "GET /api/v1/auth/me/ HTTP/1.1" 200 728
+INFO 2025-06-07 23:06:59,393 basehttp 2930 6166573056 "GET /api/v1/settings/social-networks/public_list/ HTTP/1.1" 200 822
+INFO 2025-06-07 23:06:59,393 basehttp 2930 6233878528 "GET /api/v1/auth/me/ HTTP/1.1" 200 728
+INFO 2025-06-07 23:06:59,396 basehttp 2930 6183399424 "GET /api/v1/settings/list_all/ HTTP/1.1" 200 9010
+INFO 2025-06-07 23:06:59,398 basehttp 2930 6250704896 "GET /api/v1/settings/social-networks/public_list/ HTTP/1.1" 200 822
+INFO 2025-06-07 23:06:59,401 basehttp 2930 6183399424 "GET /api/v1/settings/social-networks/public_list/ HTTP/1.1" 200 822
+INFO 2025-06-07 23:06:59,404 basehttp 2930 6250704896 "GET /api/v1/settings/social-networks/public_list/ HTTP/1.1" 200 822
+INFO 2025-06-07 23:06:59,407 basehttp 2930 6183399424 "GET /api/v1/settings/social-networks/public_list/ HTTP/1.1" 200 822
+INFO 2025-06-07 23:06:59,411 basehttp 2930 6250704896 "GET /api/v1/settings/social-networks/public_list/ HTTP/1.1" 200 822
+INFO 2025-06-07 23:06:59,414 basehttp 2930 6183399424 "GET /api/v1/settings/social-networks/public_list/ HTTP/1.1" 200 822
+INFO 2025-06-07 23:09:27,980 autoreload 3580 8710703168 Watching for file changes with StatReloader
+INFO 2025-06-07 23:10:53,052 basehttp 3580 6123843584 "GET /api/v1/swagger/ HTTP/1.1" 200 2179
+INFO 2025-06-07 23:10:53,085 basehttp 3580 6123843584 "GET /static/drf-yasg/style.css HTTP/1.1" 304 0
+INFO 2025-06-07 23:10:53,094 basehttp 3580 6123843584 "GET /static/drf-yasg/swagger-ui-dist/swagger-ui-bundle.js HTTP/1.1" 304 0
+INFO 2025-06-07 23:10:53,095 basehttp 3580 6140669952 "GET /static/drf-yasg/swagger-ui-dist/swagger-ui.css HTTP/1.1" 304 0
+INFO 2025-06-07 23:10:53,103 basehttp 3580 6157496320 "GET /static/drf-yasg/swagger-ui-dist/swagger-ui-standalone-preset.js HTTP/1.1" 304 0
+INFO 2025-06-07 23:10:53,103 basehttp 3580 6174322688 "GET /static/drf-yasg/insQ.min.js HTTP/1.1" 304 0
+INFO 2025-06-07 23:10:53,105 basehttp 3580 6191149056 "GET /static/drf-yasg/immutable.min.js HTTP/1.1" 304 0
+INFO 2025-06-07 23:10:53,109 basehttp 3580 6207975424 "GET /static/drf-yasg/swagger-ui-init.js HTTP/1.1" 304 0
+INFO 2025-06-07 23:10:53,230 basehttp 3580 6191149056 "GET /static/drf-yasg/swagger-ui-dist/favicon-32x32.png HTTP/1.1" 304 0
+INFO 2025-06-07 23:10:53,418 basehttp 3580 6207975424 "GET /api/v1/swagger/?format=openapi HTTP/1.1" 200 131009
+INFO 2025-06-07 23:13:20,385 autoreload 3860 8710703168 Watching for file changes with StatReloader
+WARNING 2025-06-07 23:14:09,794 log 3860 6155235328 Not Found: /api/v1/settings/settings/list_all/
+WARNING 2025-06-07 23:14:09,795 basehttp 3860 6155235328 "GET /api/v1/settings/settings/list_all/ HTTP/1.1" 404 16656
+INFO 2025-06-07 23:14:31,172 basehttp 3860 6155235328 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-06-07 23:19:01,901 autoreload 4375 8710703168 Watching for file changes with StatReloader
+WARNING 2025-06-07 23:20:10,864 log 4375 6201028608 Unauthorized: /api/v1/settings/all/
+WARNING 2025-06-07 23:20:10,865 basehttp 4375 6201028608 "GET /api/v1/settings/all/ HTTP/1.1" 401 82
+INFO 2025-06-07 23:20:40,822 basehttp 4375 6234681344 "OPTIONS /api/v1/sites/ HTTP/1.1" 200 0
+INFO 2025-06-07 23:20:40,824 basehttp 4375 6268334080 "OPTIONS /api/v1/auth/users/ HTTP/1.1" 200 0
+INFO 2025-06-07 23:20:40,824 basehttp 4375 6234681344 "OPTIONS /api/v1/sites/ HTTP/1.1" 200 0
+INFO 2025-06-07 23:20:40,824 basehttp 4375 6251507712 "OPTIONS /api/v1/posts/ HTTP/1.1" 200 0
+INFO 2025-06-07 23:20:40,844 basehttp 4375 6251507712 "OPTIONS /api/v1/posts/ HTTP/1.1" 200 0
+INFO 2025-06-07 23:20:40,844 basehttp 4375 6268334080 "OPTIONS /api/v1/auth/users/ HTTP/1.1" 200 0
+INFO 2025-06-07 23:20:40,969 basehttp 4375 6217854976 "GET /api/v1/settings/social-networks/public_list/ HTTP/1.1" 200 822
+INFO 2025-06-07 23:20:40,971 basehttp 4375 6285160448 "GET /api/v1/auth/me/ HTTP/1.1" 200 728
+INFO 2025-06-07 23:20:40,985 basehttp 4375 6201028608 "GET /api/v1/settings/all/ HTTP/1.1" 200 9010
+INFO 2025-06-07 23:20:40,991 basehttp 4375 6234681344 "GET /api/v1/sites/ HTTP/1.1" 200 321
+INFO 2025-06-07 23:20:40,992 basehttp 4375 6268334080 "GET /api/v1/auth/users/ HTTP/1.1" 200 1831
+INFO 2025-06-07 23:20:40,992 basehttp 4375 6251507712 "GET /api/v1/posts/ HTTP/1.1" 200 1087
+INFO 2025-06-07 23:20:41,008 basehttp 4375 6285160448 "GET /api/v1/auth/me/ HTTP/1.1" 200 728
+INFO 2025-06-07 23:20:41,025 basehttp 4375 6217854976 "GET /api/v1/settings/social-networks/public_list/ HTTP/1.1" 200 822
+INFO 2025-06-07 23:20:41,048 basehttp 4375 6285160448 "GET /api/v1/settings/social-networks/public_list/ HTTP/1.1" 200 822
+INFO 2025-06-07 23:20:41,048 basehttp 4375 6201028608 "GET /api/v1/settings/all/ HTTP/1.1" 200 9010
+INFO 2025-06-07 23:20:41,053 basehttp 4375 6234681344 "GET /api/v1/sites/ HTTP/1.1" 200 321
+INFO 2025-06-07 23:20:41,059 basehttp 4375 6268334080 "GET /api/v1/auth/users/ HTTP/1.1" 200 1831
+INFO 2025-06-07 23:20:41,065 basehttp 4375 6251507712 "GET /api/v1/posts/ HTTP/1.1" 200 1087
+INFO 2025-06-07 23:20:41,080 basehttp 4375 6285160448 "GET /api/v1/settings/social-networks/public_list/ HTTP/1.1" 200 822
+INFO 2025-06-07 23:20:41,087 basehttp 4375 6217854976 "GET /api/v1/settings/all/ HTTP/1.1" 200 9010
+INFO 2025-06-07 23:20:41,098 basehttp 4375 6251507712 "GET /api/v1/settings/social-networks/public_list/ HTTP/1.1" 200 822
+INFO 2025-06-07 23:20:41,101 basehttp 4375 6217854976 "GET /api/v1/settings/social-networks/public_list/ HTTP/1.1" 200 822
+INFO 2025-06-07 23:20:41,116 basehttp 4375 6285160448 "GET /api/v1/settings/all/ HTTP/1.1" 200 9010
+INFO 2025-06-07 23:20:41,132 basehttp 4375 6251507712 "GET /api/v1/settings/social-networks/public_list/ HTTP/1.1" 200 822
+INFO 2025-06-07 23:20:41,144 basehttp 4375 6285160448 "GET /api/v1/settings/social-networks/public_list/ HTTP/1.1" 200 822
+INFO 2025-06-07 23:20:41,149 basehttp 4375 6217854976 "GET /api/v1/settings/all/ HTTP/1.1" 200 9010
+INFO 2025-06-07 23:20:41,161 basehttp 4375 6285160448 "GET /api/v1/settings/all/ HTTP/1.1" 200 9010
+INFO 2025-06-07 23:20:41,180 basehttp 4375 6217854976 "GET /api/v1/settings/all/ HTTP/1.1" 200 9010
+INFO 2025-06-07 23:20:41,195 basehttp 4375 6285160448 "GET /api/v1/settings/all/ HTTP/1.1" 200 9010

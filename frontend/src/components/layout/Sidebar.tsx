@@ -3,6 +3,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import { clsx } from 'clsx';
 import { useAuthStore } from '../../store/authStore';
 import Icon, { type AvailableIconName } from '../ui/Icon';
+import SocialNetworks from '../ui/SocialNetworks';
 
 interface NavigationItem {
   name: string;
@@ -67,6 +68,12 @@ const navigationItems: NavigationItem[] = [
     name: 'Иконки',
     href: '/icons',
     icon: 'star',
+    roles: ['superuser', 'admin', 'author'],
+  },
+  {
+    name: 'Тест соцсетей',
+    href: '/test-social-networks',
+    icon: 'mobile',
     roles: ['superuser', 'admin', 'author'],
   },
 ];
@@ -197,6 +204,14 @@ const Sidebar: React.FC<SidebarProps> = ({
               )}
             </nav>
           </div>
+        </div>
+        
+        {/* Social Networks */}
+        <div className="flex-shrink-0 border-t border-gray-200 p-4">
+          <div className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">
+            Мы в соцсетях
+          </div>
+          <SocialNetworks size="sm" direction="horizontal" className="justify-center" />
         </div>
         
         {/* User info */}

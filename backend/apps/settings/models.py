@@ -1,6 +1,11 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from apps.sites.models import Site
+from django.core.exceptions import ValidationError
+from decimal import Decimal
+import uuid
+from django.core.cache import cache
+from django.utils import timezone
+import json
 
 User = get_user_model()
 
@@ -82,14 +87,6 @@ class Setting(models.Model):
         related_name='settings', 
         verbose_name='Группа'
     )
-    site = models.ForeignKey(
-        Site, 
-        null=True, 
-        blank=True, 
-        on_delete=models.CASCADE, 
-        related_name='settings',
-        verbose_name='Сайт'
-    )
     
     # Валидация и ограничения
     is_required = models.BooleanField(default=False, verbose_name='Обязательное')
@@ -131,7 +128,6 @@ class Setting(models.Model):
         indexes = [
             models.Index(fields=['key']),
             models.Index(fields=['group', 'order']),
-            models.Index(fields=['site']),
         ]
 
     def __str__(self):
@@ -223,3 +219,71 @@ class SettingTemplate(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class SocialNetworkSetting(models.Model):
+    """Настройки социальных сетей (множественные настройки)"""
+    
+    SOCIAL_CHOICES = [
+        ('facebook', 'Facebook'),
+        ('twitter', 'Twitter (X)'),
+        ('instagram', 'Instagram'),
+        ('youtube', 'YouTube'),
+        ('linkedin', 'LinkedIn'),
+        ('telegram', 'Telegram'),
+        ('whatsapp', 'WhatsApp'),
+        ('vk', 'ВКонтакте'),
+        ('odnoklassniki', 'Одноклассники'),
+        ('tiktok', 'TikTok'),
+        ('pinterest', 'Pinterest'),
+        ('discord', 'Discord'),
+    ]
+    
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=20, choices=SOCIAL_CHOICES, verbose_name='Социальная сеть')
+    url = models.URLField(verbose_name='Ссылка', help_text='Полная ссылка на профиль')
+    is_enabled = models.BooleanField(default=True, verbose_name='Активна')
+    order = models.PositiveIntegerField(default=0, verbose_name='Порядок отображения')
+    
+    # Аудит
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='Дата обновления')
+    created_by = models.ForeignKey(
+        User, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True,
+        verbose_name='Создал'
+    )
+    
+    class Meta:
+        verbose_name = 'Социальная сеть'
+        verbose_name_plural = 'Социальные сети'
+        ordering = ['order', 'name']
+        constraints = [
+            models.UniqueConstraint(
+                fields=['name'], 
+                name='unique_social_network'
+            )
+        ]
+    
+    def __str__(self):
+        return f"{self.get_name_display()}: {self.url}"
+
+    def get_icon_name(self):
+        """Возвращает название иконки для соц.сети"""
+        icon_map = {
+            'facebook': 'facebook',
+            'twitter': 'twitter',
+            'instagram': 'instagram', 
+            'youtube': 'youtube',
+            'linkedin': 'linkedin',
+            'telegram': 'telegram',
+            'whatsapp': 'whatsapp',
+            'vk': 'vk',
+            'odnoklassniki': 'odnoklassniki',
+            'tiktok': 'tiktok',
+            'pinterest': 'pinterest',
+            'discord': 'discord',
+        }
+        return icon_map.get(self.name, 'link')

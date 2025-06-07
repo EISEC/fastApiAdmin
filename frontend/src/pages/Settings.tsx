@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSettingsStore } from '../store/settingsStore';
+import { useAuthStore } from '../store/authStore';
 import type { SettingCategory } from '../types/settings.types';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import SettingsTabs from '../components/settings/SettingsTabs';
@@ -8,16 +10,18 @@ import Button from '../components/ui/Button';
 import Icon from '../components/ui/Icon';
 
 /**
- * Главная страница настроек
+ * Главная страница настроек (только для суперадминистраторов)
  */
 const Settings: React.FC = () => {
+  const navigate = useNavigate();
+  const { user, isAuthenticated, isLoading } = useAuthStore();
   const {
     // Состояние
     categories,
     currentCategory,
     changedSettings,
     validationErrors,
-    isLoading,
+    isLoading: isSettingsLoading,
     isSaving,
     error,
     lastSaved,
@@ -40,15 +44,34 @@ const Settings: React.FC = () => {
   const [showImportModal, setShowImportModal] = useState(false);
   const [importData, setImportData] = useState('');
 
+  // Проверка доступа - только для суперадминистраторов
+  useEffect(() => {
+    // Ждем завершения загрузки авторизации
+    if (isLoading) return;
+    
+    if (!isAuthenticated || !user) {
+      navigate('/login');
+      return;
+    }
+
+    if (user.role.name !== 'superuser') {
+      navigate('/dashboard');
+      return;
+    }
+  }, [isAuthenticated, user, navigate, isLoading]);
+
   // Загрузка данных при монтировании
   useEffect(() => {
-    const loadData = async () => {
-      await fetchSettings();
-      await fetchCategories();
-    };
-    
-    loadData();
-  }, [fetchSettings, fetchCategories]);
+    // Загружаем данные только если пользователь суперадминистратор
+    if (isAuthenticated && user && user.role.name === 'superuser') {
+      const loadData = async () => {
+        await fetchSettings();
+        await fetchCategories();
+      };
+      
+      loadData();
+    }
+  }, [fetchSettings, fetchCategories, isAuthenticated, user]);
 
   // Предупреждение о несохраненных изменениях при уходе со страницы
   useEffect(() => {
@@ -62,6 +85,31 @@ const Settings: React.FC = () => {
     window.addEventListener('beforeunload', handleBeforeUnload);
     return () => window.removeEventListener('beforeunload', handleBeforeUnload);
   }, [hasUnsavedChanges]);
+
+  // Проверяем права доступа
+  if (!isAuthenticated || !user || user.role.name !== 'superuser') {
+    return (
+      <DashboardLayout>
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="text-center">
+            <Icon name="shield" size="2xl" color="danger" className="mb-4" />
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">
+              Нет доступа
+            </h2>
+            <p className="text-gray-600 mb-4">
+              Настройки системы доступны только суперадминистраторам
+            </p>
+            <Button 
+              variant="primary" 
+              onClick={() => navigate('/dashboard')}
+            >
+              Вернуться к панели управления
+            </Button>
+          </div>
+        </div>
+      </DashboardLayout>
+    );
+  }
 
   const currentCategoryData = categories.find(cat => cat.id === currentCategory);
 
@@ -101,7 +149,7 @@ const Settings: React.FC = () => {
     }
   };
 
-  if (isLoading && categories.length === 0) {
+  if (isSettingsLoading && categories.length === 0) {
     return (
       <DashboardLayout>
         <div className="flex items-center justify-center min-h-screen">
@@ -124,7 +172,7 @@ const Settings: React.FC = () => {
                   Настройки системы
                 </h1>
                 <p className="mt-1 text-sm text-gray-600">
-                  Управление конфигурацией приложения
+                  Управление конфигурацией приложения (только для суперадминистраторов)
                 </p>
               </div>
 
@@ -139,7 +187,7 @@ const Settings: React.FC = () => {
                   variant="secondary"
                   size="sm"
                   onClick={handleExport}
-                  disabled={isLoading}
+                  disabled={isSettingsLoading}
                 >
                   <Icon name="download" size="sm" className="mr-2" />
                   Экспорт
@@ -149,7 +197,7 @@ const Settings: React.FC = () => {
                   variant="secondary"
                   size="sm"
                   onClick={() => setShowImportModal(true)}
-                  disabled={isLoading}
+                  disabled={isSettingsLoading}
                 >
                   <Icon name="upload" size="sm" className="mr-2" />
                   Импорт
@@ -174,7 +222,7 @@ const Settings: React.FC = () => {
                       disabled={isSaving}
                       loading={isSaving}
                     >
-                      <Icon name="file" size="sm" className="mr-2" />
+                      <Icon name="check" size="sm" className="mr-2" />
                       Сохранить все
                     </Button>
                   </>

@@ -194,6 +194,16 @@ import {
   StarIcon,
   ThumbsUpIcon,
   ThumbsDownIcon,
+  Facebook01Icon,
+  TwitterIcon,
+  InstagramIcon,
+  YoutubeIcon,
+  LinkedinIcon,
+  TelegramIcon,
+  WhatsappIcon,
+  TiktokIcon,
+  PinterestIcon,
+  DiscordIcon,
   
   // Местоположение
   Location01Icon,
@@ -239,6 +249,21 @@ import {
   Loading02Icon,
   Loading03Icon,
   
+  // UI и дизайн
+  BrushIcon,
+  PaintBoardIcon,
+  
+  // Техническое
+  Bug01Icon,
+  Bug02Icon,
+  
+  // Устройства
+  MobileNavigator01Icon,
+  MobileNavigator02Icon,
+  SmartPhone01Icon,
+  
+  // Другие
+  MaskIcon,
 } from '@hugeicons/core-free-icons';
 
 // Типы для размеров иконок
@@ -462,6 +487,18 @@ export const iconMap = {
   star: StarIcon,
   thumbsUp: ThumbsUpIcon,
   thumbsDown: ThumbsDownIcon,
+  facebook: Facebook01Icon,
+  twitter: TwitterIcon,
+  instagram: InstagramIcon,
+  youtube: YoutubeIcon,
+  linkedin: LinkedinIcon,
+  telegram: TelegramIcon,
+  whatsapp: WhatsappIcon,
+  tiktok: TiktokIcon,
+  pinterest: PinterestIcon,
+  discord: DiscordIcon,
+  vk: BrowserIcon,
+  odnoklassniki: BrowserIcon,
   
   // Местоположение
   location: Location01Icon,
@@ -506,6 +543,24 @@ export const iconMap = {
   loading: Loading01Icon,
   loadingDots: Loading02Icon,
   loadingBars: Loading03Icon,
+  
+  // UI и дизайн
+  palette: BrushIcon,
+  paletteAlt: PaintBoardIcon,
+  brush: BrushIcon,
+  
+  // Техническое
+  bug: Bug01Icon,
+  bugAlt: Bug02Icon,
+  
+  // Устройства
+  mobile: MobileNavigator01Icon,
+  mobileNavigator: MobileNavigator01Icon,
+  mobileNavigatorAlt: MobileNavigator02Icon,
+  smartPhone: SmartPhone01Icon,
+  
+  // Другие
+  mask: MaskIcon,
 };
 
 export type AvailableIconName = keyof typeof iconMap;

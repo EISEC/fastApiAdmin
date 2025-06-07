@@ -15,6 +15,7 @@ from .serializers import (
 )
 from apps.common.permissions import SitePermission
 from apps.accounts.models import Role
+from .signals import cascade_delete_site_with_transaction
 
 
 class SiteViewSet(viewsets.ModelViewSet):
@@ -259,3 +260,115 @@ class SiteViewSet(viewsets.ModelViewSet):
         from apps.accounts.serializers import UserListSerializer
         serializer = UserListSerializer(users, many=True)
         return Response(serializer.data)
+    
+    @action(detail=True, methods=['delete'])
+    def cascade_delete(self, request, pk=None):
+        """Каскадное удаление сайта со всеми зависимостями"""
+        site = self.get_object()
+        
+        # Проверка аутентификации
+        if not request.user.is_authenticated or not hasattr(request.user, 'role') or request.user.role is None:
+            return Response({
+                'error': 'Необходима авторизация'
+            }, status=status.HTTP_401_UNAUTHORIZED)
+        
+        # Проверяем права (только владелец или суперпользователь)
+        user_role = request.user.role.name
+        if user_role not in [Role.SUPERUSER] and site.owner != request.user:
+            return Response({
+                'error': 'У вас нет прав для удаления этого сайта'
+            }, status=status.HTTP_403_FORBIDDEN)
+        
+        # Собираем статистику перед удалением для ответа
+        stats = {
+            'site_name': site.name,
+            'site_domain': site.domain,
+            'posts_count': site.posts.count(),
+            'pages_count': site.pages.count(),
+            'categories_count': site.categories.count(),
+            'tags_count': site.tags.count(),
+            'dynamic_models_count': site.dynamic_models.count(),
+            'assigned_users_count': site.assigned_users.count(),
+        }
+        
+        # Выполняем каскадное удаление
+        result = cascade_delete_site_with_transaction(site.id)
+        
+        if result['success']:
+            return Response({
+                'message': f'Сайт "{stats["site_name"]}" успешно удален со всеми зависимостями',
+                'deleted_stats': {
+                    'posts': result['posts_deleted'],
+                    'pages': result['pages_deleted'],
+                    'categories': result['categories_deleted'],
+                    'tags': result['tags_deleted'],
+                    'dynamic_models': result['dynamic_models_deleted'],
+                    'assigned_users_cleared': result['assigned_users_cleared']
+                }
+            }, status=status.HTTP_200_OK)
+        else:
+            return Response({
+                'error': f'Ошибка при удалении сайта: {result["error"]}'
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    @action(detail=True, methods=['get'])
+    def delete_preview(self, request, pk=None):
+        """Предварительный просмотр того, что будет удалено при каскадном удалении"""
+        site = self.get_object()
+        
+        # Проверка аутентификации
+        if not request.user.is_authenticated or not hasattr(request.user, 'role') or request.user.role is None:
+            return Response({
+                'error': 'Необходима авторизация'
+            }, status=status.HTTP_401_UNAUTHORIZED)
+        
+        # Проверяем права (только владелец или суперпользователь)
+        user_role = request.user.role.name
+        if user_role not in [Role.SUPERUSER] and site.owner != request.user:
+            return Response({
+                'error': 'У вас нет прав для просмотра информации об удалении этого сайта'
+            }, status=status.HTTP_403_FORBIDDEN)
+        
+        # Собираем статистику
+        stats = {
+            'site_info': {
+                'name': site.name,
+                'domain': site.domain,
+                'owner': site.owner.username,
+                'created_at': site.created_at,
+                'is_active': site.is_active
+            },
+            'to_be_deleted': {
+                'posts': site.posts.count(),
+                'pages': site.pages.count(),
+                'categories': site.categories.count(),
+                'tags': site.tags.count(),
+                'dynamic_models': site.dynamic_models.count()
+            },
+            'users_affected': {
+                'assigned_users': site.assigned_users.count(),
+                'assigned_users_list': [
+                    {
+                        'id': user.id,
+                        'username': user.username,
+                        'email': user.email
+                    } for user in site.assigned_users.all()
+                ]
+            },
+            'warnings': []
+        }
+        
+        # Добавляем предупреждения
+        total_content = sum(stats['to_be_deleted'].values())
+        if total_content > 50:
+            stats['warnings'].append(f'Большое количество контента ({total_content} объектов)')
+        
+        if stats['users_affected']['assigned_users'] > 0:
+            stats['warnings'].append(f'{stats["users_affected"]["assigned_users"]} пользователей потеряют доступ')
+        
+        # Проверяем, последний ли это сайт владельца
+        owner_sites_count = Site.objects.filter(owner=site.owner).count()
+        if owner_sites_count == 1:
+            stats['warnings'].append('Это последний сайт владельца')
+        
+        return Response(stats)

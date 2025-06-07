@@ -12,7 +12,8 @@ import {
   SETTING_CATEGORIES,
   VALIDATION_MESSAGES
 } from '../types/settings.types';
-import apiClient from '../services/api';
+import { settingsService } from '../services/settings.service';
+import { useToastStore } from './toastStore';
 
 interface SettingsStore extends SettingsState, SettingsActions {}
 
@@ -39,207 +40,60 @@ export const useSettingsStore = create<SettingsStore>()(
         set({ isLoading: true, error: null });
         
         try {
-          // ДЕМО: Используем локальные данные вместо API
-          // const response = await apiClient.get('/settings');
+          // Используем реальный API backend
+          const backendSettings = await settingsService.getSettings();
+          const settings = settingsService.transformBackendToFrontend(backendSettings);
           
-          // Имитируем загрузку
-          await new Promise(resolve => setTimeout(resolve, 500));
-          
-          // Если настройки уже есть, не загружаем снова
-          const { settings } = get();
-          if (settings.length > 0) {
-            set({ isLoading: false });
-            return;
-          }
-          
-          // Создаем демо-настройки
-          const demoSettings: Setting[] = [
-            // Общие настройки
-            {
-              id: '1',
-              key: 'site_name',
-              value: 'FastAPI Admin',
-              type: 'text',
-              category: 'general',
-              label: 'Название сайта',
-              description: 'Основное название вашего сайта',
-              placeholder: 'Введите название сайта',
-              required: true,
-              group: 'Основная информация',
-              order: 1,
-              createdAt: new Date().toISOString(),
-              updatedAt: new Date().toISOString(),
-            },
-            {
-              id: '2',
-              key: 'site_description',
-              value: 'Современная система управления контентом',
-              type: 'textarea',
-              category: 'general',
-              label: 'Описание сайта',
-              description: 'Краткое описание вашего сайта',
-              placeholder: 'Введите описание сайта',
-              group: 'Основная информация',
-              order: 2,
-              createdAt: new Date().toISOString(),
-              updatedAt: new Date().toISOString(),
-            },
-            {
-              id: '3',
-              key: 'admin_email',
-              value: 'admin@example.com',
-              type: 'email',
-              category: 'general',
-              label: 'Email администратора',
-              description: 'Основной email для уведомлений',
-              placeholder: 'admin@example.com',
-              required: true,
-              group: 'Контакты',
-              order: 1,
-              validation: [
-                { type: 'required', message: 'Email обязателен' },
-              ],
-              createdAt: new Date().toISOString(),
-              updatedAt: new Date().toISOString(),
-            },
-            {
-              id: '4',
-              key: 'maintenance_mode',
-              value: false,
-              type: 'boolean',
-              category: 'general',
-              label: 'Режим обслуживания',
-              description: 'Включить режим обслуживания сайта',
-              group: 'Система',
-              order: 1,
-              createdAt: new Date().toISOString(),
-              updatedAt: new Date().toISOString(),
-            },
-            // Настройки оформления
-            {
-              id: '5',
-              key: 'theme',
-              value: 'light',
-              type: 'select',
-              category: 'appearance',
-              label: 'Тема оформления',
-              description: 'Выберите тему для интерфейса',
-              group: 'Внешний вид',
-              order: 1,
-              options: [
-                { value: 'light', label: 'Светлая' },
-                { value: 'dark', label: 'Темная' },
-                { value: 'auto', label: 'Автоматически' }
-              ],
-              createdAt: new Date().toISOString(),
-              updatedAt: new Date().toISOString(),
-            },
-            {
-              id: '6',
-              key: 'primary_color',
-              value: '#3B82F6',
-              type: 'color',
-              category: 'appearance',
-              label: 'Основной цвет',
-              description: 'Основной цвет интерфейса',
-              group: 'Цвета',
-              order: 1,
-              createdAt: new Date().toISOString(),
-              updatedAt: new Date().toISOString(),
-            },
-            // SEO настройки
-            {
-              id: '7',
-              key: 'default_title',
-              value: 'FastAPI Admin - Система управления',
-              type: 'text',
-              category: 'seo',
-              label: 'Заголовок по умолчанию',
-              description: 'Заголовок страницы по умолчанию',
-              group: 'Метаданные',
-              order: 1,
-              validation: [
-                { type: 'max', value: 60, message: 'Заголовок должен быть не более 60 символов' }
-              ],
-              createdAt: new Date().toISOString(),
-              updatedAt: new Date().toISOString(),
-            },
-            // Настройки безопасности
-            {
-              id: '8',
-              key: 'password_min_length',
-              value: 8,
-              type: 'number',
-              category: 'security',
-              label: 'Минимальная длина пароля',
-              description: 'Минимальное количество символов в пароле',
-              group: 'Пароли',
-              order: 1,
-              validation: [
-                { type: 'min', value: 6, message: 'Минимум 6 символов' },
-                { type: 'max', value: 50, message: 'Максимум 50 символов' }
-              ],
-              createdAt: new Date().toISOString(),
-              updatedAt: new Date().toISOString(),
-            }
-          ];
-
           set({ 
-            settings: demoSettings,
+            settings,
             isLoading: false,
             error: null 
           });
         } catch (error: any) {
+          const errorMessage = error.response?.data?.detail || 
+                              error.response?.data?.message || 
+                              error.message || 
+                              'Ошибка загрузки настроек';
+          
           set({ 
-            error: error.response?.data?.message || 'Ошибка загрузки настроек',
+            error: errorMessage,
             isLoading: false 
           });
+          
+          useToastStore.getState().error('Ошибка загрузки настроек', errorMessage);
         }
       },
 
       fetchCategories: async () => {
-        set({ isLoading: true });
+        set({ isLoading: true, error: null });
         
         try {
-          // Создаем категории на основе настроек
-          const { settings } = get();
-          const categories: SettingsCategory[] = Object.entries(SETTING_CATEGORIES).map(([key, info], index) => {
-            const categorySettings = settings.filter(s => s.category === key);
-            
-            // Группируем настройки по группам
-            const groups: { [key: string]: Setting[] } = {};
-            categorySettings.forEach(setting => {
-              const groupKey = setting.group || 'default';
-              if (!groups[groupKey]) {
-                groups[groupKey] = [];
-              }
-              groups[groupKey].push(setting);
-            });
-
-            return {
-              id: key as SettingCategory,
-              name: info.name,
-              description: info.description,
-              icon: info.icon,
-              order: index,
-              groups: Object.entries(groups).map(([groupKey, groupSettings]) => ({
-                id: groupKey,
-                name: groupKey === 'default' ? 'Основные' : groupKey,
-                order: 0,
-                settings: groupSettings.sort((a, b) => (a.order || 0) - (b.order || 0))
-              }))
-            };
-          });
-
+          // Используем новый API endpoint который возвращает данные уже в нужном формате
+          const categories = await settingsService.getCategories();
+          
           set({ 
-            categories: categories.filter(cat => cat.groups.length > 0),
-            isLoading: false 
+            categories,
+            isLoading: false,
+            error: null 
           });
+          
+          // Если нет текущей категории, устанавливаем первую
+          const { currentCategory } = get();
+          if (!currentCategory && categories.length > 0) {
+            set({ currentCategory: categories[0].id });
+          }
         } catch (error: any) {
+          const errorMessage = error.response?.data?.detail || 
+                              error.response?.data?.message || 
+                              error.message || 
+                              'Ошибка загрузки категорий';
+          
           set({ 
-            error: 'Ошибка загрузки категорий',
+            error: errorMessage,
             isLoading: false 
           });
+          
+          useToastStore.getState().error('Ошибка загрузки категорий', errorMessage);
         }
       },
 
@@ -324,56 +178,70 @@ export const useSettingsStore = create<SettingsStore>()(
       },
 
       saveAllSettings: async () => {
-        const { changedSettings, settings } = get();
+        const { changedSettings, validateAll } = get();
         
-        if (Object.keys(changedSettings).length === 0) return;
-
+        if (Object.keys(changedSettings).length === 0) {
+          useToastStore.getState().warning('Нет изменений', 'Нет изменений для сохранения');
+          return;
+        }
+        
+        // Валидация перед сохранением
+        const isValid = validateAll();
+        if (!isValid) {
+          useToastStore.getState().error('Ошибка валидации', 'Исправьте ошибки перед сохранением');
+          return;
+        }
+        
         set({ isSaving: true, error: null });
         
         try {
-          // Валидируем все изменения
-          const isValid = get().validateAll();
-          if (!isValid) {
-            set({ isSaving: false });
-            return;
-          }
-
-          // ДЕМО: Имитируем API запрос
-          // const updates = Object.entries(changedSettings).map(([key, value]) => {
-          //   const setting = settings.find(s => s.key === key);
-          //   return {
-          //     id: setting?.id,
-          //     key,
-          //     value
-          //   };
-          // });
-          // await apiClient.put('/settings/bulk', { updates });
+          // Преобразуем изменения в формат backend
+          const updates = settingsService.transformFrontendToBackend(changedSettings);
           
-          await new Promise(resolve => setTimeout(resolve, 1000));
-
-          // Обновляем локальное состояние
-          set(state => {
-            const updatedSettings = state.settings.map(setting => {
-              const changedValue = changedSettings[setting.key];
-              return changedValue !== undefined 
-                ? { ...setting, value: changedValue }
-                : setting;
-            });
+          // Отправляем массовое обновление
+          const result = await settingsService.updateSettings(updates);
+          
+          if (result.success) {
+            // Перезагружаем все данные после сохранения для корректного отображения
+            await get().fetchSettings();
+            await get().fetchCategories();
             
-            return {
-              settings: updatedSettings,
+            set({
               changedSettings: {},
               validationErrors: {},
               hasUnsavedChanges: false,
               lastSaved: new Date().toISOString(),
               isSaving: false
-            };
-          });
+            });
+            
+            useToastStore.getState().success(
+              'Настройки сохранены', 
+              `Сохранено изменений: ${result.count}`
+            );
+          } else if (result.errors && result.errors.length > 0) {
+            // Показываем ошибки
+            set({ 
+              error: result.errors.join(', '),
+              isSaving: false 
+            });
+            
+            useToastStore.getState().error(
+              'Ошибки при сохранении', 
+              result.errors.join('\n')
+            );
+          }
         } catch (error: any) {
+          const errorMessage = error.response?.data?.detail || 
+                              error.response?.data?.message || 
+                              error.message || 
+                              'Ошибка сохранения настроек';
+          
           set({ 
-            error: error.response?.data?.message || 'Ошибка сохранения настроек',
+            error: errorMessage,
             isSaving: false 
           });
+          
+          useToastStore.getState().error('Ошибка сохранения', errorMessage);
         }
       },
 
@@ -514,57 +382,87 @@ export const useSettingsStore = create<SettingsStore>()(
         return isValid;
       },
 
-      // Импорт/экспорт
-      exportSettings: async (categories?: SettingCategory[]): Promise<string> => {
-        const { settings } = get();
-        
-        const settingsToExport = categories 
-          ? settings.filter(s => categories.includes(s.category))
-          : settings;
-
-        const exportData = {
-          version: '1.0',
-          exportedAt: new Date().toISOString(),
-          categories: categories || Object.keys(SETTING_CATEGORIES),
-          settings: settingsToExport.reduce((acc, setting) => {
-            acc[setting.key] = setting.value;
-            return acc;
-          }, {} as Record<string, any>)
-        };
-
-        return JSON.stringify(exportData, null, 2);
+      // Экспорт настроек
+      exportSettings: async (categories?: SettingCategory[]) => {
+        try {
+          const params = categories ? { categories } : undefined;
+          const data = await settingsService.exportSettings(params);
+          
+          return JSON.stringify(data, null, 2);
+        } catch (error: any) {
+          const errorMessage = error.response?.data?.detail || 
+                              error.response?.data?.message || 
+                              error.message || 
+                              'Ошибка экспорта настроек';
+          
+          useToastStore.getState().error('Ошибка экспорта', errorMessage);
+          throw error;
+        }
       },
 
-      importSettings: async (data: string): Promise<void> => {
+      // Импорт настроек
+      importSettings: async (data: string) => {
+        set({ isSaving: true, error: null });
+        
         try {
+          // Парсим JSON данные
           const importData = JSON.parse(data);
           
-          if (!importData.settings || typeof importData.settings !== 'object') {
-            throw new Error('Неверный формат файла');
+          // Преобразуем в формат updates
+          let updates: Array<{ key: string; value: any }> = [];
+          
+          if (importData.settings) {
+            // Формат экспорта
+            updates = Object.entries(importData.settings).map(([key, value]) => ({
+              key,
+              value
+            }));
+          } else if (Array.isArray(importData)) {
+            // Прямой массив updates
+            updates = importData;
+          } else {
+            throw new Error('Неверный формат данных для импорта');
           }
-
-          set({ isSaving: true, error: null });
-
-          // Применяем настройки
-          const updates = Object.entries(importData.settings).map(([key, value]) => ({
-            key,
-            value
-          }));
-
-          await apiClient.put('/settings/import', { updates });
           
-          // Перезагружаем настройки
-          await get().fetchSettings();
+          // Импортируем настройки
+          const result = await settingsService.importSettings(updates);
           
-          set({ 
-            isSaving: false,
-            lastSaved: new Date().toISOString()
-          });
+          if (result.success) {
+            // Перезагружаем настройки
+            await get().fetchSettings();
+            
+            set({
+              changedSettings: {},
+              validationErrors: {},
+              hasUnsavedChanges: false,
+              lastSaved: new Date().toISOString(),
+              isSaving: false
+            });
+            
+            useToastStore.getState().success(
+              'Настройки импортированы', 
+              `Импортировано настроек: ${result.imported}`
+            );
+            
+            if (result.errors.length > 0) {
+              useToastStore.getState().warning(
+                'Предупреждения при импорте',
+                result.errors.join('\n')
+              );
+            }
+          }
         } catch (error: any) {
+          const errorMessage = error.response?.data?.detail || 
+                              error.response?.data?.message || 
+                              error.message || 
+                              'Ошибка импорта настроек';
+          
           set({ 
-            error: error.message || 'Ошибка импорта настроек',
+            error: errorMessage,
             isSaving: false 
           });
+          
+          useToastStore.getState().error('Ошибка импорта', errorMessage);
         }
       },
 
@@ -580,39 +478,70 @@ export const useSettingsStore = create<SettingsStore>()(
           }, {} as Record<string, any>);
 
         try {
-          await apiClient.post('/settings/templates', {
+          await settingsService.createTemplate({
             name,
-            categories,
-            settings: templateSettings
+            description: `Шаблон категорий: ${categories.join(', ')}`,
+            settings_data: templateSettings,
+            is_public: false
           });
+          
+          useToastStore.getState().success(
+            'Шаблон сохранен', 
+            `Шаблон "${name}" успешно создан`
+          );
         } catch (error: any) {
-          set({ 
-            error: error.response?.data?.message || 'Ошибка сохранения шаблона'
-          });
+          const errorMessage = error.response?.data?.detail || 
+                              error.response?.data?.message || 
+                              error.message || 
+                              'Ошибка сохранения шаблона';
+          
+          set({ error: errorMessage });
+          useToastStore.getState().error('Ошибка сохранения шаблона', errorMessage);
         }
       },
 
       loadTemplate: async (templateId: string): Promise<void> => {
         try {
-          set({ isLoading: true });
+          set({ isLoading: true, error: null });
           
-          const response = await apiClient.get(`/settings/templates/${templateId}`);
-          const template = response.data;
+          const result = await settingsService.applyTemplate(templateId);
 
-          // Применяем настройки из шаблона
-          set(state => ({
-            changedSettings: {
-              ...state.changedSettings,
-              ...template.settings
-            },
-            hasUnsavedChanges: true,
-            isLoading: false
-          }));
+          if (result.success) {
+            // Перезагружаем настройки после применения шаблона
+            await get().fetchSettings();
+            
+            set({
+              changedSettings: {},
+              validationErrors: {},
+              hasUnsavedChanges: false,
+              lastSaved: new Date().toISOString(),
+              isLoading: false
+            });
+            
+            useToastStore.getState().success(
+              'Шаблон применен', 
+              `Применено настроек: ${result.applied}`
+            );
+            
+            if (result.errors.length > 0) {
+              useToastStore.getState().warning(
+                'Предупреждения при применении шаблона',
+                result.errors.join('\n')
+              );
+            }
+          }
         } catch (error: any) {
+          const errorMessage = error.response?.data?.detail || 
+                              error.response?.data?.message || 
+                              error.message || 
+                              'Ошибка загрузки шаблона';
+          
           set({ 
-            error: error.response?.data?.message || 'Ошибка загрузки шаблона',
+            error: errorMessage,
             isLoading: false 
           });
+          
+          useToastStore.getState().error('Ошибка загрузки шаблона', errorMessage);
         }
       },
 
@@ -635,7 +564,7 @@ export const useSettingsStore = create<SettingsStore>()(
       },
     }),
     {
-      name: 'settings-store',
+      name: 'settings-storage',
     }
   )
 ); 

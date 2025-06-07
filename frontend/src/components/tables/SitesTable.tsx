@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Table, { type TableColumn, type SortConfig } from '../ui/Table';
 import Button from '../ui/Button';
 import Icon from '../ui/Icon';
+import CascadeDeleteModal from '../ui/CascadeDeleteModal';
 import { useSitesStore, useToastStore } from '../../store';
 import type { Site } from '../../types';
 
@@ -15,13 +16,17 @@ interface SitesTableProps {
  */
 const SitesTable: React.FC<SitesTableProps> = ({ className }) => {
   const navigate = useNavigate();
-  const { sites, isLoading, deleteSite, toggleActive } = useSitesStore();
+  const { sites, isLoading, toggleActive } = useSitesStore();
   const { success, error } = useToastStore();
   
   const [sortConfig, setSortConfig] = useState<SortConfig>({
     field: 'created_at',
     direction: 'desc'
   });
+
+  // 🚀 Состояние для модального окна каскадного удаления
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [siteToDelete, setSiteToDelete] = useState<Site | null>(null);
 
   // Сортированные данные
   const sortedSites = useMemo(() => {
@@ -60,15 +65,22 @@ const SitesTable: React.FC<SitesTableProps> = ({ className }) => {
     navigate(`/sites/${site.id}/edit`);
   };
 
-  const handleDelete = async (site: Site) => {
-    if (window.confirm(`Вы уверены, что хотите удалить сайт "${site.name}"?`)) {
-      try {
-        await deleteSite(site.id);
-        success('Сайт удален', `Сайт "${site.name}" был успешно удален`);
-      } catch {
-        error('Ошибка удаления', 'Не удалось удалить сайт');
-      }
-    }
+  // 🚀 Новый обработчик для каскадного удаления
+  const handleDelete = (site: Site) => {
+    setSiteToDelete(site);
+    setDeleteModalOpen(true);
+  };
+
+  const handleDeleteConfirm = () => {
+    // Модальное окно само выполняет удаление
+    // Просто закрываем модальное окно и очищаем состояние
+    setDeleteModalOpen(false);
+    setSiteToDelete(null);
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteModalOpen(false);
+    setSiteToDelete(null);
   };
 
   const handleToggleStatus = async (site: Site) => {
@@ -203,16 +215,28 @@ const SitesTable: React.FC<SitesTableProps> = ({ className }) => {
   ];
 
   return (
-    <div className={className}>
-      <Table
-        data={sortedSites}
-        columns={columns}
-        loading={isLoading}
-        sortConfig={sortConfig}
-        onSort={handleSort}
-        emptyMessage="Нет созданных сайтов. Создайте первый сайт!"
-      />
-    </div>
+    <>
+      <div className={className}>
+        <Table
+          data={sortedSites}
+          columns={columns}
+          loading={isLoading}
+          sortConfig={sortConfig}
+          onSort={handleSort}
+          emptyMessage="Нет созданных сайтов. Создайте первый сайт!"
+        />
+      </div>
+
+      {/* 🚀 Модальное окно каскадного удаления */}
+      {siteToDelete && (
+        <CascadeDeleteModal
+          site={siteToDelete}
+          isOpen={deleteModalOpen}
+          onClose={handleDeleteCancel}
+          onConfirm={handleDeleteConfirm}
+        />
+      )}
+    </>
   );
 };
 
