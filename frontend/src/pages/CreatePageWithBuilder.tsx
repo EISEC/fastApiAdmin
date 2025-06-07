@@ -108,7 +108,7 @@ const CreatePageWithBuilder: React.FC = () => {
                 onClick={() => navigate('/pages')}
                 className="mr-4"
               >
-                ← Назад к страницам
+                <Icon name="arrowLeft" className="mr-2" />Назад к страницам
               </Button>
               
               <div className="flex items-center gap-4">

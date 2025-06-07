@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import SitesTable from '../components/tables/SitesTable';
 import Button from '../components/ui/Button';
+import Icon from '../components/ui/Icon';
 import { useSitesStore } from '../store';
 
 /**
@@ -33,7 +34,7 @@ const Sites: React.FC = () => {
               variant="primary"
               onClick={() => navigate('/sites/create')}
             >
-              + Создать сайт
+              <Icon name="add" className="mr-2" />Создать сайт
             </Button>
           </div>
         </div>

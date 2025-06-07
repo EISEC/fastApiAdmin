@@ -109,7 +109,7 @@ const EditUser: React.FC = () => {
             <Icon name="users" size="md" className="mr-2" />
             Пользователи
           </button>
-          <span>→</span>
+                        <Icon name="arrowRight" size="sm" />
           <span className="text-gray-900 font-medium">
             <Icon name="edit" size="md" className="mr-2" />
             Редактирование пользователя

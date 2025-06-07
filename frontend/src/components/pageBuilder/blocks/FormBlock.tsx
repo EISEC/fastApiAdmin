@@ -128,7 +128,7 @@ const FormBlock: React.FC<FormBlockProps> = ({
                 onClick={handleAddField}
                 className="px-2 py-1 text-xs bg-green-500 text-white rounded hover:bg-green-600"
               >
-                + Добавить поле
+                <Icon name="add" size="xs" className="mr-1" />Добавить поле
               </button>
             </div>
             

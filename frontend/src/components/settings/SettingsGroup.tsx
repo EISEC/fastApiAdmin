@@ -3,6 +3,7 @@ import type { SettingsGroup as SettingsGroupType, Setting } from '../../types/se
 import Button from '../ui/Button';
 import Icon from '../ui/Icon';
 import SocialNetworksManager from './SocialNetworksManager';
+import { getIconName } from '../../utils/iconMapping';
 
 interface SettingsGroupProps {
   group: SettingsGroupType;
@@ -35,7 +36,7 @@ const SettingsGroup: React.FC<SettingsGroupProps> = ({
         <div className="px-6 py-4 bg-gray-50 border-b border-gray-200">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <Icon name={group.icon as any} size="sm" />
+              <Icon name={getIconName(group.icon)} size="sm" />
               <h3 className="text-lg font-semibold text-gray-900">{group.name}</h3>
             </div>
           </div>
@@ -249,7 +250,7 @@ const SettingsGroup: React.FC<SettingsGroupProps> = ({
       <div className="px-6 py-4 border-b border-gray-200">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            {group.icon && <span className="text-lg">{group.icon}</span>}
+            {group.icon && <Icon name={getIconName(group.icon)} size="md" />}
             <div>
               <h3 className="text-lg font-semibold text-gray-900">
                 {group.name}

@@ -76,6 +76,12 @@ const navigationItems: NavigationItem[] = [
     icon: 'mobile',
     roles: ['superuser', 'admin', 'author'],
   },
+  {
+    name: 'Диагностика',
+    href: '/debug',
+    icon: 'bug',
+    roles: ['superuser'], // Только для суперадмина
+  },
 ];
 
 interface SidebarProps {
