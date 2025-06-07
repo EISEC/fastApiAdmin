@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuthStore } from '../../store/authStore';
+import { useSettings } from '../../hooks/useSettings';
 import Icon from '../ui/Icon';
 
 interface HeaderProps {
@@ -11,6 +12,7 @@ interface HeaderProps {
  */
 const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
   const { user, logout } = useAuthStore();
+  const { siteName } = useSettings();
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   
   const handleLogout = () => {
@@ -32,6 +34,13 @@ const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
               <span className="sr-only">Открыть главное меню</span>
               <Icon name="menu" size="lg" />
             </button>
+          </div>
+          
+          {/* Site name for desktop */}
+          <div className="hidden lg:flex lg:items-center">
+            <h1 className="text-xl font-semibold text-gray-900">
+              {siteName}
+            </h1>
           </div>
           
           {/* Search */}

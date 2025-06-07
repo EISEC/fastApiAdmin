@@ -46,6 +46,45 @@ export interface SiteStats {
   total_authors: number;
 }
 
+// 🚀 НОВЫЕ ТИПЫ для каскадного удаления
+export interface SiteDeletePreview {
+  site_info: {
+    name: string;
+    domain: string;
+    owner: string;
+    created_at: string;
+    is_active: boolean;
+  };
+  to_be_deleted: {
+    posts: number;
+    pages: number;
+    categories: number;
+    tags: number;
+    dynamic_models: number;
+  };
+  users_affected: {
+    assigned_users: number;
+    assigned_users_list: Array<{
+      id: number;
+      username: string;
+      email: string;
+    }>;
+  };
+  warnings: string[];
+}
+
+export interface SiteCascadeDeleteResult {
+  message: string;
+  deleted_stats: {
+    posts: number;
+    pages: number;
+    categories: number;
+    tags: number;
+    dynamic_models: number;
+    assigned_users_cleared: number;
+  };
+}
+
 export interface SitesState {
   sites: Site[];
   currentSite: Site | null;
@@ -64,4 +103,8 @@ export interface SitesStore extends SitesState {
   getStats: () => Promise<SiteStats>;
   clearError: () => void;
   setCurrentSite: (site: Site | null) => void;
+  
+  // 🚀 НОВЫЕ МЕТОДЫ для каскадного удаления
+  getDeletePreview: (id: number) => Promise<SiteDeletePreview>;
+  cascadeDelete: (id: number) => Promise<SiteCascadeDeleteResult>;
 } 

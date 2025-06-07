@@ -4,13 +4,15 @@ from .views import (
     SettingCategoryViewSet,
     SettingGroupViewSet,
     SettingViewSet,
-    SettingTemplateViewSet
+    SettingTemplateViewSet,
+    SocialNetworkSettingViewSet
 )
 
 router = DefaultRouter()
 router.register(r'categories', SettingCategoryViewSet, basename='setting-category')
 router.register(r'groups', SettingGroupViewSet, basename='setting-group')
 router.register(r'templates', SettingTemplateViewSet, basename='setting-template')
+router.register(r'social-networks', SocialNetworkSettingViewSet, basename='social-network')
 router.register(r'', SettingViewSet, basename='setting')
 
 app_name = 'settings'

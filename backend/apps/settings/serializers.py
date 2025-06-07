@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import SettingCategory, SettingGroup, Setting, SettingTemplate
+from .models import SettingCategory, SettingGroup, Setting, SettingTemplate, SocialNetworkSetting
 
 
 class SettingSerializer(serializers.ModelSerializer):
@@ -9,7 +9,7 @@ class SettingSerializer(serializers.ModelSerializer):
         model = Setting
         fields = [
             'key', 'label', 'description', 'type', 'value', 'default_value',
-            'group', 'site', 'is_required', 'is_readonly', 'validation_rules',
+            'group', 'is_required', 'is_readonly', 'validation_rules',
             'options', 'placeholder', 'help_text', 'help_url', 'order',
             'created_at', 'updated_at', 'updated_by'
         ]
@@ -119,4 +119,26 @@ class SettingsImportSerializer(serializers.Serializer):
     create_missing = serializers.BooleanField(
         default=False,
         help_text="Создать отсутствующие настройки"
-    ) 
+    )
+
+
+class SocialNetworkSettingSerializer(serializers.ModelSerializer):
+    """Сериализатор для настроек социальных сетей"""
+    icon_name = serializers.CharField(source='get_icon_name', read_only=True)
+    social_name = serializers.CharField(source='get_name_display', read_only=True)
+    
+    class Meta:
+        model = SocialNetworkSetting
+        fields = [
+            'id', 'name', 'social_name', 'url', 'is_enabled', 
+            'order', 'icon_name', 'created_at', 'updated_at'
+        ]
+        read_only_fields = ['created_at', 'updated_at', 'created_by']
+    
+    def validate_url(self, value):
+        """Валидация URL социальной сети"""
+        if not value:
+            raise serializers.ValidationError("URL обязателен")
+        
+        # Можно добавить специфические проверки для каждой соц.сети
+        return value 

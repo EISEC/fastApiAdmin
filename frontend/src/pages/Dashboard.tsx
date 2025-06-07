@@ -7,12 +7,14 @@ import Icon from '../components/ui/Icon';
 import { useSitesStore } from '../store/sitesStore';
 import { usePostsStore } from '../store/postsStore';
 import { useUsersStore } from '../store/usersStore';
+import { useSettings } from '../hooks/useSettings';
 
 /**
  * Главная страница дашборда с общей статистикой
  */
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
+  const { getSetting, isLoading: settingsLoading } = useSettings();
   
   const { sites, fetchSites } = useSitesStore();
   const { posts, fetchPosts } = usePostsStore();
@@ -42,15 +44,24 @@ const Dashboard: React.FC = () => {
     active: users.filter(user => user.is_active).length,
   };
 
+  // Получаем значения из настроек
+  const welcomeMessage = getSetting('welcome_message', 'Добро пожаловать в панель управления!');
+  const dashboardDescription = getSetting('dashboard_description', 'Обзор системы управления сайтами');
+
   return (
-    <DashboardLayout>
+    <DashboardLayout title="Главная">
       <div className="space-y-6">
         {/* Header */}
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Дашборд</h1>
           <p className="mt-2 text-sm text-gray-700">
-            Обзор системы управления сайтами
+            {settingsLoading ? 'Загрузка...' : dashboardDescription}
           </p>
+          {welcomeMessage && (
+            <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <p className="text-sm text-blue-800">{welcomeMessage}</p>
+            </div>
+          )}
         </div>
 
         {/* Test Connection Component */}

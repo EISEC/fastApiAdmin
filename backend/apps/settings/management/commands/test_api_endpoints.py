@@ -1,155 +1,112 @@
 from django.core.management.base import BaseCommand
-from django.urls import reverse
-from django.test import Client
+from django.test import RequestFactory
 from django.contrib.auth import get_user_model
+from apps.settings.views import SettingViewSet, SocialNetworkSettingViewSet
+from apps.settings.models import Setting, SocialNetworkSetting
 from apps.accounts.models import Role
-from apps.settings.models import Setting
+import json
 
 User = get_user_model()
 
 class Command(BaseCommand):
-    help = 'Тестирование всех API endpoints'
+    help = 'Тестирует API endpoints для настроек'
 
     def handle(self, *args, **options):
-        self.stdout.write('🧪 Тестирование API endpoints...')
+        self.stdout.write('🧪 Тестирование API endpoints для настроек...\n')
         
-        # Создаем тестового пользователя с ролью superuser
-        try:
-            superuser_role = Role.objects.get(name='superuser')
-            test_user, created = User.objects.get_or_create(
-                username='test_api_user',
-                defaults={
-                    'email': 'test@example.com',
-                    'role': superuser_role,
-                    'is_active': True
-                }
-            )
-            if created:
-                test_user.set_password('testpass123')
-                test_user.save()
-                self.stdout.write('✓ Создан тестовый пользователь')
-        except Exception as e:
-            self.stdout.write(f'❌ Ошибка создания пользователя: {e}')
-            return
-
-        client = Client()
+        # Создаем фабрику запросов
+        factory = RequestFactory()
         
-        # Получаем JWT токен
+        # Получаем роль для пользователя
         try:
-            response = client.post('/api/v1/auth/token/', {
-                'username': 'test_api_user',
-                'password': 'testpass123'
-            })
-            if response.status_code == 200:
-                token = response.json()['access']
-                headers = {'HTTP_AUTHORIZATION': f'Bearer {token}'}
-                self.stdout.write('✓ Получен JWT токен')
-            else:
-                self.stdout.write(f'❌ Ошибка получения токена: {response.status_code}')
+            # Пытаемся найти роль author, если нет - создаем базовую роль
+            try:
+                role = Role.objects.get(name='author')
+            except Role.DoesNotExist:
+                role = Role.objects.first()  # Берем любую доступную роль
+                
+            if not role:
+                self.stdout.write('❌ Нет доступных ролей в системе')
                 return
+                
         except Exception as e:
-            self.stdout.write(f'❌ Ошибка авторизации: {e}')
+            self.stdout.write(f'❌ Ошибка получения роли: {e}')
             return
-
-        # Список endpoints для тестирования
-        test_endpoints = [
-            # Auth endpoints
-            ('GET', '/api/v1/auth/users/', 'Список пользователей'),
-            ('GET', '/api/v1/auth/roles/', 'Список ролей'),
-            
-            # Sites endpoints
-            ('GET', '/api/v1/sites/', 'Список сайтов'),
-            
-            # Posts endpoints
-            ('GET', '/api/v1/posts/', 'Список постов'),
-            ('GET', '/api/v1/posts/categories/', 'Категории постов'),
-            ('GET', '/api/v1/posts/tags/', 'Теги постов'),
-            
-            # Pages endpoints
-            ('GET', '/api/v1/pages/', 'Список страниц'),
-            
-            # Settings endpoints
-            ('GET', '/api/v1/settings/', 'Настройки (основной)'),
-            ('GET', '/api/v1/settings/all/', 'Все настройки'),
-            ('GET', '/api/v1/settings/categories/', 'Категории настроек'),
-            ('GET', '/api/v1/settings/groups/', 'Группы настроек'),
-            ('GET', '/api/v1/settings/templates/', 'Шаблоны настроек'),
-        ]
-
-        results = []
         
-        for method, url, description in test_endpoints:
-            try:
-                if method == 'GET':
-                    response = client.get(url, **headers)
-                else:
-                    response = client.post(url, **headers)
-                
-                if response.status_code in [200, 201]:
-                    self.stdout.write(f'✅ {description}: {response.status_code}')
-                    results.append((url, '✅', response.status_code))
-                elif response.status_code == 404:
-                    self.stdout.write(f'❌ {description}: 404 - Endpoint не найден')
-                    results.append((url, '❌', '404 Not Found'))
-                else:
-                    self.stdout.write(f'⚠️  {description}: {response.status_code}')
-                    results.append((url, '⚠️', response.status_code))
-                    
-            except Exception as e:
-                self.stdout.write(f'💥 {description}: Ошибка - {e}')
-                results.append((url, '💥', str(e)))
-
-        # Тестируем POST endpoints
-        post_tests = [
-            # Bulk update settings
-            ('PUT', '/api/v1/settings/bulk/', {
-                'updates': [
-                    {'key': 'site_name', 'value': 'Test Site Updated'}
-                ]
-            }, 'Массовое обновление настроек'),
-        ]
-
-        self.stdout.write('\n🔧 Тестирование POST/PUT endpoints...')
+        # Создаем тестового пользователя
+        user, created = User.objects.get_or_create(
+            username='test_user',
+            defaults={
+                'email': 'test@example.com',
+                'first_name': 'Test',
+                'last_name': 'User',
+                'role': role
+            }
+        )
         
-        for method, url, data, description in post_tests:
-            try:
-                if method == 'POST':
-                    response = client.post(url, data, content_type='application/json', **headers)
-                elif method == 'PUT':
-                    response = client.put(url, data, content_type='application/json', **headers)
+        self.stdout.write(f'👤 Использую пользователя: {user.username} (роль: {user.role.name})')
+        
+        # Тест 1: Настройки list_all
+        self.stdout.write('\n1️⃣ Тестирую /settings/settings/list_all/')
+        try:
+            request = factory.get('/settings/settings/list_all/')
+            request.user = user
+            
+            viewset = SettingViewSet()
+            viewset.format_kwarg = None
+            viewset.request = request
+            viewset.action = 'list_all'
+            response = viewset.list_all(request)
+            
+            self.stdout.write(f'   ✅ Статус: {response.status_code}')
+            self.stdout.write(f'   📊 Количество настроек: {len(response.data)}')
+            
+            if response.data:
+                sample = response.data[0]
+                self.stdout.write(f'   📝 Пример настройки: {sample.get("key", "N/A")} = {sample.get("value", "N/A")}')
                 
-                if response.status_code in [200, 201]:
-                    self.stdout.write(f'✅ {description}: {response.status_code}')
-                else:
-                    self.stdout.write(f'❌ {description}: {response.status_code} - {response.content.decode()[:100]}')
+        except Exception as e:
+            self.stdout.write(f'   ❌ Ошибка: {str(e)}')
+        
+        # Тест 2: Социальные сети public_list  
+        self.stdout.write('\n2️⃣ Тестирую /settings/social-networks/public_list/')
+        try:
+            request = factory.get('/settings/social-networks/public_list/')
+            request.user = user
+            
+            viewset = SocialNetworkSettingViewSet()
+            viewset.format_kwarg = None
+            viewset.request = request
+            viewset.action = 'public_list'
+            response = viewset.public_list(request)
+            
+            self.stdout.write(f'   ✅ Статус: {response.status_code}')
+            self.stdout.write(f'   📊 Количество соцсетей: {len(response.data)}')
+            
+            if response.data:
+                for network in response.data:
+                    name = network.get('social_name', 'N/A')
+                    url = network.get('url', 'N/A')
+                    enabled = network.get('is_enabled', False)
+                    icon = network.get('icon_name', 'N/A')
+                    self.stdout.write(f'   🌐 {name}: {url} (иконка: {icon}, активна: {enabled})')
                     
-            except Exception as e:
-                self.stdout.write(f'💥 {description}: Ошибка - {e}')
-
-        # Проверяем количество настроек в БД
+        except Exception as e:
+            self.stdout.write(f'   ❌ Ошибка: {str(e)}')
+        
+        # Тест 3: Проверка данных в БД
+        self.stdout.write('\n3️⃣ Проверяю данные в базе данных')
+        
         settings_count = Setting.objects.count()
-        self.stdout.write(f'\n📊 Статистика:')
-        self.stdout.write(f'   • Настроек в БД: {settings_count}')
+        social_count = SocialNetworkSetting.objects.count()
+        social_enabled_count = SocialNetworkSetting.objects.filter(is_enabled=True).count()
         
-        success_count = len([r for r in results if r[1] == '✅'])
-        total_count = len(results)
-        self.stdout.write(f'   • Успешных endpoints: {success_count}/{total_count}')
+        self.stdout.write(f'   📊 Настроек в БД: {settings_count}')
+        self.stdout.write(f'   📊 Соцсетей в БД: {social_count}')
+        self.stdout.write(f'   📊 Активных соцсетей: {social_enabled_count}')
         
-        # Финальная сводка
-        self.stdout.write('\n📋 Сводка тестирования:')
-        for url, status, code in results:
-            self.stdout.write(f'   {status} {url} - {code}')
+        # Показываем детали соцсетей
+        for network in SocialNetworkSetting.objects.all():
+            self.stdout.write(f'   🌐 {network.get_name_display()}: {network.url} (порядок: {network.order}, активна: {network.is_enabled})')
         
-        if success_count == total_count:
-            self.stdout.write(
-                self.style.SUCCESS('\n🎉 Все endpoints работают корректно!')
-            )
-        else:
-            self.stdout.write(
-                self.style.WARNING(f'\n⚠️  {total_count - success_count} endpoints требуют внимания')
-            )
-        
-        # Удаляем тестового пользователя
-        if created:
-            test_user.delete()
-            self.stdout.write('🗑️  Тестовый пользователь удален') 
+        self.stdout.write('\n✨ Тестирование завершено!') 

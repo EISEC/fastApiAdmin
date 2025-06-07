@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { Site, SiteCreateData, SiteUpdateData, SitesStore, SiteStats, ApiErrorResponse } from '../types';
+import type { Site, SiteCreateData, SiteUpdateData, SitesStore, SiteStats, SiteDeletePreview, SiteCascadeDeleteResult, ApiErrorResponse } from '../types';
 import { api } from '../lib/axios.config';
 import { useToastStore } from './toastStore';
 
@@ -98,6 +98,45 @@ export const useSitesStore = create<SitesStore>()(
           const errorMessage = apiError.message || 'Ошибка удаления сайта';
           set({ error: errorMessage, isLoading: false });
           useToastStore.getState().error('Ошибка удаления', errorMessage);
+          throw error;
+        }
+      },
+
+      getDeletePreview: async (id: number) => {
+        try {
+          const preview = await api.get<SiteDeletePreview>(`/sites/${id}/delete_preview/`);
+          return preview;
+        } catch (error) {
+          const apiError = error as ApiErrorResponse;
+          const errorMessage = apiError.message || 'Ошибка получения предварительного просмотра';
+          useToastStore.getState().error('Ошибка предварительного просмотра', errorMessage);
+          throw error;
+        }
+      },
+
+      cascadeDelete: async (id: number) => {
+        set({ isLoading: true, error: null });
+        try {
+          const result = await api.delete<SiteCascadeDeleteResult>(`/sites/${id}/cascade_delete/`);
+          
+          set((state) => ({
+            sites: state.sites.filter(site => site.id !== id),
+            currentSite: state.currentSite?.id === id ? null : state.currentSite,
+            isLoading: false
+          }));
+
+          const totalDeleted = Object.values(result.deleted_stats).reduce((sum, count) => sum + count, 0);
+          useToastStore.getState().success(
+            'Каскадное удаление выполнено', 
+            `Сайт удален вместе с ${totalDeleted} связанными объектами`
+          );
+          
+          return result;
+        } catch (error) {
+          const apiError = error as ApiErrorResponse;
+          const errorMessage = apiError.message || 'Ошибка каскадного удаления сайта';
+          set({ error: errorMessage, isLoading: false });
+          useToastStore.getState().error('Ошибка каскадного удаления', errorMessage);
           throw error;
         }
       },

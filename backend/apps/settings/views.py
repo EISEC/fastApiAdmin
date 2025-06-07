@@ -8,7 +8,8 @@ from rest_framework.response import Response
 from django.http import JsonResponse
 from django.db import transaction
 
-from .models import SettingCategory, SettingGroup, Setting, SettingTemplate
+from .models import SettingCategory, SettingGroup, Setting, SettingTemplate, SocialNetworkSetting
+from .permissions import SettingsPermission, SuperAdminOnlyPermission
 from .serializers import (
     SettingCategorySerializer,
     SettingGroupSerializer,
@@ -17,50 +18,103 @@ from .serializers import (
     BulkSettingsUpdateSerializer,
     SettingTemplateSerializer,
     SettingsExportSerializer,
-    SettingsImportSerializer
+    SettingsImportSerializer,
+    SocialNetworkSettingSerializer
 )
+from .utils import invalidate_settings_cache
 
 
 class SettingCategoryViewSet(viewsets.ReadOnlyModelViewSet):
-    """ViewSet для категорий настроек (только чтение)"""
+    """ViewSet для категорий настроек (только чтение, только для суперадминистраторов)"""
     queryset = SettingCategory.objects.filter(is_active=True)
     serializer_class = SettingCategorySerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [SuperAdminOnlyPermission]
     ordering = ['order', 'name']
+
+    @action(detail=False, methods=['get'])
+    def list_all(self, request):
+        """Простой endpoint для получения всех категорий без пагинации"""
+        categories = self.get_queryset()
+        
+        # Преобразуем в простой формат для frontend
+        categories_data = []
+        for category in categories:
+            # Получаем группы для категории
+            groups = SettingGroup.objects.filter(category=category, is_active=True).order_by('order', 'name')
+            groups_data = []
+            
+            for group in groups:
+                # Получаем настройки для группы
+                settings = Setting.objects.filter(group=group).order_by('order', 'label')
+                settings_data = []
+                
+                for setting in settings:
+                    settings_data.append({
+                        'id': str(setting.id) if setting.id else setting.key,
+                        'key': setting.key,
+                        'value': setting.get_value(),
+                        'type': setting.type,
+                        'category': category.id,
+                        'label': setting.label,
+                        'description': setting.description,
+                        'placeholder': setting.placeholder,
+                        'required': setting.is_required,
+                        'readonly': setting.is_readonly,
+                        'group': group.name,
+                        'order': setting.order,
+                        'options': setting.options,
+                        'validation': setting.validation_rules,
+                        'help_text': setting.help_text,
+                        'help_url': setting.help_url,
+                        'createdAt': setting.created_at.isoformat() if setting.created_at else None,
+                        'updatedAt': setting.updated_at.isoformat() if setting.updated_at else None,
+                    })
+                
+                groups_data.append({
+                    'id': group.id,
+                    'name': group.name,
+                    'description': group.description,
+                    'icon': group.icon,
+                    'order': group.order,
+                    'settings': settings_data
+                })
+            
+            categories_data.append({
+                'id': category.id,
+                'name': category.name,
+                'description': category.description,
+                'icon': category.icon,
+                'order': category.order,
+                'groups': groups_data
+            })
+        
+        return Response(categories_data)
 
 
 class SettingGroupViewSet(viewsets.ReadOnlyModelViewSet):
-    """ViewSet для групп настроек (только чтение)"""
+    """ViewSet для групп настроек (только чтение, только для суперадминистраторов)"""
     queryset = SettingGroup.objects.filter(is_active=True)
     serializer_class = SettingGroupSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [SuperAdminOnlyPermission]
     ordering = ['order', 'name']
 
 
 class SettingViewSet(viewsets.ModelViewSet):
-    """ViewSet для настроек"""
+    """ViewSet для настроек (только для суперадминистраторов)"""
     queryset = Setting.objects.all()
     serializer_class = SettingSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [SettingsPermission]
     lookup_field = 'key'
     ordering = ['group__order', 'order', 'label']
 
     def get_queryset(self):
-        """Фильтруем настройки по сайту если указан"""
+        """Фильтруем настройки"""
         queryset = Setting.objects.select_related('group', 'group__category')
-        
-        site_id = self.request.query_params.get('site')
-        if site_id:
-            queryset = queryset.filter(site_id=site_id)
-        else:
-            # Глобальные настройки (без привязки к сайту)
-            queryset = queryset.filter(site__isnull=True)
-            
         return queryset
 
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=['get'], permission_classes=[permissions.IsAuthenticated])
     def list_all(self, request):
-        """Простой endpoint для получения всех настроек"""
+        """Простой endpoint для получения всех настроек (для всех авторизованных пользователей)"""
         queryset = self.get_queryset()
         
         # Преобразуем в формат ожидаемый frontend
@@ -91,7 +145,7 @@ class SettingViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['put'])
     def bulk_update(self, request):
-        """Массовое обновление настроек"""
+        """Массовое обновление настроек (только для суперадминистраторов)"""
         updates = request.data.get('updates', [])
         
         if not updates:
@@ -136,6 +190,9 @@ class SettingViewSet(viewsets.ModelViewSet):
             return Response({
                 'error': f"Ошибка транзакции: {str(e)}"
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        # Очищаем кэш после успешного обновления
+        invalidate_settings_cache()
 
         return Response({
             'success': True,
@@ -233,6 +290,9 @@ class SettingViewSet(viewsets.ModelViewSet):
                 'error': f"Ошибка импорта: {str(e)}"
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+        # Очищаем кэш после успешного импорта
+        invalidate_settings_cache()
+
         return Response({
             'success': True,
             'imported': imported_count,
@@ -241,9 +301,9 @@ class SettingViewSet(viewsets.ModelViewSet):
 
 
 class SettingTemplateViewSet(viewsets.ModelViewSet):
-    """ViewSet для шаблонов настроек"""
+    """ViewSet для шаблонов настроек (только для суперадминистраторов)"""
     serializer_class = SettingTemplateSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [SuperAdminOnlyPermission]
 
     def get_queryset(self):
         """Показываем публичные шаблоны и шаблоны пользователя"""
@@ -254,7 +314,7 @@ class SettingTemplateViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['post'])
     def apply(self, request, pk=None):
-        """Применение шаблона настроек"""
+        """Применение шаблона настроек (только для суперадминистраторов)"""
         template = self.get_object()
         
         try:
@@ -282,3 +342,64 @@ class SettingTemplateViewSet(viewsets.ModelViewSet):
             return Response({
                 'error': f"Ошибка применения шаблона: {str(e)}"
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class SocialNetworkSettingViewSet(viewsets.ModelViewSet):
+    """ViewSet для настроек социальных сетей (только для суперадминистраторов)"""
+    serializer_class = SocialNetworkSettingSerializer
+    permission_classes = [SuperAdminOnlyPermission]
+    ordering = ['order', 'name']
+
+    def get_queryset(self):
+        """Получаем все социальные сети упорядоченно"""
+        return SocialNetworkSetting.objects.all().order_by('order', 'name')
+
+    def perform_create(self, serializer):
+        """Сохраняем информацию о создателе и очищаем кэш"""
+        serializer.save(created_by=self.request.user)
+        invalidate_settings_cache()
+
+    def perform_update(self, serializer):
+        """Очищаем кэш после обновления"""
+        serializer.save()
+        invalidate_settings_cache()
+
+    def perform_destroy(self, instance):
+        """Очищаем кэш после удаления"""
+        instance.delete()
+        invalidate_settings_cache()
+
+    @action(detail=False, methods=['put'])
+    def reorder(self, request):
+        """Изменение порядка социальных сетей"""
+        items = request.data.get('items', [])
+        
+        if not items:
+            return Response(
+                {'error': 'Не указаны элементы для перестановки'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            with transaction.atomic():
+                for i, item_data in enumerate(items):
+                    item_id = item_data.get('id')
+                    if item_id:
+                        SocialNetworkSetting.objects.filter(id=item_id).update(order=i)
+
+                # Очищаем кэш после изменения порядка
+                invalidate_settings_cache()
+
+                return Response({'success': True, 'message': 'Порядок обновлен'})
+
+        except Exception as e:
+            return Response({
+                'error': f"Ошибка обновления порядка: {str(e)}"
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @action(detail=False, methods=['get'], permission_classes=[permissions.IsAuthenticated])
+    def public_list(self, request):
+        """Публичный список социальных сетей для всех авторизованных пользователей"""
+        networks = SocialNetworkSetting.objects.filter(is_enabled=True).order_by('order', 'name')
+        serializer = self.get_serializer(networks, many=True)
+        return Response(serializer.data)

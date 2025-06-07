@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import SettingCategory, SettingGroup, Setting, SettingTemplate
+from .models import SettingCategory, SettingGroup, Setting, SettingTemplate, SocialNetworkSetting
 
 
 class SettingInline(admin.TabularInline):
@@ -68,14 +68,14 @@ class SettingGroupAdmin(admin.ModelAdmin):
 @admin.register(Setting)
 class SettingAdmin(admin.ModelAdmin):
     """Админка для настроек"""
-    list_display = ['key', 'label', 'type', 'group', 'site', 'is_required', 'is_readonly', 'updated_at']
-    list_filter = ['type', 'group__category', 'is_required', 'is_readonly', 'site', 'created_at']
+    list_display = ['key', 'label', 'type', 'group', 'is_required', 'is_readonly', 'updated_at']
+    list_filter = ['type', 'group__category', 'is_required', 'is_readonly', 'created_at']
     search_fields = ['key', 'label', 'description']
     ordering = ['group__category__order', 'group__order', 'order', 'label']
     
     fieldsets = (
         ('Основная информация', {
-            'fields': ('key', 'label', 'description', 'type', 'group', 'site')
+            'fields': ('key', 'label', 'description', 'type', 'group')
         }),
         ('Значения', {
             'fields': ('value', 'default_value')
@@ -97,7 +97,7 @@ class SettingAdmin(admin.ModelAdmin):
     
     def get_queryset(self, request):
         return super().get_queryset(request).select_related(
-            'group', 'group__category', 'site', 'updated_by'
+            'group', 'group__category', 'updated_by'
         )
 
 
@@ -122,6 +122,35 @@ class SettingTemplateAdmin(admin.ModelAdmin):
         }),
     )
     readonly_fields = ['created_by', 'created_at', 'updated_at']
+    
+    def save_model(self, request, obj, form, change):
+        if not change:  # Создание нового объекта
+            obj.created_by = request.user
+        super().save_model(request, obj, form, change)
+
+
+@admin.register(SocialNetworkSetting)
+class SocialNetworkSettingAdmin(admin.ModelAdmin):
+    """Админка для настроек социальных сетей"""
+    list_display = ['name', 'social_name', 'url', 'is_enabled', 'order', 'created_at']
+    list_filter = ['name', 'is_enabled', 'created_at']
+    search_fields = ['url']
+    ordering = ['order', 'name']
+    
+    fieldsets = (
+        ('Основная информация', {
+            'fields': ('name', 'url', 'is_enabled', 'order')
+        }),
+        ('Метаданные', {
+            'fields': ('created_by', 'created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+    readonly_fields = ['created_by', 'created_at', 'updated_at']
+    
+    def social_name(self, obj):
+        return obj.get_name_display()
+    social_name.short_description = 'Название'
     
     def save_model(self, request, obj, form, change):
         if not change:  # Создание нового объекта
