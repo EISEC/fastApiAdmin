@@ -12,11 +12,9 @@ import PostPreview from '../posts/PostPreview';
 import Modal from '../ui/Modal';
 import { clsx } from 'clsx';
 import Input from '../ui/Input';
-import Select from '../ui/Select';
 import Textarea from '../ui/Textarea';
 import ColorPicker from '../ui/ColorPicker';
 import { useToastStore } from '../../store/toastStore';
-import type { Category, Tag } from '../../types';
 import Icon from '../ui/Icon';
 
 // Zod схема валидации
@@ -287,7 +285,7 @@ const PostForm: React.FC<PostFormProps> = ({
       }
       
       onSuccess?.();
-    } catch {
+    } catch (_error) {
       // Ошибка уже обработана в store
     }
   };
@@ -327,7 +325,7 @@ const PostForm: React.FC<PostFormProps> = ({
       setSelectedCategories([...selectedCategories, category.id]);
       setIsCreateCategoryOpen(false);
       setNewCategory({ name: '', description: '', color: '#3B82F6' });
-    } catch (error) {
+    } catch (_error) {
       // Ошибка уже обработана в store
     } finally {
       setIsCreatingCategory(false);
@@ -360,7 +358,7 @@ const PostForm: React.FC<PostFormProps> = ({
       setSelectedTags([...selectedTags, tag.id]);
       setIsCreateTagOpen(false);
       setNewTag({ name: '', color: '#6B7280' });
-    } catch (error) {
+    } catch (_error) {
       // Ошибка уже обработана в store
     } finally {
       setIsCreatingTag(false);

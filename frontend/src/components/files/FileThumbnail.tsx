@@ -91,12 +91,6 @@ const FileThumbnail: React.FC<FileThumbnailProps> = ({
     lg: 'text-base'
   };
   
-  const iconSizes = {
-    sm: 'text-2xl',
-    md: 'text-4xl',
-    lg: 'text-6xl'
-  };
-
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (showSelect && onSelect) {

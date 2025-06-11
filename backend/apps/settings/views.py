@@ -70,6 +70,8 @@ class SettingCategoryViewSet(viewsets.ReadOnlyModelViewSet):
                         'updatedAt': setting.updated_at.isoformat() if setting.updated_at else None,
                     })
                 
+                # Всегда добавляем группу, даже если в ней нет настроек
+                # Особенно важно для группы "Социальные сети" которая управляется отдельно
                 groups_data.append({
                     'id': group.id,
                     'name': group.name,
@@ -345,10 +347,21 @@ class SettingTemplateViewSet(viewsets.ModelViewSet):
 
 
 class SocialNetworkSettingViewSet(viewsets.ModelViewSet):
-    """ViewSet для настроек социальных сетей (только для суперадминистраторов)"""
+    """ViewSet для настроек социальных сетей"""
     serializer_class = SocialNetworkSettingSerializer
-    permission_classes = [SuperAdminOnlyPermission]
     ordering = ['order', 'name']
+
+    def get_permissions(self):
+        """
+        Настройка прав доступа:
+        - Чтение (list, retrieve) - авторизованные пользователи  
+        - Изменение (create, update, destroy) - только суперадмины
+        """
+        if self.action in ['list', 'retrieve', 'public_list']:
+            permission_classes = [permissions.IsAuthenticated]
+        else:
+            permission_classes = [SuperAdminOnlyPermission]
+        return [permission() for permission in permission_classes]
 
     def get_queryset(self):
         """Получаем все социальные сети упорядоченно"""

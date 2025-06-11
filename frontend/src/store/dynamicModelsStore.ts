@@ -69,6 +69,10 @@ interface DynamicModelsState {
     previous: string | null;
   };
 
+  // Общие состояния для совместимости
+  isLoading: boolean;
+  error: string | null;
+
   // Model Data
   modelData: DynamicModelData[];
   selectedModelData: DynamicModelData | null;
@@ -113,6 +117,9 @@ interface DynamicModelsState {
   exportModelConfig: (id: number, includeData?: boolean) => Promise<void>;
   importModelConfig: (file: File) => Promise<boolean>;
   
+  // Actions - Status Management
+  toggleStatus: (id: number) => Promise<boolean>;
+  
   // State management
   setSelectedModel: (model: DynamicModel | null) => void;
   setSelectedModelData: (data: DynamicModelData | null) => void;
@@ -143,6 +150,10 @@ export const useDynamicModelsStore = create<DynamicModelsState>((set, get) => ({
 
   preview: null,
   previewLoading: false,
+  
+  // Общие состояния для совместимости
+  isLoading: false,
+  error: null,
 
   // Models Actions
   fetchModels: async (filters?: DynamicModelFilters) => {
@@ -572,6 +583,36 @@ export const useDynamicModelsStore = create<DynamicModelsState>((set, get) => ({
       return true;
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Ошибка импорта';
+      useToastStore.getState().addToast({
+        type: 'error',
+        title: 'Ошибка',
+        message: errorMessage,
+      });
+      return false;
+    }
+  },
+
+  // Status Management
+  toggleStatus: async (id: number) => {
+    try {
+      const updatedModel = await dynamicModelsService.toggleStatus(id);
+      
+      // Обновляем модель в списке
+      set(state => ({
+        models: state.models.map(model => 
+          model.id === id ? { ...model, is_active: updatedModel.is_active } : model
+        )
+      }));
+
+      useToastStore.getState().addToast({
+        type: 'success',
+        title: 'Успешно',
+        message: `Статус модели ${updatedModel.is_active ? 'активирован' : 'деактивирован'}`,
+      });
+
+      return true;
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Ошибка изменения статуса';
       useToastStore.getState().addToast({
         type: 'error',
         title: 'Ошибка',

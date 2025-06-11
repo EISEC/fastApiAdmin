@@ -41,10 +41,15 @@ SECURE_HSTS_PRELOAD = False
 # CORS - allow all origins in development
 CORS_ALLOW_ALL_ORIGINS = True
 
-# Cache configuration for development
+# Cache configuration for development - Redis
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/1',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        },
+        'KEY_PREFIX': 'fastapi_admin_dev',
     }
 }
 
