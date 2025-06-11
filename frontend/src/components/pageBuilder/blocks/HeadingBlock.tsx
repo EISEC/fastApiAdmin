@@ -46,7 +46,7 @@ const HeadingBlock: React.FC<HeadingBlockProps> = ({
     textAlign: styles.textAlign || 'left'
   });
 
-  const Tag = `h${data.level || 2}` as keyof JSX.IntrinsicElements;
+  const Tag = `h${data.level || 2}` as keyof React.JSX.IntrinsicElements;
 
   if (isEditing && isSelected) {
     return (
