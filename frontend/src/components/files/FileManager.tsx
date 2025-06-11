@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import type { FileItem, FolderItem, FileFilter, FileSort } from '../../types';
+import React, { useState, useEffect } from 'react';
+import type { FileItem, FolderItem } from '../../types';
 import { useFilesStore } from '../../store/filesStore';
 import FileThumbnail from './FileThumbnail';
 import FileUploader from './FileUploader';
@@ -28,7 +28,6 @@ const FileManager: React.FC<FileManagerProps> = ({
     folders,
     selectedFiles,
     selectedFolder,
-    currentPath,
     filter,
     sort,
     viewMode,

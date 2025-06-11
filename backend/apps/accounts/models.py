@@ -145,11 +145,16 @@ class CustomUser(AbstractUser):
     
     def get_accessible_sites(self):
         """Возвращает сайты, доступные для пользователя"""
+        from apps.sites.models import Site
+        
         if self.has_role(Role.SUPERUSER):
-            from apps.sites.models import Site
             return Site.objects.all()
         elif self.has_role(Role.ADMIN):
-            return self.owned_sites.all()
+            return self.owned_sites.all() if hasattr(self, 'owned_sites') else Site.objects.none()
         elif self.has_role(Role.AUTHOR):
             return self.assigned_sites.all()
-        return self.site.objects.none() if self.site else []
+        else:  # USER role
+            # Пользователи видят только свой основной сайт, если он есть
+            if self.site:
+                return Site.objects.filter(id=self.site.id)
+            return Site.objects.none()

@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.utils.html import format_html
 from django.urls import reverse
 from django.db.models import Count
-from .models import Site
+from .models import Site, SiteRequest
 
 
 @admin.register(Site)
@@ -135,3 +135,145 @@ class SiteAdmin(admin.ModelAdmin):
             return True
         
         return hasattr(request.user, 'role') and request.user.role.name == 'admin'
+
+
+@admin.register(SiteRequest)
+class SiteRequestAdmin(admin.ModelAdmin):
+    """Админка для запросов на доступ к сайтам"""
+    
+    list_display = [
+        'user', 'site', 'requested_role', 'status', 'created_at', 'reviewed_by', 'reviewed_at'
+    ]
+    list_filter = ['status', 'requested_role', 'created_at', 'reviewed_at']
+    search_fields = ['user__email', 'user__username', 'site__name', 'site__domain']
+    readonly_fields = ['created_at', 'updated_at', 'user_info', 'site_info']
+    
+    fieldsets = (
+        ('Основная информация', {
+            'fields': ('user', 'user_info', 'site', 'site_info', 'requested_role')
+        }),
+        ('Сообщение пользователя', {
+            'fields': ('message',)
+        }),
+        ('Рассмотрение запроса', {
+            'fields': ('status', 'admin_response', 'reviewed_by', 'reviewed_at')
+        }),
+        ('Временные метки', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+    
+    def user_info(self, obj):
+        """Дополнительная информация о пользователе"""
+        if obj.user:
+            role = obj.user.role.name if hasattr(obj.user, 'role') and obj.user.role else 'Нет роли'
+            return format_html(
+                '<strong>Email:</strong> {}<br>'
+                '<strong>Роль:</strong> {}<br>'
+                '<strong>Дата регистрации:</strong> {}',
+                obj.user.email,
+                role,
+                obj.user.date_joined.strftime('%d.%m.%Y %H:%M')
+            )
+        return 'Нет данных'
+    
+    user_info.short_description = 'Информация о пользователе'
+    
+    def site_info(self, obj):
+        """Дополнительная информация о сайте"""
+        if obj.site:
+            return format_html(
+                '<strong>Домен:</strong> {}<br>'
+                '<strong>Владелец:</strong> {}<br>'
+                '<strong>Активен:</strong> {}',
+                obj.site.domain,
+                obj.site.owner.email,
+                'Да' if obj.site.is_active else 'Нет'
+            )
+        return 'Нет данных'
+    
+    site_info.short_description = 'Информация о сайте'
+    
+    def get_queryset(self, request):
+        """Фильтрация запросов по ролям"""
+        queryset = super().get_queryset(request).select_related(
+            'user', 'user__role', 'site', 'site__owner', 'reviewed_by'
+        )
+        
+        if request.user.is_superuser:
+            return queryset
+        elif hasattr(request.user, 'role') and request.user.role.name == 'admin':
+            # Админы видят только запросы к своим сайтам
+            return queryset.filter(site__owner=request.user)
+        else:
+            return queryset.none()
+    
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        """Фильтрация полей по ролям"""
+        if db_field.name == "site":
+            if hasattr(request.user, 'role') and request.user.role.name == 'admin':
+                kwargs["queryset"] = kwargs["queryset"].filter(owner=request.user)
+        elif db_field.name == "user":
+            # Только пользователи с ролью user или author могут создавать запросы
+            kwargs["queryset"] = kwargs["queryset"].filter(
+                role__name__in=['user', 'author']
+            )
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+    
+    def has_change_permission(self, request, obj=None):
+        """Проверка прав на изменение"""
+        if obj is None:
+            return True
+        
+        if request.user.is_superuser:
+            return True
+        
+        # Админы могут изменять только запросы к своим сайтам
+        if hasattr(request.user, 'role') and request.user.role.name == 'admin':
+            return obj.site.owner == request.user
+        
+        return False
+    
+    def has_delete_permission(self, request, obj=None):
+        """Проверка прав на удаление"""
+        return self.has_change_permission(request, obj)
+    
+    def has_add_permission(self, request):
+        """Проверка прав на добавление"""
+        if request.user.is_superuser:
+            return True
+        
+        return hasattr(request.user, 'role') and request.user.role.name == 'admin'
+    
+    actions = ['approve_requests', 'reject_requests']
+    
+    def approve_requests(self, request, queryset):
+        """Массовое одобрение запросов"""
+        approved_count = 0
+        for site_request in queryset.filter(status='pending'):
+            if site_request.can_be_reviewed_by(request.user):
+                try:
+                    site_request.approve(request.user, "Одобрено массовым действием")
+                    approved_count += 1
+                except Exception as e:
+                    self.message_user(request, f"Ошибка при одобрении запроса {site_request}: {e}", level='ERROR')
+        
+        self.message_user(request, f"Одобрено запросов: {approved_count}")
+    
+    approve_requests.short_description = 'Одобрить выбранные запросы'
+    
+    def reject_requests(self, request, queryset):
+        """Массовое отклонение запросов"""
+        rejected_count = 0
+        for site_request in queryset.filter(status='pending'):
+            if site_request.can_be_reviewed_by(request.user):
+                try:
+                    site_request.reject(request.user, "Отклонено массовым действием")
+                    rejected_count += 1
+                except Exception as e:
+                    self.message_user(request, f"Ошибка при отклонении запроса {site_request}: {e}", level='ERROR')
+        
+        self.message_user(request, f"Отклонено запросов: {rejected_count}")
+    
+    reject_requests.short_description = 'Отклонить выбранные запросы'

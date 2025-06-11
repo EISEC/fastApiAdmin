@@ -227,6 +227,16 @@ def is_cache_enabled():
     return get_setting(SettingsKeys.CACHE_ENABLED, True)
 
 
+def get_cache_enabled():
+    """Алиас для is_cache_enabled"""
+    return is_cache_enabled()
+
+
+def get_cache_timeout():
+    """Получить таймаут кэша"""
+    return get_setting(SettingsKeys.CACHE_TIMEOUT, 3600)
+
+
 def is_debug_mode():
     """Проверить включен ли режим отладки"""
     return get_setting(SettingsKeys.DEBUG_MODE, False)

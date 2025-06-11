@@ -148,3 +148,184 @@ class Site(models.Model):
             return user in self.assigned_users.all()
         
         return False
+
+
+class SiteRequest(models.Model):
+    """Модель запроса пользователя на доступ к сайту"""
+    
+    STATUS_CHOICES = [
+        ('pending', 'Ожидает рассмотрения'),
+        ('approved', 'Одобрен'),
+        ('rejected', 'Отклонен'),
+    ]
+    
+    ROLE_CHOICES = [
+        ('author', 'Автор'),
+        ('editor', 'Редактор'),
+    ]
+    
+    # Основная информация
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='site_requests',
+        verbose_name='Пользователь',
+        help_text='Пользователь, запрашивающий доступ'
+    )
+    site = models.ForeignKey(
+        Site,
+        on_delete=models.CASCADE,
+        related_name='access_requests',
+        verbose_name='Сайт',
+        help_text='Сайт, к которому запрашивается доступ'
+    )
+    requested_role = models.CharField(
+        max_length=20,
+        choices=ROLE_CHOICES,
+        default='author',
+        verbose_name='Запрашиваемая роль',
+        help_text='Роль, которую пользователь хочет получить'
+    )
+    
+    # Сообщения
+    message = models.TextField(
+        blank=True,
+        verbose_name='Сообщение от пользователя',
+        help_text='Дополнительная информация о запросе'
+    )
+    admin_response = models.TextField(
+        blank=True,
+        verbose_name='Ответ администратора',
+        help_text='Комментарий администратора к решению'
+    )
+    
+    # Статус и даты
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='pending',
+        verbose_name='Статус',
+        help_text='Текущий статус запроса'
+    )
+    
+    # Мета информация
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Дата создания'
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        verbose_name='Дата обновления'
+    )
+    reviewed_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name='Дата рассмотрения'
+    )
+    reviewed_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='reviewed_site_requests',
+        verbose_name='Рассмотрел',
+        help_text='Администратор, рассмотревший запрос'
+    )
+    
+    class Meta:
+        verbose_name = 'Запрос на доступ к сайту'
+        verbose_name_plural = 'Запросы на доступ к сайтам'
+        ordering = ['-created_at']
+        
+        # Уникальность: один пользователь может иметь только один активный запрос на конкретный сайт
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'site'],
+                condition=models.Q(status='pending'),
+                name='unique_pending_site_request'
+            )
+        ]
+        
+        indexes = [
+            models.Index(fields=['user', 'status']),
+            models.Index(fields=['site', 'status']),
+            models.Index(fields=['-created_at']),
+            models.Index(fields=['status', '-created_at']),
+        ]
+    
+    def __str__(self) -> str:
+        return f"{self.user.username} -> {self.site.name} ({self.get_status_display()})"
+    
+    def can_be_reviewed_by(self, user) -> bool:
+        """Проверяет, может ли пользователь рассматривать этот запрос"""
+        if not user.is_authenticated:
+            return False
+            
+        # Суперпользователь может рассматривать любые запросы
+        if hasattr(user, 'role') and user.role.name == 'superuser':
+            return True
+            
+        # Админ может рассматривать запросы только к своим сайтам
+        if hasattr(user, 'role') and user.role.name == 'admin':
+            return self.site.owner == user
+            
+        return False
+    
+    def approve(self, admin_user, response_message=""):
+        """Одобряет запрос и назначает пользователя к сайту"""
+        from django.utils import timezone
+        
+        if not self.can_be_reviewed_by(admin_user):
+            raise PermissionError("У вас нет прав для рассмотрения этого запроса")
+        
+        if self.status != 'pending':
+            raise ValueError("Можно одобрить только ожидающие запросы")
+        
+        # Обновляем статус запроса
+        self.status = 'approved'
+        self.reviewed_by = admin_user
+        self.reviewed_at = timezone.now()
+        self.admin_response = response_message
+        self.save()
+        
+        # Назначаем пользователя к сайту (через M2M поле)
+        # Предполагаем, что у Site модели есть assigned_users поле
+        if hasattr(self.site, 'assigned_users'):
+            self.site.assigned_users.add(self.user)
+        
+        # Можно добавить отправку уведомления пользователю
+        return True
+    
+    def reject(self, admin_user, response_message=""):
+        """Отклоняет запрос"""
+        from django.utils import timezone
+        
+        if not self.can_be_reviewed_by(admin_user):
+            raise PermissionError("У вас нет прав для рассмотрения этого запроса")
+        
+        if self.status != 'pending':
+            raise ValueError("Можно отклонить только ожидающие запросы")
+        
+        # Обновляем статус запроса
+        self.status = 'rejected'
+        self.reviewed_by = admin_user
+        self.reviewed_at = timezone.now()
+        self.admin_response = response_message
+        self.save()
+        
+        return True
+    
+    @property
+    def is_pending(self) -> bool:
+        """Проверяет, ожидает ли запрос рассмотрения"""
+        return self.status == 'pending'
+    
+    @property
+    def is_approved(self) -> bool:
+        """Проверяет, одобрен ли запрос"""
+        return self.status == 'approved'
+    
+    @property
+    def is_rejected(self) -> bool:
+        """Проверяет, отклонен ли запрос"""
+        return self.status == 'rejected'

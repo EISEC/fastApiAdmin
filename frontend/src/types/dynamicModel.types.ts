@@ -48,6 +48,7 @@ export interface FieldValidation {
 export interface DynamicModel {
   id: number;
   name: string;
+  display_name?: string;
   site: number;
   description?: string;
   model_type: 'standalone' | 'extension';
@@ -55,6 +56,7 @@ export interface DynamicModel {
   fields_config: {
     fields: DynamicModelField[];
   };
+  fields: DynamicModelField[]; // Для совместимости
   validation_rules?: Record<string, any>;
   version: number;
   parent_model?: number;
@@ -118,6 +120,7 @@ export interface DynamicModelPermission {
 // API Request/Response типы
 export interface DynamicModelCreateData {
   name: string;
+  display_name?: string;
   site: number;
   description?: string;
   model_type: 'standalone' | 'extension';
@@ -125,11 +128,13 @@ export interface DynamicModelCreateData {
   fields_config: {
     fields: DynamicModelField[];
   };
+  fields?: DynamicModelField[]; // Для совместимости
   validation_rules?: Record<string, any>;
 }
 
 export interface DynamicModelUpdateData {
   name?: string;
+  display_name?: string;
   site?: number;
   description?: string;
   model_type?: 'standalone' | 'extension';
@@ -137,6 +142,7 @@ export interface DynamicModelUpdateData {
   fields_config?: {
     fields: DynamicModelField[];
   };
+  fields?: DynamicModelField[]; // Для совместимости
   validation_rules?: Record<string, any>;
   is_active?: boolean;
 }

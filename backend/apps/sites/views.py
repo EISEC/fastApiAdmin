@@ -5,13 +5,17 @@ from rest_framework.response import Response
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django.db.models import Count, Q
 
-from .models import Site
+from .models import Site, SiteRequest
 from .serializers import (
     SiteListSerializer,
     SiteDetailSerializer,
     SiteCreateUpdateSerializer,
     SiteStatsSerializer,
-    SiteAssignUsersSerializer
+    SiteAssignUsersSerializer,
+    SiteRequestListSerializer,
+    SiteRequestDetailSerializer,
+    SiteRequestCreateSerializer,
+    SiteRequestReviewSerializer
 )
 from apps.common.permissions import SitePermission
 from apps.accounts.models import Role
@@ -372,3 +376,187 @@ class SiteViewSet(viewsets.ModelViewSet):
             stats['warnings'].append('Это последний сайт владельца')
         
         return Response(stats)
+
+
+class SiteRequestViewSet(viewsets.ModelViewSet):
+    """ViewSet для управления запросами на доступ к сайтам"""
+    
+    queryset = SiteRequest.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [SearchFilter, OrderingFilter]
+    search_fields = ['user__username', 'user__email', 'site__name', 'site__domain']
+    ordering_fields = ['created_at', 'status', 'reviewed_at']
+    ordering = ['-created_at']
+    
+    def get_serializer_class(self):
+        """Выбор сериализатора в зависимости от действия"""
+        if self.action == 'list':
+            return SiteRequestListSerializer
+        elif self.action == 'create':
+            return SiteRequestCreateSerializer
+        elif self.action in ['review']:
+            return SiteRequestReviewSerializer
+        else:
+            return SiteRequestDetailSerializer
+    
+    def get_queryset(self):
+        """Фильтрация запросов в зависимости от роли пользователя"""
+        user = self.request.user
+        
+        # Проверка для Swagger схемы и анонимных пользователей
+        if not user.is_authenticated or not hasattr(user, 'role') or user.role is None:
+            return SiteRequest.objects.none()
+        
+        user_role = user.role.name
+        
+        if user_role == Role.SUPERUSER:
+            # Суперпользователь видит все запросы
+            return SiteRequest.objects.all().select_related('user', 'site', 'reviewed_by')
+        elif user_role == Role.ADMIN:
+            # Админ видит только запросы к своим сайтам
+            return SiteRequest.objects.filter(site__owner=user).select_related('user', 'site', 'reviewed_by')
+        elif user_role == Role.USER:
+            # Пользователи видят только свои запросы
+            return SiteRequest.objects.filter(user=user).select_related('user', 'site', 'reviewed_by')
+        else:
+            # Авторы не могут создавать запросы (уже имеют доступ)
+            return SiteRequest.objects.none()
+    
+    def create(self, request, *args, **kwargs):
+        """Создание запроса на доступ к сайту"""
+        # Проверяем роль пользователя
+        if not hasattr(request.user, 'role') or request.user.role.name != Role.USER:
+            return Response({
+                'error': 'Только пользователи с ролью USER могут создавать запросы на доступ'
+            }, status=status.HTTP_403_FORBIDDEN)
+        
+        return super().create(request, *args, **kwargs)
+    
+    @action(detail=True, methods=['post'])
+    def review(self, request, pk=None):
+        """Рассмотрение запроса (одобрение или отклонение)"""
+        site_request = self.get_object()
+        
+        # Проверяем права на рассмотрение
+        if not site_request.can_be_reviewed_by(request.user):
+            return Response({
+                'error': 'У вас нет прав для рассмотрения этого запроса'
+            }, status=status.HTTP_403_FORBIDDEN)
+        
+        # Проверяем, что запрос ожидает рассмотрения
+        if site_request.status != 'pending':
+            return Response({
+                'error': 'Можно рассматривать только ожидающие запросы'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        serializer = SiteRequestReviewSerializer(
+            site_request, 
+            data=request.data, 
+            context={'request': request}
+        )
+        
+        if serializer.is_valid():
+            serializer.save()
+            
+            # Возвращаем обновленную информацию о запросе
+            detail_serializer = SiteRequestDetailSerializer(
+                site_request, 
+                context={'request': request}
+            )
+            return Response(detail_serializer.data)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['get'])
+    def my_requests(self, request):
+        """Получение запросов текущего пользователя"""
+        user = request.user
+        
+        # Проверка аутентификации
+        if not user.is_authenticated or not hasattr(user, 'role') or user.role is None:
+            return Response([])
+        
+        # Пользователи видят только свои запросы
+        requests_qs = SiteRequest.objects.filter(user=user).select_related('site', 'reviewed_by')
+        
+        serializer = SiteRequestListSerializer(requests_qs, many=True)
+        return Response(serializer.data)
+    
+    @action(detail=False, methods=['get'])
+    def pending_reviews(self, request):
+        """Получение запросов, ожидающих рассмотрения для админов"""
+        user = request.user
+        
+        # Проверка прав
+        if not hasattr(user, 'role') or user.role.name not in [Role.SUPERUSER, Role.ADMIN]:
+            return Response({
+                'error': 'У вас нет прав для просмотра запросов на рассмотрение'
+            }, status=status.HTTP_403_FORBIDDEN)
+        
+        # Фильтруем только ожидающие запросы
+        if user.role.name == Role.SUPERUSER:
+            requests_qs = SiteRequest.objects.filter(status='pending')
+        else:  # ADMIN
+            requests_qs = SiteRequest.objects.filter(status='pending', site__owner=user)
+        
+        requests_qs = requests_qs.select_related('user', 'site')
+        
+        serializer = SiteRequestListSerializer(requests_qs, many=True)
+        return Response(serializer.data)
+    
+    @action(detail=False, methods=['get'])
+    def available_sites(self, request):
+        """Получение сайтов, к которым пользователь может запросить доступ"""
+        user = request.user
+        
+        # Проверяем роль
+        if not hasattr(user, 'role') or user.role.name != Role.USER:
+            return Response({
+                'error': 'Только пользователи с ролью USER могут запрашивать доступ к сайтам'
+            }, status=status.HTTP_403_FORBIDDEN)
+        
+        # Исключаем сайты:
+        # 1. К которым у пользователя уже есть доступ
+        # 2. К которым у пользователя есть активный запрос
+        # 3. Которыми пользователь владеет
+        # 4. Неактивные сайты
+        
+        user_assigned_sites = Site.objects.filter(assigned_users=user).values_list('id', flat=True)
+        user_pending_requests = SiteRequest.objects.filter(
+            user=user, 
+            status='pending'
+        ).values_list('site_id', flat=True)
+        
+        available_sites = Site.objects.filter(
+            is_active=True
+        ).exclude(
+            Q(id__in=user_assigned_sites) |
+            Q(id__in=user_pending_requests) |
+            Q(owner=user)
+        ).select_related('owner')
+        
+        serializer = SiteListSerializer(available_sites, many=True)
+        return Response(serializer.data)
+    
+    @action(detail=True, methods=['delete'])
+    def cancel_request(self, request, pk=None):
+        """Отмена запроса пользователем"""
+        site_request = self.get_object()
+        
+        # Проверяем, что пользователь может отменить запрос
+        if site_request.user != request.user:
+            return Response({
+                'error': 'Вы можете отменить только свои запросы'
+            }, status=status.HTTP_403_FORBIDDEN)
+        
+        # Проверяем, что запрос ожидает рассмотрения
+        if site_request.status != 'pending':
+            return Response({
+                'error': 'Можно отменить только ожидающие запросы'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        site_request.delete()
+        
+        return Response({
+            'message': 'Запрос на доступ к сайту отменен'
+        }, status=status.HTTP_200_OK)

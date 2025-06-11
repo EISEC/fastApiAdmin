@@ -1,3 +1,12 @@
 from django.db import models
 
-# Create your models here.
+
+class BaseModel(models.Model):
+    """
+    Базовая модель с общими полями для всех моделей
+    """
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='Дата обновления')
+    
+    class Meta:
+        abstract = True

@@ -59,6 +59,7 @@ LOCAL_APPS = [
     'apps.posts',
     'apps.pages',
     'apps.dynamic_models',
+    'apps.analytics',
     'apps.common',
     'apps.api',
     'apps.settings',
@@ -74,8 +75,13 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'apps.analytics.middleware.AnalyticsMiddleware',  # Аналитика (ПОСЛЕ авторизации!)
+    'apps.analytics.middleware.SessionTrackingMiddleware',  # Отслеживание сессий
+    'apps.common.middleware.APICacheMiddleware',  # Кэширование API (ПОСЛЕ авторизации!)
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'apps.common.middleware.CacheInvalidationMiddleware',  # Инвалидация кэша
+    'apps.common.middleware.CacheStatsMiddleware',  # Статистика кэша
 ]
 
 ROOT_URLCONF = 'core.urls'

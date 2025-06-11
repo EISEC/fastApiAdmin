@@ -327,6 +327,16 @@ class DynamicModelsService {
     await apiClient.delete(`${this.baseUrl}/permissions/${id}/`);
   }
 
+  /**
+   * Переключение статуса модели
+   */
+  async toggleStatus(id: number) {
+    const response = await apiClient.patch<DynamicModel>(
+      `${this.baseUrl}/models/${id}/toggle_status/`
+    );
+    return response.data;
+  }
+
   // === Утилиты ===
 
   /**

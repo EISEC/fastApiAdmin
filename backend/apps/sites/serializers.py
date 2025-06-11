@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from .models import Site
+from .models import Site, SiteRequest
 from apps.accounts.models import Role
 
 User = get_user_model()
@@ -208,4 +208,166 @@ class SiteAssignUsersSerializer(serializers.Serializer):
                     f'Пользователя с ролью {user.role.get_name_display()} нельзя назначить на сайт'
                 )
         
-        return value 
+        return value
+
+
+class SiteRequestListSerializer(serializers.ModelSerializer):
+    """Сериализатор для списка запросов на доступ к сайтам"""
+    
+    user_name = serializers.CharField(source='user.get_full_name', read_only=True)
+    user_email = serializers.CharField(source='user.email', read_only=True)
+    site_name = serializers.CharField(source='site.name', read_only=True)
+    site_domain = serializers.CharField(source='site.domain', read_only=True)
+    reviewed_by_name = serializers.CharField(source='reviewed_by.get_full_name', read_only=True)
+    
+    class Meta:
+        model = SiteRequest
+        fields = [
+            'id', 'user', 'user_name', 'user_email', 'site', 'site_name', 'site_domain',
+            'requested_role', 'status', 'message', 'admin_response', 'reviewed_by', 
+            'reviewed_by_name', 'created_at', 'updated_at', 'reviewed_at'
+        ]
+        read_only_fields = [
+            'id', 'user', 'reviewed_by', 'reviewed_at', 'created_at', 'updated_at'
+        ]
+
+
+class SiteRequestDetailSerializer(serializers.ModelSerializer):
+    """Подробный сериализатор запроса на доступ к сайту"""
+    
+    user_details = serializers.SerializerMethodField()
+    site_details = serializers.SerializerMethodField()
+    reviewed_by_details = serializers.SerializerMethodField()
+    can_review = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = SiteRequest
+        fields = [
+            'id', 'user', 'user_details', 'site', 'site_details', 'requested_role',
+            'message', 'status', 'admin_response', 'reviewed_by', 'reviewed_by_details',
+            'can_review', 'created_at', 'updated_at', 'reviewed_at'
+        ]
+        read_only_fields = [
+            'id', 'user', 'reviewed_by', 'reviewed_at', 'created_at', 'updated_at'
+        ]
+    
+    def get_user_details(self, obj):
+        """Детальная информация о пользователе"""
+        from apps.accounts.serializers import UserListSerializer
+        return UserListSerializer(obj.user).data
+    
+    def get_site_details(self, obj):
+        """Детальная информация о сайте"""
+        return {
+            'id': obj.site.id,
+            'name': obj.site.name,
+            'domain': obj.site.domain,
+            'owner_name': obj.site.owner.get_full_name(),
+            'owner_email': obj.site.owner.email,
+            'is_active': obj.site.is_active,
+        }
+    
+    def get_reviewed_by_details(self, obj):
+        """Детальная информация о том, кто рассмотрел запрос"""
+        if obj.reviewed_by:
+            from apps.accounts.serializers import UserListSerializer
+            return UserListSerializer(obj.reviewed_by).data
+        return None
+    
+    def get_can_review(self, obj):
+        """Может ли текущий пользователь рассматривать этот запрос"""
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            return obj.can_be_reviewed_by(request.user)
+        return False
+
+
+class SiteRequestCreateSerializer(serializers.ModelSerializer):
+    """Сериализатор для создания запроса на доступ к сайту"""
+    
+    class Meta:
+        model = SiteRequest
+        fields = ['site', 'requested_role', 'message']
+    
+    def validate_site(self, value):
+        """Валидация сайта"""
+        request = self.context.get('request')
+        if not request or not request.user.is_authenticated:
+            raise serializers.ValidationError('Пользователь не аутентифицирован')
+        
+        user = request.user
+        
+        # Проверяем, что сайт активен
+        if not value.is_active:
+            raise serializers.ValidationError('Нельзя запросить доступ к неактивному сайту')
+        
+        # Проверяем, что пользователь еще не имеет доступа к сайту
+        if user in value.assigned_users.all():
+            raise serializers.ValidationError('У вас уже есть доступ к этому сайту')
+        
+        # Проверяем, что у пользователя нет активного запроса к этому сайту
+        if SiteRequest.objects.filter(user=user, site=value, status='pending').exists():
+            raise serializers.ValidationError('У вас уже есть активный запрос к этому сайту')
+        
+        # Проверяем, что пользователь не является владельцем сайта
+        if value.owner == user:
+            raise serializers.ValidationError('Вы являетесь владельцем этого сайта')
+        
+        return value
+    
+    def validate_requested_role(self, value):
+        """Валидация запрашиваемой роли"""
+        valid_roles = [choice[0] for choice in SiteRequest.ROLE_CHOICES]
+        if value not in valid_roles:
+            raise serializers.ValidationError(f'Недопустимая роль. Доступные роли: {valid_roles}')
+        
+        return value
+    
+    def create(self, validated_data):
+        """Создание запроса с установкой пользователя"""
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            validated_data['user'] = request.user
+        
+        return super().create(validated_data)
+
+
+class SiteRequestReviewSerializer(serializers.ModelSerializer):
+    """Сериализатор для рассмотрения запроса на доступ к сайту"""
+    
+    action = serializers.ChoiceField(choices=['approve', 'reject'], write_only=True)
+    
+    class Meta:
+        model = SiteRequest
+        fields = ['action', 'admin_response']
+    
+    def validate(self, attrs):
+        """Валидация данных для рассмотрения"""
+        request = self.context.get('request')
+        if not request or not request.user.is_authenticated:
+            raise serializers.ValidationError('Пользователь не аутентифицирован')
+        
+        # Проверяем права на рассмотрение
+        if not self.instance.can_be_reviewed_by(request.user):
+            raise serializers.ValidationError('У вас нет прав для рассмотрения этого запроса')
+        
+        # Проверяем, что запрос ожидает рассмотрения
+        if self.instance.status != 'pending':
+            raise serializers.ValidationError('Можно рассматривать только ожидающие запросы')
+        
+        return attrs
+    
+    def update(self, instance, validated_data):
+        """Обновление статуса запроса"""
+        action = validated_data.pop('action')
+        admin_response = validated_data.get('admin_response', '')
+        
+        request = self.context.get('request')
+        admin_user = request.user
+        
+        if action == 'approve':
+            instance.approve(admin_user, admin_response)
+        elif action == 'reject':
+            instance.reject(admin_user, admin_response)
+        
+        return instance 

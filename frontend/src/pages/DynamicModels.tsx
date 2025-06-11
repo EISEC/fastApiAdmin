@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { clsx } from 'clsx';
 import { useDynamicModelsStore, useToastStore } from '../store';
-import type { DynamicModel, FieldSchema, FieldType } from '../store';
+import type { DynamicModel, DynamicModelField } from '../types/dynamicModel.types';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import Icon from '../components/ui/Icon';
 import Button from '../components/ui/Button';
@@ -11,6 +11,7 @@ import Input from '../components/ui/Input';
 import Textarea from '../components/ui/Textarea';
 import Table from '../components/ui/Table';
 import DynamicModelBuilder from '../components/dynamic/DynamicModelBuilder';
+import { convertFieldsToSchema, convertFieldsFromSchema } from '../utils/typeConverters';
 
 /**
  * Страница управления динамическими моделями
@@ -37,7 +38,7 @@ const DynamicModels: React.FC = () => {
     name: '',
     display_name: '',
     description: '',
-    fields: [] as FieldSchema[]
+    fields: [] as DynamicModelField[]
   });
 
   useEffect(() => {
@@ -67,8 +68,25 @@ const DynamicModels: React.FC = () => {
       await createModel({
         name: newModel.name,
         display_name: newModel.display_name,
+        site: 1, // TODO: получить из контекста
+        model_type: 'standalone',
         description: newModel.description,
-        fields: newModel.fields
+        fields_config: {
+          fields: newModel.fields.map(field => ({
+            name: field.name,
+            type: field.type as string,
+            label: field.label,
+            required: field.required,
+            default_value: field.default_value,
+            help_text: field.help_text,
+            placeholder: field.placeholder,
+            options: field.options,
+            validation: field.validation,
+            ui_config: field.ui_config,
+            show_in_list: field.show_in_list,
+            order: field.order,
+          }))
+        }
       });
       
       setIsCreateModalOpen(false);
@@ -83,9 +101,12 @@ const DynamicModels: React.FC = () => {
     setEditingModel(model);
     setNewModel({
       name: model.name,
-      display_name: model.display_name,
+      display_name: model.display_name || '',
       description: model.description || '',
-      fields: [...model.fields]
+      fields: (model.fields_config?.fields || []).map((field, index) => ({
+        ...field,
+        id: `field_${index}` // Добавляем id для FieldSchema
+      }))
     });
     setIsEditModalOpen(true);
   };
@@ -100,7 +121,9 @@ const DynamicModels: React.FC = () => {
       await updateModel(editingModel.id, {
         display_name: newModel.display_name,
         description: newModel.description,
-        fields: newModel.fields
+        fields_config: {
+          fields: newModel.fields
+        }
       });
       
       setIsEditModalOpen(false);
@@ -174,7 +197,7 @@ const DynamicModels: React.FC = () => {
       label: 'Полей',
       render: (_value: unknown, model: DynamicModel) => (
         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-          {model.fields.length}
+          {model.fields_config?.fields?.length || 0}
         </span>
       )
     },
@@ -316,8 +339,8 @@ const DynamicModels: React.FC = () => {
               </div>
 
               <DynamicModelBuilder
-                fields={newModel.fields}
-                onChange={(fields) => setNewModel({ ...newModel, fields })}
+                fields={convertFieldsToSchema(newModel.fields)}
+                onChange={(fields) => setNewModel({ ...newModel, fields: convertFieldsFromSchema(fields) })}
               />
 
               <div className="flex gap-2 pt-4 border-t">
@@ -387,8 +410,8 @@ const DynamicModels: React.FC = () => {
               </div>
 
               <DynamicModelBuilder
-                fields={newModel.fields}
-                onChange={(fields) => setNewModel({ ...newModel, fields })}
+                fields={convertFieldsToSchema(newModel.fields)}
+                onChange={(fields) => setNewModel({ ...newModel, fields: convertFieldsFromSchema(fields) })}
               />
 
               <div className="flex gap-2 pt-4 border-t">
