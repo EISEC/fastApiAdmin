@@ -76,6 +76,7 @@ export interface SettingsGroup {
   description?: string;
   icon?: string;
   order: number;
+  category: SettingCategory;
   settings: Setting[];
 }
 

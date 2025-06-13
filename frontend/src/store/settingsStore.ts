@@ -40,12 +40,12 @@ export const useSettingsStore = create<SettingsStore>()(
         set({ isLoading: true, error: null });
         
         try {
-          // Используем реальный API backend
-          const backendSettings = await settingsService.getSettings();
-          const settings = settingsService.transformBackendToFrontend(backendSettings);
+          // Используем новый API endpoint который возвращает данные уже в нужном формате
+          const backendCategories = await settingsService.getCategories();
+          const categories = settingsService.transformCategoriesBackendToFrontend(backendCategories);
+          set({ categories });
           
           set({ 
-            settings,
             isLoading: false,
             error: null 
           });

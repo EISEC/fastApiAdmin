@@ -2,7 +2,7 @@ import React from 'react';
 import type { SettingsGroup as SettingsGroupType, Setting } from '../../types/settings.types';
 import Button from '../ui/Button';
 import Icon from '../ui/Icon';
-import SocialNetworksManager from './SocialNetworksManager';
+import IntegrationsSettings from './IntegrationsSettings';
 import { getIconName } from '../../utils/iconMapping';
 
 interface SettingsGroupProps {
@@ -14,6 +14,7 @@ interface SettingsGroupProps {
   onReset?: () => void;
   isLoading?: boolean;
   hasChanges?: boolean;
+  siteId?: string | number;
 }
 
 /**
@@ -27,29 +28,30 @@ const SettingsGroup: React.FC<SettingsGroupProps> = ({
   onSave,
   onReset,
   isLoading = false,
-  hasChanges = false
+  hasChanges = false,
+  siteId
 }) => {
-  // Специальная обработка для группы "Социальные сети" 
-  if (group.name === 'Социальные сети') {
-    return (
-      <div className="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
-        <div className="px-6 py-4 bg-gray-50 border-b border-gray-200">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <Icon name={getIconName(group.icon)} size="sm" />
-              <h3 className="text-lg font-semibold text-gray-900">{group.name}</h3>
-            </div>
-          </div>
-          {group.description && (
-            <p className="mt-2 text-sm text-gray-600">{group.description}</p>
-          )}
-        </div>
-        
-        <div className="p-6">
-          <SocialNetworksManager />
-        </div>
-      </div>
-    );
+  // Для отладки: выводим id и структуру группы
+  console.log('SettingsGroup:', group.id, group);
+
+  // Если в группе нет настроек — ничего не рендерим
+  if (!group.settings || group.settings.length === 0) {
+    return null;
+  }
+
+  // Специальные компоненты для определенных групп
+  if (group.id === 'social' || group.id === 'social_networks') {
+    return null;
+  }
+  if (group.id === 'payment') {
+    return <div className="p-6 text-gray-500">Настройки платежных систем появятся здесь</div>;
+  }
+  if (group.id === 'object_storage') {
+    return <IntegrationsSettings />;
+  }
+  const integrationIds = ['integrations', 'yandex_storage', 'storage'];
+  if (integrationIds.includes(group.id) && siteId) {
+    return <IntegrationsSettings />;
   }
 
   const renderSettingField = (setting: Setting) => {
@@ -245,54 +247,61 @@ const SettingsGroup: React.FC<SettingsGroupProps> = ({
     );
   };
 
-  return (
-    <div className="bg-white shadow-sm rounded-lg border border-gray-200">
-      <div className="px-6 py-4 border-b border-gray-200">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            {group.icon && <Icon name={getIconName(group.icon)} size="md" />}
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900">
-                {group.name}
-              </h3>
-              {group.description && (
-                <p className="text-sm text-gray-600">
-                  {group.description}
-                </p>
-              )}
-            </div>
-          </div>
+  const handleSave = () => {
+    if (onSave) {
+      onSave();
+    }
+  };
 
+  const hasUnsavedChanges = hasChanges;
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h3 className="text-lg font-semibold text-gray-900">{group.name}</h3>
+          {group.description && (
+            <p className="mt-1 text-sm text-gray-500">{group.description}</p>
+          )}
+        </div>
+        <div className="flex items-center space-x-3">
           {hasChanges && (
             <div className="flex items-center space-x-2">
-              <Button
-                variant="secondary"
-                size="sm"
-                onClick={onReset}
-                disabled={isLoading}
-              >
-                Сбросить
-              </Button>
-              <Button
-                variant="primary"
-                size="sm"
-                onClick={onSave}
-                disabled={isLoading}
-                loading={isLoading}
-              >
-                Сохранить
-              </Button>
+              <span className="text-sm text-yellow-600">Есть несохраненные изменения</span>
+              <div className="w-2 h-2 bg-yellow-400 rounded-full" />
             </div>
           )}
+          {onReset && (
+            <Button
+              variant="secondary"
+              onClick={onReset}
+              disabled={isLoading || !hasChanges}
+            >
+              <Icon name="refresh" className="mr-2" />
+              Сбросить
+            </Button>
+          )}
+          <Button
+            variant="primary"
+            onClick={handleSave}
+            disabled={!hasUnsavedChanges}
+            className="flex items-center"
+          >
+            <Icon name="check" className="mr-2" />
+            Сохранить изменения
+          </Button>
         </div>
       </div>
 
-      <div className="px-6 py-4">
-        <div className="space-y-6">
-          {group.settings
-            .sort((a, b) => (a.order || 0) - (b.order || 0))
-            .map(renderSettingField)}
-        </div>
+      <div className="space-y-4">
+        {group.settings.map((setting) => (
+          <div key={setting.key} className="bg-white rounded-lg p-4">
+            {renderSettingField(setting)}
+            {errors[setting.key] && (
+              <p className="mt-2 text-sm text-red-600">{errors[setting.key].join(', ')}</p>
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );

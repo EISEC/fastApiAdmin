@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from .models import Site, SiteRequest
+from .models import Site, SiteRequest, SiteStorageSettings
 from apps.accounts.models import Role
 
 User = get_user_model()
@@ -371,3 +371,14 @@ class SiteRequestReviewSerializer(serializers.ModelSerializer):
             instance.reject(admin_user, admin_response)
         
         return instance 
+
+
+class SiteStorageSettingsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SiteStorageSettings
+        fields = [
+            'access_key', 'secret_key', 'bucket_name', 'endpoint', 'region', 'updated_at'
+        ]
+        extra_kwargs = {
+            'secret_key': {'write_only': True}
+        } 

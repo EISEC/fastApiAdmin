@@ -4,8 +4,11 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django.db.models import Count, Q
+from rest_framework.exceptions import ValidationError
+import boto3
+from botocore.exceptions import ClientError
 
-from .models import Site, SiteRequest
+from .models import Site, SiteRequest, SiteStorageSettings
 from .serializers import (
     SiteListSerializer,
     SiteDetailSerializer,
@@ -15,7 +18,8 @@ from .serializers import (
     SiteRequestListSerializer,
     SiteRequestDetailSerializer,
     SiteRequestCreateSerializer,
-    SiteRequestReviewSerializer
+    SiteRequestReviewSerializer,
+    SiteStorageSettingsSerializer
 )
 from apps.common.permissions import SitePermission
 from apps.accounts.models import Role
@@ -560,3 +564,38 @@ class SiteRequestViewSet(viewsets.ModelViewSet):
         return Response({
             'message': 'Запрос на доступ к сайту отменен'
         }, status=status.HTTP_200_OK)
+
+
+class SiteStorageSettingsViewSet(viewsets.ModelViewSet):
+    queryset = SiteStorageSettings.objects.all()
+    serializer_class = SiteStorageSettingsSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_superuser:
+            return SiteStorageSettings.objects.all()
+        return SiteStorageSettings.objects.filter(site__owner=user)
+
+    def validate_storage(self, data):
+        try:
+            s3 = boto3.client(
+                's3',
+                aws_access_key_id=data['access_key'],
+                aws_secret_access_key=data['secret_key'],
+                endpoint_url=data.get('endpoint', 'https://storage.yandexcloud.net'),
+                region_name=data.get('region', 'ru-central1'),
+            )
+            # Проверяем доступность бакета
+            s3.head_bucket(Bucket=data['bucket_name'])
+        except ClientError as e:
+            raise ValidationError({'detail': f'Ошибка подключения к Object Storage: {str(e)}'})
+        return True
+
+    def perform_create(self, serializer):
+        self.validate_storage(serializer.validated_data)
+        serializer.save()
+
+    def perform_update(self, serializer):
+        self.validate_storage(serializer.validated_data)
+        serializer.save()

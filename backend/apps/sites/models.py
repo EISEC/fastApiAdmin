@@ -329,3 +329,20 @@ class SiteRequest(models.Model):
     def is_rejected(self) -> bool:
         """Проверяет, отклонен ли запрос"""
         return self.status == 'rejected'
+
+
+class SiteStorageSettings(models.Model):
+    site = models.OneToOneField(Site, on_delete=models.CASCADE, related_name='storage_settings')
+    access_key = models.CharField(max_length=128, verbose_name='Access Key')
+    secret_key = models.CharField(max_length=128, verbose_name='Secret Key')
+    bucket_name = models.CharField(max_length=128, verbose_name='Bucket Name')
+    endpoint = models.CharField(max_length=256, default='https://storage.yandexcloud.net', verbose_name='Endpoint')
+    region = models.CharField(max_length=64, default='ru-central1', verbose_name='Регион')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='Обновлено')
+
+    class Meta:
+        verbose_name = 'Настройки Object Storage'
+        verbose_name_plural = 'Object Storage для сайтов'
+
+    def __str__(self):
+        return f"Object Storage для {self.site.name}"
