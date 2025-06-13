@@ -26,6 +26,13 @@ class RoleSerializer(serializers.ModelSerializer):
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     """Кастомный сериализатор для получения JWT токенов с дополнительными данными"""
     
+    username_field = 'email'  # Используем email вместо username
+    
+    default_error_messages = {
+        'no_active_account': 'Неверный email или пароль',
+        'invalid_credentials': 'Неверный email или пароль',
+    }
+    
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
@@ -41,21 +48,27 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         return token
     
     def validate(self, attrs):
-        data = super().validate(attrs)
-        
-        # Добавляем информацию о пользователе в ответ
-        data.update({
-            'user_id': self.user.id,
-            'username': self.user.username,
-            'email': self.user.email,
-            'role': self.user.role.name,
-            'role_display': self.user.role.get_name_display(),
-            'first_name': self.user.first_name,
-            'last_name': self.user.last_name,
-            'avatar': self.user.avatar.url if self.user.avatar else None,
-        })
-        
-        return data
+        try:
+            data = super().validate(attrs)
+            
+            # Добавляем информацию о пользователе в ответ
+            data.update({
+                'user_id': self.user.id,
+                'username': self.user.username,
+                'email': self.user.email,
+                'role': self.user.role.name,
+                'role_display': self.user.role.get_name_display(),
+                'first_name': self.user.first_name,
+                'last_name': self.user.last_name,
+                'avatar': self.user.avatar.url if self.user.avatar else None,
+            })
+            
+            return data
+        except Exception as e:
+            raise serializers.ValidationError({
+                'detail': str(e),
+                'code': 'invalid_credentials'
+            })
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
