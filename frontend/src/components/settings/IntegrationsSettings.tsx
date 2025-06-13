@@ -187,15 +187,21 @@ const IntegrationsSettings: React.FC<IntegrationsSettingsProps> = () => {
       {/* Социальные сети */}
       <Card>
         <div className="p-6">
-          <h3 className="text-lg font-semibold mb-2">Социальные сети</h3>
-          <p className="text-sm text-gray-500 mb-4">Настройки внешних сервисов</p>
-          <Button
-            variant="primary"
-            className="mb-4"
-            onClick={() => window.dispatchEvent(new Event('open-social-form'))}
-          >
-            <Icon name="add" className="mr-2" /> Добавить социальную сеть
-          </Button>
+          <div className='flex justify-between'>
+            <div>
+              <h3 className="text-lg font-semibold mb-2">Социальные сети</h3>
+              <p className="text-sm text-gray-500 mb-4">Настройки внешних сервисов</p>
+            </div>
+            <div>
+              <Button
+                variant="primary"
+                className="mb-4"
+                onClick={() => window.dispatchEvent(new Event('open-social-form'))}
+              >
+                <Icon name="add" className="mr-2" /> Добавить социальную сеть
+              </Button>
+            </div>
+          </div>
           <SocialNetworksManager />
         </div>
       </Card>
