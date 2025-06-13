@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSettingsStore } from '../store/settingsStore';
 import { useAuthStore } from '../store/authStore';
+import { useSitesStore } from '../store/sitesStore';
 import type { SettingCategory } from '../types/settings.types';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import SettingsTabs from '../components/settings/SettingsTabs';
@@ -16,6 +17,7 @@ import { getIconName } from '../utils/iconMapping';
 const Settings: React.FC = () => {
   const navigate = useNavigate();
   const { user, isAuthenticated, isLoading } = useAuthStore();
+  const { currentSite } = useSitesStore();
   const {
     // Состояние
     categories,
@@ -73,6 +75,11 @@ const Settings: React.FC = () => {
       loadData();
     }
   }, [fetchSettings, fetchCategories, isAuthenticated, user]);
+
+  // Для отладки: выводим категории после загрузки
+  useEffect(() => {
+    console.log('categories:', categories);
+  }, [categories]);
 
   // Предупреждение о несохраненных изменениях при уходе со страницы
   useEffect(() => {
@@ -301,6 +308,7 @@ const Settings: React.FC = () => {
                       onReset={() => resetCategory(currentCategory)}
                       isLoading={isSaving}
                       hasChanges={hasGroupChanges}
+                      siteId={currentSite?.id}
                     />
                   );
                 })}

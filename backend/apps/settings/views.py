@@ -41,6 +41,8 @@ class SettingCategoryViewSet(viewsets.ReadOnlyModelViewSet):
         for category in categories:
             # Получаем группы для категории
             groups = SettingGroup.objects.filter(category=category, is_active=True).order_by('order', 'name')
+            if category.id == 'integrations':
+                print('DEBUG integrations groups:', [(g.id, g.name) for g in groups])
             groups_data = []
             
             for group in groups:

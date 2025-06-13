@@ -8,6 +8,7 @@ import Button from '../ui/Button';
 import Icon from '../ui/Icon';
 import { api } from '../../lib/axios.config';
 import { useToastStore } from '../../store/toastStore';
+import SocialNetworkForm from './SocialNetworkForm';
 
 interface SocialNetwork {
   id: string;
@@ -134,12 +135,23 @@ const SocialNetworksManager: React.FC = () => {
 
   const { success, error } = useToastStore();
 
+  // Открытие формы по событию
+  React.useEffect(() => {
+    const handler = () => {
+      setShowForm(true);
+      setEditingNetwork(null);
+      setFormData({ name: '', url: '', is_enabled: true });
+    };
+    window.addEventListener('open-social-form', handler);
+    return () => window.removeEventListener('open-social-form', handler);
+  }, []);
+
   // Загрузка социальных сетей
   const loadNetworks = async () => {
     setIsLoading(true);
     try {
-      const response = await api.get<SocialNetwork[]>('/settings/social-networks/');
-      setNetworks(response);
+      const response = await api.get<{ results: SocialNetwork[] }>('/settings/social-networks/');
+      setNetworks(response.results);
     } catch (err: any) {
       error('Ошибка загрузки', err.response?.data?.detail || 'Не удалось загрузить социальные сети');
     } finally {
@@ -260,104 +272,25 @@ const SocialNetworksManager: React.FC = () => {
 
   if (isLoading && networks.length === 0) {
     return (
-      <div className="bg-white rounded-lg border border-gray-200 p-6">
-        <div className="flex items-center justify-center py-8">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-        </div>
+      <div className="flex items-center justify-center py-8">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
       </div>
     );
   }
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h3 className="text-lg font-semibold text-gray-900 flex items-center">
-            <Icon name="mobile" className="mr-2" />
-            Социальные сети
-          </h3>
-          <p className="text-sm text-gray-600 mt-1">
-            Управление ссылками на социальные сети. Перетаскивайте для изменения порядка.
-          </p>
-        </div>
-
-        <Button
-          variant="primary"
-          onClick={() => setShowForm(true)}
-          disabled={isLoading}
-        >
-          <Icon name="add" size="sm" className="mr-2" />
-          Добавить
-        </Button>
-      </div>
-
+    <>
       {/* Форма создания/редактирования */}
       {showForm && (
-        <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
-          <h4 className="font-medium text-gray-900 mb-4">
-            {editingNetwork ? 'Редактирование социальной сети' : 'Добавление социальной сети'}
-          </h4>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Социальная сеть *
-              </label>
-              <select
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                disabled={!!editingNetwork}
-              >
-                <option value="">Выберите социальную сеть</option>
-                {SOCIAL_CHOICES.map((choice) => (
-                  <option key={choice.value} value={choice.value}>
-                    {choice.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                URL профиля *
-              </label>
-              <input
-                type="url"
-                value={formData.url}
-                onChange={(e) => setFormData({ ...formData, url: e.target.value })}
-                placeholder="https://..."
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              />
-            </div>
-
-            <div className="flex items-end">
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
-                  checked={formData.is_enabled}
-                  onChange={(e) => setFormData({ ...formData, is_enabled: e.target.checked })}
-                  className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                />
-                <span className="ml-2 text-sm text-gray-700">Активна</span>
-              </label>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-end space-x-3 mt-4">
-            <Button variant="secondary" onClick={handleCancel}>
-              Отмена
-            </Button>
-            <Button 
-              variant="primary" 
-              onClick={handleSave}
-              disabled={isLoading}
-              loading={isLoading}
-            >
-              {editingNetwork ? 'Сохранить' : 'Добавить'}
-            </Button>
-          </div>
-        </div>
+        <SocialNetworkForm
+          formData={formData}
+          setFormData={setFormData}
+          onSave={handleSave}
+          onCancel={handleCancel}
+          isLoading={isLoading}
+          isEditing={!!editingNetwork}
+          socialChoices={SOCIAL_CHOICES}
+        />
       )}
 
       {/* Список социальных сетей */}
@@ -387,13 +320,9 @@ const SocialNetworksManager: React.FC = () => {
           <p className="text-gray-600 mb-4">
             Добавьте ссылки на ваши профили в социальных сетях
           </p>
-          <Button variant="primary" onClick={() => setShowForm(true)}>
-            <Icon name="add" size="sm" className="mr-2" />
-            Добавить первую
-          </Button>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

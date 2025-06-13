@@ -6,6 +6,7 @@ import { useSitesStore } from '../../store';
 import type { Site, SiteCreateData, SiteUpdateData } from '../../types';
 import Button from '../ui/Button';
 import Card from '../ui/Card';
+import SiteStorageSettingsForm from './SiteStorageSettingsForm';
 
 // Zod схема валидации
 const siteSchema = z.object({
@@ -351,6 +352,14 @@ const SiteForm: React.FC<SiteFormProps> = ({
             </Button>
           </div>
         </form>
+
+        {/* Object Storage настройки только для редактирования сайта */}
+        {isEditing && site?.id && (
+          <div className="mt-10">
+            <h3 className="text-lg font-semibold mb-2">Object Storage (Яндекс Облако)</h3>
+            <SiteStorageSettingsForm siteId={site.id} />
+          </div>
+        )}
       </div>
     </Card>
   );

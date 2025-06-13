@@ -103,6 +103,7 @@ class Command(BaseCommand):
             # Integrations
             {'id': 'social', 'name': 'Социальные сети', 'category': 'integrations', 'icon': '📱', 'order': 1},
             {'id': 'payment', 'name': 'Платежи', 'category': 'integrations', 'icon': '💳', 'order': 2},
+            {'id': 'object_storage', 'name': 'Object Storage', 'category': 'integrations', 'icon': '🗄️', 'order': 3},
             
             # Performance
             {'id': 'cache', 'name': 'Кэширование', 'category': 'performance', 'icon': '🚀', 'order': 1},
@@ -321,6 +322,67 @@ class Command(BaseCommand):
                 'group': 'cache',
                 'default_value': 3600,
                 'order': 2
+            },
+            
+            # Object Storage
+            {
+                'key': 'object_storage.enabled',
+                'label': 'Включить Object Storage',
+                'type': 'boolean',
+                'group': 'object_storage',
+                'default_value': False,
+                'order': 1
+            },
+            {
+                'key': 'object_storage.provider',
+                'label': 'Провайдер',
+                'type': 'select',
+                'group': 'object_storage',
+                'default_value': 'yandex',
+                'options': [
+                    {'value': 'yandex', 'label': 'Yandex Object Storage'},
+                    {'value': 'aws', 'label': 'Amazon S3'},
+                    {'value': 'gcp', 'label': 'Google Cloud Storage'}
+                ],
+                'order': 2
+            },
+            {
+                'key': 'object_storage.bucket',
+                'label': 'Имя бакета',
+                'type': 'text',
+                'group': 'object_storage',
+                'placeholder': 'my-bucket',
+                'order': 3
+            },
+            {
+                'key': 'object_storage.endpoint',
+                'label': 'Endpoint URL',
+                'type': 'text',
+                'group': 'object_storage',
+                'placeholder': 'https://storage.yandexcloud.net',
+                'order': 4
+            },
+            {
+                'key': 'object_storage.access_key',
+                'label': 'Access Key',
+                'type': 'text',
+                'group': 'object_storage',
+                'order': 5
+            },
+            {
+                'key': 'object_storage.secret_key',
+                'label': 'Secret Key',
+                'type': 'password',
+                'group': 'object_storage',
+                'order': 6
+            },
+            {
+                'key': 'object_storage.region',
+                'label': 'Регион',
+                'type': 'text',
+                'group': 'object_storage',
+                'placeholder': 'ru-central1',
+                'order': 7
             },
             
             # Debug

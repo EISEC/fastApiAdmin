@@ -65,7 +65,7 @@ export class SettingsService {
       updated: Array<{ key: string; value: any; updated_at: string }>;
       count: number;
       errors?: string[];
-    }>(`${this.baseUrl}/bulk_update/`, { updates });
+    }>(`${this.baseUrl}/bulk/`, { updates });
     return response;
   }
 
