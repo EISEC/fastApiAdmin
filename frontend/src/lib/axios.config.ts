@@ -79,6 +79,11 @@ apiClient.interceptors.response.use(
       error.message = 'Ошибка сервера. Попробуйте позже.';
     }
     
+    // Handle authentication errors
+    if (error.response?.status === 401) {
+      error.message = error.response.data?.detail || 'Неверный email или пароль';
+    }
+    
     return Promise.reject(error);
   }
 );

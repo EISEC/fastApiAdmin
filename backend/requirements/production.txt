@@ -5,4 +5,10 @@ sentry-sdk==1.38.0
 django-health-check==3.17.0
 
 # Security
-django-security==0.17.0 
+django-security==0.17.0
+
+# FCGI для Beget хостинга
+flup6==1.1.1
+
+# Дополнительные зависимости для продакшена
+python-dotenv==1.0.0 

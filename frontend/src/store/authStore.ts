@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { AuthStore, LoginCredentials, RegisterData, PasswordChangeData, User, AuthTokens, ApiErrorResponse } from '../types';
 import { api } from '../lib/axios.config';
+import { AxiosError } from 'axios';
 
 export const useAuthStore = create<AuthStore>()(
   persist(
@@ -31,8 +32,8 @@ export const useAuthStore = create<AuthStore>()(
           // Fetch user profile
           await get().checkAuth();
         } catch (error: unknown) {
-          const apiError = error as ApiErrorResponse;
-          const errorMessage = apiError.message || 'Ошибка входа в систему';
+          const apiError = error as AxiosError<{ detail: string }>;
+          const errorMessage = apiError.response?.data?.detail || apiError.message || 'Ошибка входа в систему';
           
           set({
             error: errorMessage,
@@ -55,8 +56,8 @@ export const useAuthStore = create<AuthStore>()(
             password: data.password,
           });
         } catch (error: unknown) {
-          const apiError = error as ApiErrorResponse;
-          const errorMessage = apiError.message || 'Ошибка регистрации';
+          const apiError = error as AxiosError<{ detail: string }>;
+          const errorMessage = apiError.response?.data?.detail || apiError.message || 'Ошибка регистрации';
           
           set({
             error: errorMessage,
@@ -113,8 +114,8 @@ export const useAuthStore = create<AuthStore>()(
             isLoading: false,
           });
         } catch (error: unknown) {
-          const apiError = error as ApiErrorResponse;
-          const errorMessage = apiError.message || 'Ошибка обновления профиля';
+          const apiError = error as AxiosError<{ detail: string }>;
+          const errorMessage = apiError.response?.data?.detail || apiError.message || 'Ошибка обновления профиля';
           
           set({
             error: errorMessage,
@@ -132,8 +133,8 @@ export const useAuthStore = create<AuthStore>()(
           
           set({ isLoading: false });
         } catch (error: unknown) {
-          const apiError = error as ApiErrorResponse;
-          const errorMessage = apiError.message || 'Ошибка смены пароля';
+          const apiError = error as AxiosError<{ detail: string }>;
+          const errorMessage = apiError.response?.data?.detail || apiError.message || 'Ошибка смены пароля';
           
           set({
             error: errorMessage,

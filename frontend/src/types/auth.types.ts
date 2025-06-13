@@ -1,3 +1,19 @@
+export interface ApiErrorResponse {
+  message: string;
+  response?: {
+    data: {
+      detail: string;
+      code?: string;
+    };
+    status: number;
+  };
+  isAxiosError?: boolean;
+  config?: {
+    url?: string;
+    method?: string;
+  };
+}
+
 export interface User {
   id: number;
   email: string;
