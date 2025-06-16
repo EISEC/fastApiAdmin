@@ -1,2 +1,30 @@
+# Backend
+backend/venv/
 backend/db.sqlite3
 backend/dump.sql
+backend/logs/
+backend/media/
+backend/static/
+backend/cgi-bin/
+*.log
+__pycache__/
+*.pyc
+*.pyo
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+*.log
+
+# System/IDE
+.DS_Store
+.idea/
+.vscode/
+.cursor/
+.cache/
+.pytest_cache/
+*.tmp
+
+# Env
+.env
+.env.*
