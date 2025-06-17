@@ -1,11 +1,8 @@
+import os
 from decouple import config
 
-# Определяем какие настройки использовать
-environment = config('DJANGO_ENVIRONMENT', default='development')
-
-if environment == 'production':
+# Определяем, какие настройки использовать
+if os.environ.get('DJANGO_ENV') == 'production':
     from .production import *
-elif environment == 'testing':
-    from .testing import *
 else:
     from .development import *
