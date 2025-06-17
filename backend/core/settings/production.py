@@ -149,3 +149,14 @@ USE_TZ = True
 # Настройки кодировки
 DEFAULT_CHARSET = 'utf-8'
 FILE_CHARSET = 'utf-8'
+
+# CORS settings for production
+CORS_ALLOW_ALL_ORIGINS = False  # В продакшене разрешаем только конкретные домены
+CORS_ALLOWED_ORIGINS = [
+    "https://ifuw.ru",
+    "https://www.ifuw.ru",
+]
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://\w+\.ifuw\.ru$",
+]
+CORS_ALLOW_CREDENTIALS = True

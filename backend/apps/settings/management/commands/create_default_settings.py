@@ -14,56 +14,56 @@ class Command(BaseCommand):
                 'id': 'general',
                 'name': 'Основные',
                 'description': 'Основные настройки системы',
-                'icon': '⚙️',
+                'icon': 'settings',
                 'order': 1
             },
             {
                 'id': 'appearance',
                 'name': 'Внешний вид',
                 'description': 'Настройки оформления и темы',
-                'icon': '🎨',
+                'icon': 'palette',
                 'order': 2
             },
             {
                 'id': 'seo',
                 'name': 'SEO',
                 'description': 'Настройки поисковой оптимизации',
-                'icon': '🔍',
+                'icon': 'search',
                 'order': 3
             },
             {
                 'id': 'notifications',
                 'name': 'Уведомления',
                 'description': 'Настройки уведомлений и рассылок',
-                'icon': '📧',
+                'icon': 'mail',
                 'order': 4
             },
             {
                 'id': 'security',
                 'name': 'Безопасность',
                 'description': 'Настройки безопасности и доступа',
-                'icon': '🔒',
+                'icon': 'lock',
                 'order': 5
             },
             {
                 'id': 'integrations',
                 'name': 'Интеграции',
                 'description': 'Настройки внешних сервисов',
-                'icon': '🔗',
+                'icon': 'link',
                 'order': 6
             },
             {
                 'id': 'performance',
                 'name': 'Производительность',
                 'description': 'Настройки кэширования и оптимизации',
-                'icon': '⚡',
+                'icon': 'speed',
                 'order': 7
             },
             {
                 'id': 'developer',
                 'name': 'Разработчик',
                 'description': 'Настройки для разработчиков',
-                'icon': '💻',
+                'icon': 'code',
                 'order': 8
             }
         ]
@@ -79,39 +79,39 @@ class Command(BaseCommand):
         # Создаем группы настроек
         groups_data = [
             # General
-            {'id': 'site_info', 'name': 'Информация о сайте', 'category': 'general', 'icon': '🏠', 'order': 1},
-            {'id': 'contact_info', 'name': 'Контактная информация', 'category': 'general', 'icon': '📞', 'order': 2},
-            {'id': 'regional', 'name': 'Региональные настройки', 'category': 'general', 'icon': '🌍', 'order': 3},
+            {'id': 'site_info', 'name': 'Информация о сайте', 'category': 'general', 'icon': 'home', 'order': 1},
+            {'id': 'contact_info', 'name': 'Контактная информация', 'category': 'general', 'icon': 'phone', 'order': 2},
+            {'id': 'regional', 'name': 'Региональные настройки', 'category': 'general', 'icon': 'globe', 'order': 3},
             
             # Appearance
-            {'id': 'theme', 'name': 'Тема оформления', 'category': 'appearance', 'icon': '🎭', 'order': 1},
-            {'id': 'colors', 'name': 'Цветовая схема', 'category': 'appearance', 'icon': '🌈', 'order': 2},
-            {'id': 'typography', 'name': 'Типографика', 'category': 'appearance', 'icon': '📝', 'order': 3},
+            {'id': 'theme', 'name': 'Тема оформления', 'category': 'appearance', 'icon': 'brush', 'order': 1},
+            {'id': 'colors', 'name': 'Цветовая схема', 'category': 'appearance', 'icon': 'color', 'order': 2},
+            {'id': 'typography', 'name': 'Типографика', 'category': 'appearance', 'icon': 'text', 'order': 3},
             
             # SEO
-            {'id': 'meta', 'name': 'Meta теги', 'category': 'seo', 'icon': '🏷️', 'order': 1},
-            {'id': 'analytics', 'name': 'Аналитика', 'category': 'seo', 'icon': '📊', 'order': 2},
+            {'id': 'meta', 'name': 'Meta теги', 'category': 'seo', 'icon': 'tag', 'order': 1},
+            {'id': 'analytics', 'name': 'Аналитика', 'category': 'seo', 'icon': 'chart', 'order': 2},
             
             # Notifications
-            {'id': 'email', 'name': 'Email уведомления', 'category': 'notifications', 'icon': '✉️', 'order': 1},
-            {'id': 'push', 'name': 'Push уведомления', 'category': 'notifications', 'icon': '🔔', 'order': 2},
+            {'id': 'email', 'name': 'Email уведомления', 'category': 'notifications', 'icon': 'mail', 'order': 1},
+            {'id': 'push', 'name': 'Push уведомления', 'category': 'notifications', 'icon': 'bell', 'order': 2},
             
             # Security
-            {'id': 'auth', 'name': 'Аутентификация', 'category': 'security', 'icon': '🔑', 'order': 1},
-            {'id': 'access', 'name': 'Контроль доступа', 'category': 'security', 'icon': '🛡️', 'order': 2},
+            {'id': 'auth', 'name': 'Аутентификация', 'category': 'security', 'icon': 'key', 'order': 1},
+            {'id': 'access', 'name': 'Контроль доступа', 'category': 'security', 'icon': 'shield', 'order': 2},
             
             # Integrations
-            {'id': 'social', 'name': 'Социальные сети', 'category': 'integrations', 'icon': '📱', 'order': 1},
-            {'id': 'payment', 'name': 'Платежи', 'category': 'integrations', 'icon': '💳', 'order': 2},
-            {'id': 'object_storage', 'name': 'Object Storage', 'category': 'integrations', 'icon': '🗄️', 'order': 3},
+            {'id': 'social', 'name': 'Социальные сети', 'category': 'integrations', 'icon': 'share', 'order': 1},
+            {'id': 'payment', 'name': 'Платежи', 'category': 'integrations', 'icon': 'card', 'order': 2},
+            {'id': 'object_storage', 'name': 'Object Storage', 'category': 'integrations', 'icon': 'storage', 'order': 3},
             
             # Performance
-            {'id': 'cache', 'name': 'Кэширование', 'category': 'performance', 'icon': '🚀', 'order': 1},
-            {'id': 'optimization', 'name': 'Оптимизация', 'category': 'performance', 'icon': '⚡', 'order': 2},
+            {'id': 'cache', 'name': 'Кэширование', 'category': 'performance', 'icon': 'speed', 'order': 1},
+            {'id': 'optimization', 'name': 'Оптимизация', 'category': 'performance', 'icon': 'tune', 'order': 2},
             
             # Developer
-            {'id': 'debug', 'name': 'Отладка', 'category': 'developer', 'icon': '🐛', 'order': 1},
-            {'id': 'api', 'name': 'API настройки', 'category': 'developer', 'icon': '🔌', 'order': 2},
+            {'id': 'debug', 'name': 'Отладка', 'category': 'developer', 'icon': 'bug', 'order': 1},
+            {'id': 'api', 'name': 'API настройки', 'category': 'developer', 'icon': 'api', 'order': 2},
         ]
         
         for group_data in groups_data:
@@ -248,7 +248,7 @@ class Command(BaseCommand):
                 'label': 'SEO описание',
                 'type': 'textarea',
                 'group': 'meta',
-                'placeholder': 'Описание для поисковых систем',
+                'placeholder': 'SEO описание для главной страницы',
                 'order': 2
             },
             
@@ -404,17 +404,14 @@ class Command(BaseCommand):
                     'label': setting_data['label'],
                     'type': setting_data['type'],
                     'group': group,
-                    'default_value': setting_data.get('default_value'),
-                    'value': setting_data.get('default_value'),
-                    'is_required': setting_data.get('is_required', False),
-                    'options': setting_data.get('options'),
+                    'default_value': setting_data.get('default_value', ''),
                     'placeholder': setting_data.get('placeholder', ''),
+                    'options': setting_data.get('options', []),
+                    'is_required': setting_data.get('is_required', False),
                     'order': setting_data['order']
                 }
             )
             if created:
                 self.stdout.write(f'✓ Создана настройка: {setting.label}')
         
-        self.stdout.write(
-            self.style.SUCCESS('✅ Базовые настройки созданы успешно!')
-        ) 
+        self.stdout.write(self.style.SUCCESS('✅ Базовые настройки успешно созданы!')) 

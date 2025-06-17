@@ -233,13 +233,36 @@ SIMPLE_JWT = {
 }
 
 # CORS settings
-CORS_ALLOWED_ORIGINS = config(
-    'CORS_ALLOWED_ORIGINS',
-    default='http://localhost:3000,http://127.0.0.1:3000,http://localhost:5173,http://127.0.0.1:5173',
-    cast=lambda v: [s.strip() for s in v.split(',')]
-)
-
+CORS_ALLOW_ALL_ORIGINS = True  # В продакшене лучше указать конкретные домены
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "https://ifuw.ru",
+    "https://www.ifuw.ru",
+]
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://\w+\.ifuw\.ru$",
+]
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
 
 # Swagger settings
 SWAGGER_SETTINGS = {
