@@ -31,7 +31,7 @@ export default defineConfig({
   },
   // Настройки для dev сервера
   server: {
-    port: 3000,
+    port: 5173,
     host: true
   },
   // Алиасы для упрощения импортов

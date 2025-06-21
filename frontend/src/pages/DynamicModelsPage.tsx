@@ -37,6 +37,9 @@ const DynamicModelsPage: React.FC = () => {
   const [modelType, setModelType] = useState<'standalone' | 'extension' | ''>('');
   const [isActive, setIsActive] = useState<string>('');
 
+  // Состояние сворачивания групп сайтов
+  const [expandedSites, setExpandedSites] = useState<number[]>([]);
+
   // Модалы
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [modelToDelete, setModelToDelete] = useState<DynamicModel | null>(null);
@@ -44,6 +47,24 @@ const DynamicModelsPage: React.FC = () => {
   useEffect(() => {
     loadData();
   }, []);
+
+  // Флаг для отслеживания первой загрузки
+  const [initialLoadComplete, setInitialLoadComplete] = useState(false);
+
+  // Изначально разворачиваем все сайты при загрузке данных
+  useEffect(() => {
+    if (sites.length > 0 && models.length > 0 && !initialLoadComplete) {
+      const sitesWithModels = models.reduce((acc, model) => {
+        if (!acc.includes(model.site)) {
+          acc.push(model.site);
+        }
+        return acc;
+      }, [] as number[]);
+      
+      setExpandedSites(sitesWithModels);
+      setInitialLoadComplete(true);
+    }
+  }, [sites, models, initialLoadComplete]);
 
   useEffect(() => {
     // Применяем фильтры с задержкой
@@ -111,6 +132,15 @@ const DynamicModelsPage: React.FC = () => {
     await exportModelConfig(model.id, false);
   };
 
+  // Переключение состояния сворачивания сайта
+  const toggleSiteExpansion = (siteId: number) => {
+    setExpandedSites(prev => 
+      prev.includes(siteId) 
+        ? prev.filter(id => id !== siteId)
+        : [...prev, siteId]
+    );
+  };
+
   const getSiteName = (siteId: number) => {
     const site = sites.find(s => s.id === siteId);
     return site?.name || `Сайт ${siteId}`;
@@ -156,16 +186,53 @@ const DynamicModelsPage: React.FC = () => {
         {/* Заголовок */}
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 flex items-center">
-              <Icon name="code" className="mr-3" />
-              Динамические модели
-            </h1>
+            <div className="flex items-center gap-3">
+              <h1 className="text-2xl font-bold text-gray-900 flex items-center">
+                <Icon name="code" className="mr-3" />
+                Динамические модели
+              </h1>
+              {models.length > 0 && (
+                <div className="flex items-center gap-2">
+                  <Badge color="blue">
+                    {Object.keys(models.reduce((acc, model) => ({...acc, [model.site]: true}), {})).length} сайтов
+                  </Badge>
+                  <Badge color="green">
+                    {models.length} моделей
+                  </Badge>
+                </div>
+              )}
+            </div>
             <p className="text-gray-600 mt-1">
               Создавайте и управляйте пользовательскими моделями данных
             </p>
           </div>
           
           <div className="flex gap-3">
+            {models.length > 0 && (
+              <>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    const sitesWithModels = [...new Set(models.map(model => model.site))];
+                    setExpandedSites(sitesWithModels);
+                  }}
+                  title="Развернуть все сайты"
+                >
+                  <Icon name="arrowDown" size="sm" className="mr-1" />
+                  Развернуть все
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setExpandedSites([])}
+                  title="Свернуть все сайты"
+                >
+                  <Icon name="arrowUp" size="sm" className="mr-1" />
+                  Свернуть все
+                </Button>
+              </>
+            )}
             <Button
               variant="outline"
               onClick={() => navigate('/dynamic-models/import')}
@@ -226,8 +293,8 @@ const DynamicModelsPage: React.FC = () => {
           </Card>
         )}
 
-        {/* Список моделей */}
-        <div className="space-y-4">
+        {/* Список моделей по сайтам */}
+        <div className="space-y-6">
           {models.length === 0 && !modelsLoading ? (
             <Card className="p-8 text-center">
               <div className="space-y-3">
@@ -244,124 +311,186 @@ const DynamicModelsPage: React.FC = () => {
               </div>
             </Card>
           ) : (
-            models.map(model => (
-              <Card key={model.id} className="p-6 hover:shadow-md transition-shadow">
-                <div className="flex items-center justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-lg font-semibold text-gray-900">
-                        {model.name}
-                      </h3>
-                      <Badge color={getModelTypeColor(model.model_type)}>
-                        {getModelTypeLabel(model.model_type)}
-                      </Badge>
-                      {!model.is_active && (
-                        <Badge color="gray">
-                          Неактивная
-                        </Badge>
-                      )}
-                    </div>
-                    
-                    {model.description && (
-                      <p className="text-gray-600 mb-3">
-                        {model.description}
-                      </p>
-                    )}
+            (() => {
+              // Группируем модели по сайтам
+              const modelsBySite = models.reduce((acc, model) => {
+                if (!acc[model.site]) {
+                  acc[model.site] = [];
+                }
+                acc[model.site].push(model);
+                return acc;
+              }, {} as Record<number, DynamicModel[]>);
 
-                    <div className="flex items-center gap-6 text-sm text-gray-500">
-                      <div className="flex items-center gap-1">
-                        <Icon name="globe" size="sm" />
-                        <span>{getSiteName(model.site)}</span>
+              return Object.entries(modelsBySite).map(([siteId, siteModels]) => {
+                const site = sites.find(s => s.id === parseInt(siteId));
+                const siteIdNum = parseInt(siteId);
+                const isExpanded = expandedSites.includes(siteIdNum);
+                
+                return (
+                  <div key={siteId} className="space-y-4">
+                    {/* Заголовок сайта - кликабельный */}
+                    <button
+                      onClick={() => toggleSiteExpansion(siteIdNum)}
+                      className="w-full flex items-center justify-between pb-3 border-b border-gray-200 hover:bg-gray-50 -mx-2 px-2 py-2 rounded-lg transition-colors group"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2">
+                          <Icon name="globe" className="text-primary-600" />
+                          <Icon 
+                            name="arrowRight" 
+                            size="sm" 
+                            className={`text-gray-400 group-hover:text-gray-600 transition-all duration-300 ${
+                              isExpanded ? 'transform rotate-90' : 'transform rotate-0'
+                            }`}
+                          />
+                        </div>
+                        <h2 className="text-xl font-semibold text-gray-900 group-hover:text-primary-700 transition-colors">
+                          {site?.name || `Сайт ${siteId}`}
+                        </h2>
+                        <Badge color="blue">
+                          {siteModels.length} {siteModels.length === 1 ? 'модель' : 'моделей'}
+                        </Badge>
                       </div>
-                      
-                      <div className="flex items-center gap-1">
-                        <Icon name="menu" size="sm" />
-                        <span>{model.fields_count || 0} полей</span>
-                      </div>
-                      
-                      <div className="flex items-center gap-1">
-                        <Icon name="database" size="sm" />
-                        <span>{model.data_entries_count || 0} записей</span>
-                      </div>
-                      
-                      <div className="flex items-center gap-1">
-                        <Icon name="clock" size="sm" />
-                        <span>
-                          {formatDistanceToNow(new Date(model.created_at), {
-                            addSuffix: true,
-                            locale: ru
-                          })}
+                      <div className="flex items-center gap-3">
+                        {site?.domain && (
+                          <span className="text-sm text-gray-500">{site.domain}</span>
+                        )}
+                        <span className="text-xs text-gray-400 group-hover:text-gray-600 transition-colors">
+                          {isExpanded ? 'Свернуть' : 'Развернуть'}
                         </span>
                       </div>
-                    </div>
+                    </button>
 
-                    {model.target_model && (
-                      <div className="mt-2 text-sm text-purple-600">
-                        <Icon name="link" size="sm" className="inline mr-1" />
-                        Расширяет: {model.target_model}
+                    {/* Модели сайта с плавной анимацией */}
+                    <div 
+                      className={`overflow-hidden transition-all duration-500 ease-in-out ml-6 ${
+                        isExpanded 
+                          ? 'max-h-[2000px] opacity-100 transform translate-y-0' 
+                          : 'max-h-0 opacity-0 transform -translate-y-4'
+                      }`}
+                    >
+                      <div className={`space-y-4 pt-4 transition-transform duration-500 ${
+                        isExpanded ? 'transform translate-y-0' : 'transform -translate-y-2'
+                      }`}>
+                        {siteModels.map(model => (
+                        <Card key={model.id} className="p-6 hover:shadow-md transition-shadow">
+                          <div className="flex items-center justify-between">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-3 mb-2">
+                                <h3 className="text-lg font-semibold text-gray-900">
+                                  {model.display_name || model.name}
+                                </h3>
+                                <Badge color={getModelTypeColor(model.model_type)}>
+                                  {getModelTypeLabel(model.model_type)}
+                                </Badge>
+                                {!model.is_active && (
+                                  <Badge color="gray">
+                                    Неактивная
+                                  </Badge>
+                                )}
+                              </div>
+                              
+                              {model.description && (
+                                <p className="text-gray-600 mb-3">
+                                  {model.description}
+                                </p>
+                              )}
+
+                              <div className="flex items-center gap-6 text-sm text-gray-500">
+                                <div className="flex items-center gap-1">
+                                  <Icon name="menu" size="sm" />
+                                  <span>{model.fields_count || 0} полей</span>
+                                </div>
+                                
+                                <div className="flex items-center gap-1">
+                                  <Icon name="database" size="sm" />
+                                  <span>{model.data_entries_count || 0} записей</span>
+                                </div>
+                                
+                                <div className="flex items-center gap-1">
+                                  <Icon name="clock" size="sm" />
+                                  <span>
+                                    {formatDistanceToNow(new Date(model.created_at), {
+                                      addSuffix: true,
+                                      locale: ru
+                                    })}
+                                  </span>
+                                </div>
+                              </div>
+
+                              {model.target_model && (
+                                <div className="mt-2 text-sm text-purple-600">
+                                  <Icon name="link" size="sm" className="inline mr-1" />
+                                  Расширяет: {model.target_model}
+                                </div>
+                              )}
+                            </div>
+
+                            <div className="flex items-center gap-2">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleViewData(model)}
+                                title="Управление данными"
+                              >
+                                <Icon name="database" size="sm" />
+                              </Button>
+                              
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handlePreviewModel(model)}
+                                title="Превью"
+                              >
+                                <Icon name="eye" size="sm" />
+                              </Button>
+                              
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleEditModel(model)}
+                                title="Редактировать"
+                              >
+                                <Icon name="edit" size="sm" />
+                              </Button>
+                              
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleDuplicate(model)}
+                                title="Дублировать"
+                              >
+                                <Icon name="copy" size="sm" />
+                              </Button>
+                              
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleExport(model)}
+                                title="Экспорт"
+                              >
+                                <Icon name="download" size="sm" />
+                              </Button>
+                              
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleDeleteClick(model)}
+                                title="Удалить"
+                                className="text-red-500 hover:text-red-700"
+                              >
+                                <Icon name="delete" size="sm" />
+                              </Button>
+                            </div>
+                          </div>
+                        </Card>
+                        ))}
                       </div>
-                    )}
+                    </div>
                   </div>
-
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleViewData(model)}
-                      title="Данные"
-                    >
-                      <Icon name="database" size="sm" />
-                    </Button>
-                    
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handlePreviewModel(model)}
-                      title="Превью"
-                    >
-                      <Icon name="eye" size="sm" />
-                    </Button>
-                    
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleEditModel(model)}
-                      title="Редактировать"
-                    >
-                      <Icon name="edit" size="sm" />
-                    </Button>
-                    
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleDuplicate(model)}
-                      title="Дублировать"
-                    >
-                      <Icon name="copy" size="sm" />
-                    </Button>
-                    
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleExport(model)}
-                      title="Экспорт"
-                    >
-                      <Icon name="download" size="sm" />
-                    </Button>
-                    
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleDeleteClick(model)}
-                      title="Удалить"
-                      className="text-red-500 hover:text-red-700"
-                    >
-                      <Icon name="delete" size="sm" />
-                    </Button>
-                  </div>
-                </div>
-              </Card>
-            ))
+                );
+              });
+            })()
           )}
         </div>
 

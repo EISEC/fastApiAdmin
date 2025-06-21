@@ -29,6 +29,7 @@ import CreateDynamicModelDataPage from './pages/CreateDynamicModelDataPage';
 import EditDynamicModelDataPage from './pages/EditDynamicModelDataPage';
 import TestSocialNetworks from './pages/TestSocialNetworks';
 import Debug from './pages/Debug';
+import ImportExportPage from './pages/ImportExportPage';
 
 /**
  * Компонент для защищенных маршрутов
@@ -318,6 +319,16 @@ const App: React.FC = () => {
             } 
           />
           
+          {/* Импорт и экспорт */}
+          <Route 
+            path="/import-export" 
+            element={
+              <ProtectedRoute>
+                <ImportExportPage />
+              </ProtectedRoute>
+            } 
+          />
+          
           {/* Диагностика */}
           <Route 
             path="/debug" 
@@ -327,6 +338,8 @@ const App: React.FC = () => {
               </ProtectedRoute>
             } 
           />
+          
+
           
           {/* Перенаправление на главную для неизвестных маршрутов */}
           <Route path="*" element={<Navigate to="/" replace />} />

@@ -171,16 +171,73 @@ class DynamicModelsService {
    * Создание записи данных
    */
   async createModelData(data: DynamicModelDataCreateData) {
-    const response = await apiClient.post<DynamicModelData>(`${this.baseUrl}/data/`, data);
-    return response.data;
+    // Проверяем, есть ли файлы в данных
+    const hasFiles = this._hasFileFields(data.data);
+    
+    if (hasFiles) {
+      // Создаем FormData для отправки файлов
+      const formData = new FormData();
+      formData.append('dynamic_model', data.dynamic_model.toString());
+      formData.append('is_published', data.is_published ? 'true' : 'false');
+      
+      // Обрабатываем поля данных
+      if (data.data) {
+        Object.entries(data.data).forEach(([key, value]) => {
+          if (value instanceof File) {
+            formData.append(`data.${key}`, value);
+          } else if (value !== null && value !== undefined) {
+            formData.append(`data.${key}`, typeof value === 'object' ? JSON.stringify(value) : value.toString());
+          }
+        });
+      }
+      
+      const response = await apiClient.post<DynamicModelData>(`${this.baseUrl}/data/`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return response.data;
+    } else {
+      // Обычная отправка JSON
+      const response = await apiClient.post<DynamicModelData>(`${this.baseUrl}/data/`, data);
+      return response.data;
+    }
   }
 
   /**
    * Обновление записи данных
    */
   async updateModelData(id: number, data: DynamicModelDataUpdateData) {
-    const response = await apiClient.patch<DynamicModelData>(`${this.baseUrl}/data/${id}/`, data);
-    return response.data;
+    // Проверяем, есть ли файлы в данных
+    const hasFiles = this._hasFileFields(data.data);
+    
+    if (hasFiles) {
+      // Создаем FormData для отправки файлов
+      const formData = new FormData();
+      formData.append('is_published', data.is_published ? 'true' : 'false');
+      
+      // Обрабатываем поля данных
+      if (data.data) {
+        Object.entries(data.data).forEach(([key, value]) => {
+          if (value instanceof File) {
+            formData.append(`data.${key}`, value);
+          } else if (value !== null && value !== undefined) {
+            formData.append(`data.${key}`, typeof value === 'object' ? JSON.stringify(value) : value.toString());
+          }
+        });
+      }
+      
+      const response = await apiClient.patch<DynamicModelData>(`${this.baseUrl}/data/${id}/`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return response.data;
+    } else {
+      // Обычная отправка JSON
+      const response = await apiClient.patch<DynamicModelData>(`${this.baseUrl}/data/${id}/`, data);
+      return response.data;
+    }
   }
 
   /**
@@ -348,6 +405,15 @@ class DynamicModelsService {
       { dynamic_model: modelId, data }
     );
     return response.data;
+  }
+
+  /**
+   * Проверяет, содержат ли данные файлы
+   */
+  private _hasFileFields(data: Record<string, any> | undefined): boolean {
+    if (!data) return false;
+    
+    return Object.values(data).some(value => value instanceof File);
   }
 }
 

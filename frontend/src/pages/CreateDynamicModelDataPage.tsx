@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import DashboardLayout from '../components/layout/DashboardLayout';
-import { Button, Input, Textarea, Select, Modal, Spinner } from '../components/ui';
+import { Button, Switch, Spinner } from '../components/ui';
 import Card from '../components/ui/Card';
 import Icon from '../components/ui/Icon';
+import DynamicFieldRenderer from '../components/forms/DynamicFieldRenderer';
 import { useDynamicModelsStore } from '../store/dynamicModelsStore';
 import type { DynamicModel, DynamicModelDataCreateData } from '../types/dynamicModel.types';
 
@@ -58,6 +59,8 @@ const CreateDynamicModelDataPage: React.FC = () => {
           fieldSchema = z.string().url('Некорректный URL');
           break;
         case 'number':
+        case 'decimal':
+        case 'range':
           fieldSchema = z.number().or(z.string().transform(val => parseInt(val, 10)));
           break;
         case 'boolean':
@@ -65,7 +68,33 @@ const CreateDynamicModelDataPage: React.FC = () => {
           break;
         case 'date':
         case 'datetime':
+        case 'time':
           fieldSchema = z.string();
+          break;
+        case 'file':
+        case 'image':
+        case 'gallery':
+          fieldSchema = z.any(); // Файлы могут быть File объектами или строками
+          break;
+        case 'multiselect':
+        case 'checkbox':
+          fieldSchema = z.array(z.string());
+          break;
+        case 'json':
+          fieldSchema = z.string().refine((val) => {
+            try {
+              JSON.parse(val);
+              return true;
+            } catch {
+              return false;
+            }
+          }, { message: 'Должен быть валидный JSON' });
+          break;
+        case 'color':
+          fieldSchema = z.string().regex(/^#[0-9A-F]{6}$/i, 'Некорректный цвет');
+          break;
+        case 'rating':
+          fieldSchema = z.number().min(0).max(5);
           break;
         default:
           fieldSchema = z.string();
@@ -89,6 +118,7 @@ const CreateDynamicModelDataPage: React.FC = () => {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors, isValid }
   } = useForm({
     resolver: selectedModel ? zodResolver(createValidationSchema(selectedModel)) : undefined,
@@ -131,156 +161,17 @@ const CreateDynamicModelDataPage: React.FC = () => {
   };
 
   const renderField = (field: any) => {
-    const fieldError = errors[field.name];
-    const isRequired = field.required;
-
-    const getErrorMessage = (error: any) => {
-      if (error && typeof error === 'object' && 'message' in error) {
-        return error.message;
-      }
-      return 'Ошибка валидации';
-    };
-
-    switch (field.type) {
-      case 'textarea':
-        return (
-          <div key={field.name}>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {field.label}
-              {isRequired && <span className="text-red-500 ml-1">*</span>}
-            </label>
-            <Textarea
-              {...register(field.name)}
-              placeholder={field.placeholder || field.help_text}
-              rows={4}
-              error={!!fieldError}
-            />
-            {fieldError && (
-              <p className="mt-1 text-sm text-red-600">{getErrorMessage(fieldError)}</p>
-            )}
-            {field.help_text && (
-              <p className="mt-1 text-xs text-gray-500">{field.help_text}</p>
-            )}
-          </div>
-        );
-
-      case 'select':
-        return (
-          <div key={field.name}>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {field.label}
-              {isRequired && <span className="text-red-500 ml-1">*</span>}
-            </label>
-            <Select
-              {...register(field.name)}
-              options={field.options?.map((opt: any) => ({
-                value: opt.value,
-                label: opt.label
-              })) || []}
-              placeholder={field.placeholder || `Выберите ${field.label.toLowerCase()}`}
-              error={!!fieldError}
-            />
-            {fieldError && (
-              <p className="mt-1 text-sm text-red-600">{getErrorMessage(fieldError)}</p>
-            )}
-          </div>
-        );
-
-      case 'boolean':
-        return (
-          <div key={field.name} className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              {...register(field.name)}
-              className="rounded border-gray-300 text-primary-600"
-            />
-            <label className="text-sm font-medium text-gray-700">
-              {field.label}
-              {isRequired && <span className="text-red-500 ml-1">*</span>}
-            </label>
-            {field.help_text && (
-              <p className="text-xs text-gray-500 ml-2">{field.help_text}</p>
-            )}
-          </div>
-        );
-
-      case 'number':
-        return (
-          <div key={field.name}>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {field.label}
-              {isRequired && <span className="text-red-500 ml-1">*</span>}
-            </label>
-            <Input
-              type="number"
-              {...register(field.name, { valueAsNumber: true })}
-              placeholder={field.placeholder || field.help_text}
-              error={!!fieldError}
-            />
-            {fieldError && (
-              <p className="mt-1 text-sm text-red-600">{getErrorMessage(fieldError)}</p>
-            )}
-          </div>
-        );
-
-      case 'date':
-        return (
-          <div key={field.name}>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {field.label}
-              {isRequired && <span className="text-red-500 ml-1">*</span>}
-            </label>
-            <Input
-              type="date"
-              {...register(field.name)}
-              error={!!fieldError}
-            />
-            {fieldError && (
-              <p className="mt-1 text-sm text-red-600">{getErrorMessage(fieldError)}</p>
-            )}
-          </div>
-        );
-
-      case 'datetime':
-        return (
-          <div key={field.name}>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {field.label}
-              {isRequired && <span className="text-red-500 ml-1">*</span>}
-            </label>
-            <Input
-              type="datetime-local"
-              {...register(field.name)}
-              error={!!fieldError}
-            />
-            {fieldError && (
-              <p className="mt-1 text-sm text-red-600">{getErrorMessage(fieldError)}</p>
-            )}
-          </div>
-        );
-
-      default:
-        return (
-          <div key={field.name}>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {field.label}
-              {isRequired && <span className="text-red-500 ml-1">*</span>}
-            </label>
-            <Input
-              type={field.type === 'email' ? 'email' : field.type === 'url' ? 'url' : 'text'}
-              {...register(field.name)}
-              placeholder={field.placeholder || field.help_text}
-              error={!!fieldError}
-            />
-            {fieldError && (
-              <p className="mt-1 text-sm text-red-600">{getErrorMessage(fieldError)}</p>
-            )}
-            {field.help_text && (
-              <p className="mt-1 text-xs text-gray-500">{field.help_text}</p>
-            )}
-          </div>
-        );
-    }
+    const fieldError = errors[field.name] as any;
+    
+    return (
+      <DynamicFieldRenderer
+        key={field.name}
+        field={field}
+        register={register}
+        control={control}
+        error={fieldError}
+      />
+    );
   };
 
   if (!id) {
@@ -364,16 +255,18 @@ const CreateDynamicModelDataPage: React.FC = () => {
               Настройки публикации
             </h3>
             
-            <div className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                {...register('is_published')}
-                className="rounded border-gray-300 text-primary-600"
-              />
-              <label className="text-sm font-medium text-gray-700">
-                Опубликовать запись
-              </label>
-            </div>
+            <Controller
+              name="is_published"
+              control={control}
+              render={({ field }) => (
+                <Switch
+                  checked={field.value || false}
+                  onChange={field.onChange}
+                  label="Опубликовать запись"
+                  description="Определяет, будет ли запись видна публично"
+                />
+              )}
+            />
           </Card>
 
           {/* Кнопки действий */}

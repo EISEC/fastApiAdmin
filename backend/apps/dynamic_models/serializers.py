@@ -232,6 +232,84 @@ class DynamicModelDataSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ['created_at', 'updated_at']
     
+    def to_internal_value(self, data):
+        """Обработка входящих данных с поддержкой файлов"""
+        # Получаем модель для определения типов полей
+        dynamic_model = None
+        if 'dynamic_model' in data:
+            try:
+                dynamic_model = DynamicModel.objects.get(id=data['dynamic_model'])
+            except DynamicModel.DoesNotExist:
+                pass
+        elif self.instance:
+            dynamic_model = self.instance.dynamic_model
+        
+        # Обрабатываем файлы и изображения
+        if dynamic_model and 'data' in data:
+            processed_data = self._process_file_fields(data['data'], dynamic_model)
+            data = data.copy()
+            data['data'] = processed_data
+        
+        return super().to_internal_value(data)
+    
+    def _process_file_fields(self, data, dynamic_model):
+        """Обработка полей с файлами и изображениями"""
+        from django.core.files.storage import default_storage
+        from django.core.files.base import ContentFile
+        import os
+        import uuid
+        
+        fields_config = dynamic_model.fields_config
+        if not fields_config or 'fields' not in fields_config:
+            return data
+        
+        processed_data = data.copy()
+        
+        for field_config in fields_config['fields']:
+            field_name = field_config['name']
+            field_type = field_config['type']
+            
+            # Обрабатываем только поля файлов и изображений
+            if field_type in ['file', 'image', 'gallery'] and field_name in processed_data:
+                field_value = processed_data[field_name]
+                
+                # Если это файл из формы
+                if hasattr(field_value, 'read'):
+                    # Генерируем уникальное имя файла
+                    file_extension = os.path.splitext(field_value.name)[1]
+                    unique_filename = f"{uuid.uuid4()}{file_extension}"
+                    
+                    # Определяем папку для сохранения
+                    upload_folder = 'images' if field_type == 'image' else 'files'
+                    file_path = f"dynamic_models/{dynamic_model.site.id}/{dynamic_model.id}/{upload_folder}/{unique_filename}"
+                    
+                    # Сохраняем файл
+                    saved_path = default_storage.save(file_path, ContentFile(field_value.read()))
+                    
+                    # Сохраняем путь к файлу в данных
+                    processed_data[field_name] = {
+                        'url': default_storage.url(saved_path),
+                        'path': saved_path,
+                        'name': field_value.name,
+                        'size': field_value.size if hasattr(field_value, 'size') else None
+                    }
+                
+                # Если это уже обработанный файл (при обновлении)
+                elif isinstance(field_value, dict) and 'url' in field_value:
+                    # Оставляем как есть
+                    pass
+                
+                # Если это строка (URL существующего файла)
+                elif isinstance(field_value, str) and field_value.startswith(('http', '/')):
+                    # Оставляем как есть
+                    pass
+                
+                # Если поле пустое
+                elif not field_value:
+                    processed_data[field_name] = None
+        
+        return processed_data
+    
     def validate_data(self, value):
         """Валидация данных согласно схеме динамической модели"""
         dynamic_model = self.instance.dynamic_model if self.instance else None

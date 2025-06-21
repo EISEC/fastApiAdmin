@@ -39,4 +39,5 @@ urlpatterns = [
     path('settings/', include('apps.settings.urls')),
     path('dynamic-models/', include('apps.dynamic_models.urls')),
     path('analytics/', include('apps.analytics.urls')),
+    path('import-export/', include('apps.import_export.urls')),
 ] 

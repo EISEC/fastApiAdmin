@@ -7,6 +7,7 @@ export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localho
 const apiClient: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
   timeout: 30000,
+  withCredentials: true, // Включаем cookies и credentials для CORS
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
@@ -50,8 +51,14 @@ apiClient.interceptors.response.use(
         const refreshToken = localStorage.getItem('refresh_token');
         
         if (refreshToken) {
+          // Используем базовый axios для refresh token чтобы избежать зацикливания
           const response = await axios.post(`${API_BASE_URL}/auth/token/refresh/`, {
             refresh: refreshToken,
+          }, {
+            withCredentials: true,
+            headers: {
+              'Content-Type': 'application/json',
+            },
           });
           
           const { access } = response.data;

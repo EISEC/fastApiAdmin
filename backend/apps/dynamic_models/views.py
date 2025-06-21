@@ -469,6 +469,14 @@ class DynamicModelDataViewSet(viewsets.ModelViewSet):
     ordering_fields = ['created_at', 'updated_at']
     ordering = ['-created_at']
     
+    def get_parsers(self):
+        """Поддержка multipart/form-data для загрузки файлов"""
+        from rest_framework.parsers import MultiPartParser, JSONParser, FormParser
+        
+        if self.action in ['create', 'update', 'partial_update']:
+            return [MultiPartParser(), FormParser(), JSONParser()]
+        return super().get_parsers()
+    
     def get_queryset(self):
         """Фильтруем данные по доступным пользователю моделям"""
         user = self.request.user

@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAuthStore } from '../store/authStore';
 import { useGlobalSettings } from '../store/globalSettingsStore';
 import { useSitesStore } from '../store/sitesStore';
 import { usePostsStore } from '../store/postsStore';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import Icon from '../components/ui/Icon';
+import apiClient from '../services/api';
+import Button from '../components/ui/Button';
+import Card from '../components/ui/Card';
+import { api } from '../lib/axios.config';
+import Input from '../components/ui/Input';
 
 /**
  * Диагностическая страница для проверки состояния всех store
@@ -14,6 +19,143 @@ const Debug: React.FC = () => {
   const globalSettings = useGlobalSettings();
   const sitesStore = useSitesStore();
   const postsStore = usePostsStore();
+  const [corsStatus, setCorsStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [apiStatus, setApiStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [authStatus, setAuthStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [corsResult, setCorsResult] = useState<string>('');
+  const [apiResult, setApiResult] = useState<string>('');
+  const [authResult, setAuthResult] = useState<string>('');
+  const [testEmail, setTestEmail] = useState('test@example.com');
+  const [testPassword, setTestPassword] = useState('testpass123');
+
+  const testCors = async () => {
+    setCorsStatus('loading');
+    setCorsResult('');
+    
+    try {
+      console.log('🔍 Начинаю тест CORS...');
+      
+      // Простой GET запрос для проверки CORS
+      const response = await fetch('http://localhost:8000/test/', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Origin': 'http://localhost:5173',
+        },
+        credentials: 'include', // Включаем cookies
+      });
+      
+      console.log('📡 CORS ответ:', response);
+      console.log('📡 CORS headers:', [...response.headers.entries()]);
+      
+      if (response.ok) {
+        const text = await response.text();
+        setCorsResult(`✅ CORS работает! Ответ: ${text}`);
+        setCorsStatus('success');
+        console.log('✅ CORS успешно:', text);
+      } else {
+        setCorsResult(`❌ Ошибка: ${response.status} - ${response.statusText}`);
+        setCorsStatus('error');
+        console.error('❌ CORS ошибка статуса:', response.status, response.statusText);
+      }
+    } catch (error) {
+      console.error('❌ CORS исключение:', error);
+      setCorsResult(`❌ CORS ошибка: ${error}`);
+      setCorsStatus('error');
+    }
+  };
+
+  const testApi = async () => {
+    setApiStatus('loading');
+    setApiResult('');
+    
+    try {
+      console.log('🔍 Начинаю тест API...');
+      
+      // Запрос к API без авторизации (должен вернуть 401)
+      const response = await apiClient.get('/sites/');
+      console.log('📡 API ответ:', response);
+      
+      setApiResult(`✅ API ответил: ${JSON.stringify(response)}`);
+      setApiStatus('success');
+    } catch (error: any) {
+      console.error('❌ API ошибка:', error);
+      console.error('❌ API error.response:', error.response);
+      console.error('❌ API error.message:', error.message);
+      
+      if (error.response?.status === 401) {
+        setApiResult(`✅ API работает! Требует авторизации (401)`);
+        setApiStatus('success');
+        console.log('✅ API корректно требует авторизацию');
+      } else if (error.message.includes('CORS')) {
+        setApiResult(`❌ CORS ошибка в API: ${error.message}`);
+        setApiStatus('error');
+      } else {
+        setApiResult(`❌ API ошибка: ${error.message}`);
+        setApiStatus('error');
+      }
+    }
+  };
+
+  const testAuth = async () => {
+    setAuthStatus('loading');
+    setAuthResult('');
+    
+    try {
+
+      
+      // Тестируем авторизацию через api из axios.config
+      const response = await api.post('/auth/token/', {
+        email: testEmail,
+        password: testPassword,
+      });
+      
+      setAuthResult(`✅ Авторизация успешна! Токен получен: ${(response as any).access?.substring(0, 20)}...`);
+      setAuthStatus('success');
+      
+    } catch (error: any) {
+      
+      if (error.message && error.message.includes('CORS')) {
+        setAuthResult(`❌ CORS ошибка при авторизации: ${error.message}`);
+        setAuthStatus('error');
+      } else if (error.response?.status === 400) {
+        setAuthResult(`❌ Неверные credentials (400): ${error.response.data?.detail || 'Неверный email или пароль'}`);
+        setAuthStatus('error');
+      } else if (error.code === 'ERR_NETWORK') {
+        setAuthResult(`❌ Сетевая ошибка (возможно CORS): ${error.message}`);
+        setAuthStatus('error');
+      } else {
+        setAuthResult(`❌ Auth ошибка: ${error.message}`);
+        setAuthStatus('error');
+      }
+    }
+  };
+
+  const testAxiosDirectly = async () => {
+    try {
+      console.log('🔍 Прямой тест axios...');
+      
+      const response = await fetch('http://localhost:8000/api/v1/sites/', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Origin': 'http://localhost:5173',
+        },
+        credentials: 'include',
+      });
+      
+      console.log('📡 Прямой fetch ответ:', response);
+      console.log('📡 Прямой fetch статус:', response.status);
+      console.log('📡 Прямой fetch headers:', [...response.headers.entries()]);
+      
+      const data = await response.json();
+      console.log('📡 Прямой fetch данные:', data);
+      
+    } catch (error) {
+      console.error('❌ Прямой fetch ошибка:', error);
+    }
+  };
 
   const diagnostics = [
     {
@@ -167,6 +309,194 @@ const Debug: React.FC = () => {
             </button>
           </div>
         </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* CORS Test */}
+          <Card>
+            <div className="p-6">
+              <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                <Icon name="globe" className="mr-2" />
+                Тест CORS
+              </h2>
+              <p className="text-sm text-gray-600 mb-4">
+                Проверяет базовое CORS соединение с backend
+              </p>
+              
+              <Button
+                onClick={testCors}
+                disabled={corsStatus === 'loading'}
+                className="mb-4 w-full"
+                variant="primary"
+              >
+                <Icon name={corsStatus === 'loading' ? 'refresh' : 'play'} className="mr-2" />
+                {corsStatus === 'loading' ? 'Проверяю...' : 'Проверить CORS'}
+              </Button>
+
+              {corsResult && (
+                <div className={`p-3 rounded-lg text-sm ${
+                  corsStatus === 'success' 
+                    ? 'bg-green-50 text-green-800 border border-green-200' 
+                    : 'bg-red-50 text-red-800 border border-red-200'
+                }`}>
+                  {corsResult}
+                </div>
+              )}
+            </div>
+          </Card>
+
+          {/* API Test */}
+          <Card>
+            <div className="p-6">
+              <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                <Icon name="database" className="mr-2" />
+                Тест API
+              </h2>
+              <p className="text-sm text-gray-600 mb-4">
+                Проверяет API endpoints через настроенный клиент
+              </p>
+              
+              <Button
+                onClick={testApi}
+                disabled={apiStatus === 'loading'}
+                className="mb-4 w-full"
+                variant="secondary"
+              >
+                <Icon name={apiStatus === 'loading' ? 'refresh' : 'database'} className="mr-2" />
+                {apiStatus === 'loading' ? 'Проверяю...' : 'Проверить API'}
+              </Button>
+
+              {apiResult && (
+                <div className={`p-3 rounded-lg text-sm ${
+                  apiStatus === 'success' 
+                    ? 'bg-green-50 text-green-800 border border-green-200' 
+                    : 'bg-red-50 text-red-800 border border-red-200'
+                }`}>
+                  {apiResult}
+                </div>
+              )}
+            </div>
+          </Card>
+
+          {/* Auth Test */}
+          <Card className="mb-6">
+            <div className="p-6">
+              <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                <Icon name="lock" className="mr-2" />
+                Тест авторизации
+              </h2>
+              <p className="text-sm text-gray-600 mb-4">
+                Проверяет авторизацию через /auth/token/ endpoint
+              </p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                  <Input
+                    type="email"
+                    value={testEmail}
+                    onChange={(e) => setTestEmail(e.target.value)}
+                    placeholder="test@example.com"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                  <Input
+                    type="password"
+                    value={testPassword}
+                    onChange={(e) => setTestPassword(e.target.value)}
+                    placeholder="password"
+                  />
+                </div>
+              </div>
+              
+              <Button
+                onClick={testAuth}
+                disabled={authStatus === 'loading'}
+                className="mb-4 w-full"
+                variant="danger"
+              >
+                <Icon name={authStatus === 'loading' ? 'refresh' : 'login'} className="mr-2" />
+                {authStatus === 'loading' ? 'Проверяю...' : 'Тест авторизации'}
+              </Button>
+
+              {authResult && (
+                <div className={`p-3 rounded-lg text-sm ${
+                  authStatus === 'success' 
+                    ? 'bg-green-50 text-green-800 border border-green-200' 
+                    : 'bg-red-50 text-red-800 border border-red-200'
+                }`}>
+                  {authResult}
+                </div>
+              )}
+            </div>
+          </Card>
+
+          {/* Direct Test */}
+          <Card className="mb-6">
+            <div className="p-6">
+              <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                <Icon name="code" className="mr-2" />
+                Прямой тест
+              </h2>
+              <p className="text-sm text-gray-600 mb-4">
+                Прямой fetch запрос к API
+              </p>
+              
+              <Button
+                onClick={testAxiosDirectly}
+                className="mb-4 w-full"
+                variant="secondary"
+              >
+                <Icon name="play" className="mr-2" />
+                Прямой fetch
+              </Button>
+
+              <div className="text-xs text-gray-500">
+                Смотрите результат в консоли браузера (F12)
+              </div>
+            </div>
+          </Card>
+        </div>
+
+        {/* Connection Info */}
+        <Card className="mt-6">
+          <div className="p-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+              <Icon name="info" className="mr-2" />
+              Информация о соединении
+            </h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+              <div>
+                <p className="font-medium text-gray-700">Frontend URL:</p>
+                <p className="text-gray-600 font-mono">http://localhost:5173</p>
+              </div>
+              <div>
+                <p className="font-medium text-gray-700">Backend URL:</p>
+                <p className="text-gray-600 font-mono">http://localhost:8000</p>
+              </div>
+              <div>
+                <p className="font-medium text-gray-700">API Base URL:</p>
+                <p className="text-gray-600 font-mono">http://localhost:8000/api/v1</p>
+              </div>
+              <div>
+                <p className="font-medium text-gray-700">Database:</p>
+                <p className="text-gray-600">MySQL (Production)</p>
+              </div>
+            </div>
+
+            <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+              <h3 className="font-medium text-blue-900 mb-2">💡 Советы по отладке CORS:</h3>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Откройте консоль браузера (F12) для детальных логов</li>
+                <li>• Проверьте вкладку Network для HTTP запросов</li>
+                <li>• CORS ошибки обычно видны в консоли как красный текст</li>
+                <li>• Preflight запросы (OPTIONS) должны возвращать 200</li>
+                <li>• При авторизации проверьте что credentials включены</li>
+              </ul>
+            </div>
+          </div>
+        </Card>
       </div>
     </DashboardLayout>
   );

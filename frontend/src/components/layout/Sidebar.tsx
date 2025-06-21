@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { clsx } from 'clsx';
 import { useAuthStore } from '../../store/authStore';
+import { useSitesStore } from '../../store/sitesStore';
+import { useDynamicModelsStore } from '../../store/dynamicModelsStore';
 import Icon, { type AvailableIconName } from '../ui/Icon';
 import SocialNetworks from '../ui/SocialNetworks';
 
@@ -59,6 +61,12 @@ const navigationItems: NavigationItem[] = [
     roles: ['superuser', 'admin'],
   },
   {
+    name: 'Импорт и экспорт',
+    href: '/import-export',
+    icon: 'upload',
+    roles: ['superuser', 'admin'],
+  },
+  {
     name: 'Настройки',
     href: '/settings',
     icon: 'settings',
@@ -97,16 +105,52 @@ const Sidebar: React.FC<SidebarProps> = ({
   onMobileClose 
 }) => {
   const { user, isAuthenticated, isLoading, logout } = useAuthStore();
+  const { sites, fetchSites } = useSitesStore();
+  const { models, fetchModels } = useDynamicModelsStore();
   const location = useLocation();
+  
+  // Состояние для выпадающих списков
+  const [expandedSites, setExpandedSites] = useState<number[]>([]);
   
   // Получаем роль пользователя
   const userRole = user?.role?.name;
+  
+  // Загружаем данные при монтировании
+  useEffect(() => {
+    if (isAuthenticated && userRole && ['superuser', 'admin', 'author'].includes(userRole)) {
+      fetchSites();
+      fetchModels();
+    }
+  }, [isAuthenticated, userRole, fetchSites, fetchModels]);
   
   // Фильтрация пунктов меню по ролям
   const allowedItems = navigationItems.filter(item => {
     if (!userRole) return false;
     return item.roles.includes(userRole);
   });
+  
+  // Группировка динамических моделей по сайтам
+  const modelsBySite = models.reduce((acc, model) => {
+    if (!acc[model.site]) {
+      acc[model.site] = [];
+    }
+    acc[model.site].push(model);
+    return acc;
+  }, {} as Record<number, typeof models>);
+  
+  // Сайты с динамическими моделями
+  const sitesWithModels = sites.filter(site => 
+    modelsBySite[site.id] && modelsBySite[site.id].length > 0
+  );
+  
+  // Переключение развернутого состояния сайта
+  const toggleSiteExpansion = (siteId: number) => {
+    setExpandedSites(prev => 
+      prev.includes(siteId) 
+        ? prev.filter(id => id !== siteId)
+        : [...prev, siteId]
+    );
+  };
   
   // Обработчик выхода
   const handleLogout = () => {
@@ -209,57 +253,123 @@ const Sidebar: React.FC<SidebarProps> = ({
                 </div>
               )}
             </nav>
-          </div>
-        </div>
-        
-        {/* Social Networks */}
-        <div className="flex-shrink-0 border-t border-gray-200 p-4">
-          <div className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">
-            Мы в соцсетях
-          </div>
-          <SocialNetworks size="sm" direction="horizontal" className="justify-center" />
-        </div>
-        
-        {/* User info */}
-        <div className="flex flex-shrink-0 border-t border-gray-200 p-4">
-          <div className="flex items-center justify-between w-full">
-            <div className="flex items-center min-w-0 flex-1">
-              <div className="flex-shrink-0">
-                {user.avatar ? (
-                  <img
-                    className="h-8 w-8 rounded-full"
-                    src={user.avatar}
-                    alt={user.username}
-                  />
-                ) : (
-                  <div className="h-8 w-8 rounded-full bg-primary-500 flex items-center justify-center">
-                    <span className="text-sm font-medium text-white">
-                      {user.first_name?.charAt(0)?.toUpperCase() || user.username.charAt(0).toUpperCase()}
-                    </span>
-                  </div>
-                )}
+
+            {/* Сайты с динамическими моделями */}
+            {sitesWithModels.length > 0 && (
+              <div className="mt-6 px-2">
+                <h3 className="px-2 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+                  Динамические модели сайтов
+                </h3>
+                <nav className="space-y-1">
+                  {sitesWithModels.map((site) => {
+                    const siteModels = modelsBySite[site.id] || [];
+                    const isExpanded = expandedSites.includes(site.id);
+                    
+                    return (
+                      <div key={site.id}>
+                        {/* Заголовок сайта */}
+                        <button
+                          onClick={() => toggleSiteExpansion(site.id)}
+                          className="w-full group flex items-center justify-between px-2 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors"
+                        >
+                          <div className="flex items-center">
+                            <span className="mr-3">
+                              <Icon name="globe" size="sm" />
+                            </span>
+                            <span className="truncate">{site.name}</span>
+                          </div>
+                          <div className="flex items-center">
+                            <span className="mr-2 text-xs bg-gray-200 text-gray-600 px-1.5 py-0.5 rounded-full">
+                              {siteModels.length}
+                            </span>
+                            <Icon 
+                              name={isExpanded ? "arrowUp" : "arrowDown"} 
+                              size="sm" 
+                              className="text-gray-400"
+                            />
+                          </div>
+                        </button>
+                        
+                        {/* Динамические модели сайта */}
+                        {isExpanded && (
+                          <div className="ml-6 space-y-1">
+                            {siteModels.map((model) => {
+                              const modelPath = `/dynamic-models/${model.id}/data`;
+                              const isModelActive = location.pathname.startsWith(modelPath);
+                              
+                              return (
+                                <NavLink
+                                  key={model.id}
+                                  to={modelPath}
+                                  onClick={() => {
+                                    if (onMobileClose) onMobileClose();
+                                  }}
+                                  className={clsx(
+                                    'group flex items-center px-2 py-1.5 text-sm rounded-md transition-colors',
+                                    isModelActive
+                                      ? 'bg-primary-50 text-primary-700'
+                                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                                  )}
+                                >
+                                  <span className="mr-2">
+                                    <Icon name="database" size="xs" />
+                                  </span>
+                                  <span className="truncate">
+                                    {model.display_name || model.name}
+                                  </span>
+                                  {model.data_entries_count !== undefined && (
+                                    <span className="ml-auto text-xs bg-gray-200 text-gray-600 px-1.5 py-0.5 rounded-full">
+                                      {model.data_entries_count}
+                                    </span>
+                                  )}
+                                </NavLink>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </nav>
               </div>
-              <div className="ml-3 flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-700 truncate">
+            )}
+          </div>
+          
+          {/* User info and logout */}
+          <div className="border-t border-gray-200 pt-4 px-2">
+            <div className="flex items-center px-2 py-2 text-sm text-gray-600">
+              <div className="w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center mr-3">
+                <span className="text-white font-medium">
+                  {user.username?.charAt(0).toUpperCase()}
+                </span>
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-gray-900 truncate">
                   {user.first_name && user.last_name 
-                    ? `${user.first_name} ${user.last_name}` 
+                    ? `${user.first_name} ${user.last_name}`
                     : user.username
                   }
                 </p>
-                <p className="text-xs text-gray-500 capitalize">
-                  {user.role?.name || 'Неизвестная роль'}
+                <p className="text-xs text-gray-500 truncate">
+                  {user.role?.name || 'Пользователь'}
                 </p>
               </div>
             </div>
             
-            {/* Logout button */}
             <button
               onClick={handleLogout}
-              className="ml-2 p-1 rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-100"
-              title="Выйти"
+              className="w-full mt-2 group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors"
             >
-              <Icon name="logout" size="md" />
+              <span className="mr-3">
+                <Icon name="logout" size="md" />
+              </span>
+              Выйти
             </button>
+            
+                         {/* Социальные сети */}
+             <div className="mt-4">
+               <SocialNetworks />
+             </div>
           </div>
         </div>
       </div>

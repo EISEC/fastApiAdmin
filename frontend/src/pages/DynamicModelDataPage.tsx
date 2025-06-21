@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDynamicModelsStore } from '../store/dynamicModelsStore';
+import { useSitesStore } from '../store/sitesStore';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import { Button, Input, Select, Badge, Spinner, Modal, Table } from '../components/ui';
 import Card from '../components/ui/Card';
@@ -27,6 +28,8 @@ const DynamicModelDataPage: React.FC = () => {
     fetchModelData,
     deleteModelData
   } = useDynamicModelsStore();
+
+  const { sites } = useSitesStore();
 
   // Фильтры
   const [search, setSearch] = useState('');
@@ -250,10 +253,23 @@ const DynamicModelDataPage: React.FC = () => {
                 <Icon name="arrowLeft" size="sm" className="mr-2" />
                 Назад
               </Button>
-              <h1 className="text-2xl font-bold text-gray-900 flex items-center">
-                <Icon name="database" className="mr-3" />
-                Данные модели: {selectedModel.name}
-              </h1>
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900 flex items-center">
+                  <Icon name="database" className="mr-3" />
+                  {selectedModel.display_name || selectedModel.name}
+                </h1>
+                {(() => {
+                  const site = sites.find(s => s.id === selectedModel.site);
+                  return site ? (
+                    <div className="flex items-center gap-2 mt-1">
+                      <Icon name="globe" size="sm" className="text-gray-400" />
+                      <span className="text-sm text-gray-600">
+                        Сайт: <span className="font-medium">{site.name}</span>
+                      </span>
+                    </div>
+                  ) : null;
+                })()}
+              </div>
             </div>
             <p className="text-gray-600">
               Управление записями данных для модели

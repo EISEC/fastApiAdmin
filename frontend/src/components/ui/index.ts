@@ -13,5 +13,8 @@ export { default as ToastContainer } from './ToastContainer';
 export { default as StatsCard } from './StatsCard';
 export { default as DatePicker } from './DatePicker';
 export { default as SiteFilter } from './SiteFilter';
+export { default as Switch } from './Switch';
 export { default as Icon } from './Icon';
+export { default as Card } from './Card';
+export { default as Alert } from './Alert';
 export type { TableColumn, SortConfig } from './Table'; 

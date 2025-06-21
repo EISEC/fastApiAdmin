@@ -66,6 +66,7 @@ LOCAL_APPS = [
     'apps.common',
     'apps.api',
     'apps.settings',
+    'apps.import_export',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -232,12 +233,14 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
 
-# CORS settings
-CORS_ALLOW_ALL_ORIGINS = True  # В продакшене лучше указать конкретные домены
+# CORS settings (базовые, переопределяются в development.py)
+CORS_ALLOW_ALL_ORIGINS = False  # Переопределяется в development.py
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
+    "http://localhost:5173",  # Vite dev server
+    "http://127.0.0.1:5173",  # Vite dev server
+    "http://localhost:3000",  # React dev server
+    "http://127.0.0.1:3000",  # React dev server
     "https://ifuw.ru",
     "https://www.ifuw.ru",
 ]
