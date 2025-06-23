@@ -14,6 +14,7 @@ __pycache__/
 # Frontend
 frontend/node_modules/
 frontend/dist/
+frontend/.env
 *.log
 
 # System/IDE
@@ -28,3 +29,14 @@ frontend/dist/
 # Env
 .env
 .env.*
+backend/.env
+backend/yandex_storage_config.env
+
+# Deploy guides (содержат секретную информацию)
+BEGET_DEPLOY_GUIDE.md
+
+# Production settings
+backend/core/settings/local.py
+
+# Temporary files
+backend/tmp/
