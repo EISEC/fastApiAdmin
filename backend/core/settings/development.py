@@ -1,4 +1,5 @@
 from .base import *
+from decouple import config
 import logging
 
 # Development specific settings
@@ -159,3 +160,34 @@ LOGGING = {
 # LOGGING['handlers']['console']['level'] = 'DEBUG'
 # LOGGING['loggers']['django']['level'] = 'DEBUG'
 # LOGGING['loggers']['apps']['level'] = 'DEBUG'
+
+# Yandex Object Storage Configuration
+# Используем переменные окружения для безопасности
+AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID', default='')
+AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY', default='')
+AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME', default='adminifuw')
+AWS_S3_ENDPOINT_URL = config('AWS_S3_ENDPOINT_URL', default='https://storage.yandexcloud.net')
+AWS_S3_REGION_NAME = config('AWS_S3_REGION_NAME', default='ru-central1')
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+AWS_S3_VERIFY = True
+
+# Для Yandex Object Storage используем кастомный домен
+if AWS_STORAGE_BUCKET_NAME:
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.storage.yandexcloud.net'
+else:
+    AWS_S3_CUSTOM_DOMAIN = None
+
+# Настройки файлового хранилища
+if AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY:
+    # Используем Yandex Object Storage если настроены ключи
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    if AWS_S3_CUSTOM_DOMAIN:
+        MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
+    else:
+        MEDIA_URL = f'{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}/'
+else:
+    # Используем локальное хранилище если ключи не настроены
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = BASE_DIR / 'media'

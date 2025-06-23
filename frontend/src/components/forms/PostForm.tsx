@@ -14,6 +14,7 @@ import { clsx } from 'clsx';
 import Input from '../ui/Input';
 import Textarea from '../ui/Textarea';
 import ColorPicker from '../ui/ColorPicker';
+import CloudFileUpload from '../ui/CloudFileUpload';
 import { useToastStore } from '../../store/toastStore';
 import Icon from '../ui/Icon';
 
@@ -34,11 +35,7 @@ const postSchema = z.object({
     .max(500, 'Описание не должно превышать 500 символов')
     .or(z.literal(''))
     .optional(),
-  featured_image: z.union([
-    z.instanceof(File),
-    z.string(),
-    z.null()
-  ]).optional(),
+  featured_image: z.string().url().optional().or(z.literal('')).nullable(),
   status: z.enum(['draft', 'published', 'scheduled', 'archived'] as const),
   visibility: z.enum(['public', 'private', 'password'] as const),
   site: z.number({
@@ -121,6 +118,7 @@ const PostForm: React.FC<PostFormProps> = ({
       title: '',
       content: '',
       excerpt: '',
+      featured_image: '',
       status: 'draft' as PostStatus,
       visibility: 'public' as PostVisibility,
       categories: [],
@@ -177,6 +175,7 @@ const PostForm: React.FC<PostFormProps> = ({
         slug: post.slug,
         content: post.content,
         excerpt: post.excerpt || '',
+        featured_image: post.featured_image || '',
         status: post.status,
         visibility: post.visibility,
         site: post.site,
@@ -207,7 +206,7 @@ const PostForm: React.FC<PostFormProps> = ({
         slug: formData.slug || '',
         content: formData.content,
         excerpt: formData.excerpt || '',
-        featured_image: formData.featured_image instanceof File ? URL.createObjectURL(formData.featured_image) : (formData.featured_image as string) || '',
+        featured_image: formData.featured_image || '',
         status: formData.status,
         visibility: formData.visibility,
         author: post?.author || 1,
@@ -260,7 +259,7 @@ const PostForm: React.FC<PostFormProps> = ({
           meta_title: postData.meta_title,
           meta_description: postData.meta_description,
           meta_keywords: postData.meta_keywords,
-          ...(postData.featured_image instanceof File && { featured_image: postData.featured_image }),
+          ...(postData.featured_image && { featured_image: postData.featured_image }),
         };
         
         await updatePost(post.id, updateData);
@@ -278,7 +277,7 @@ const PostForm: React.FC<PostFormProps> = ({
           meta_title: postData.meta_title,
           meta_description: postData.meta_description,
           meta_keywords: postData.meta_keywords,
-          ...(postData.featured_image instanceof File && { featured_image: postData.featured_image }),
+          ...(postData.featured_image && { featured_image: postData.featured_image }),
         };
         
         await createPost(createData);
@@ -576,27 +575,27 @@ const PostForm: React.FC<PostFormProps> = ({
 
             {/* Изображение */}
             <div>
-              <label htmlFor="featured_image" className="block text-sm font-medium text-gray-700">
-                Главное изображение
-              </label>
-              <div className="mt-1">
-                <input
-                  id="featured_image"
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) {
-                      setValue('featured_image', file, { shouldDirty: true });
-                    }
-                  }}
-                  className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100"
-                  disabled={isLoading}
-                />
-                <p className="mt-1 text-xs text-gray-500">
-                  PNG, JPG, GIF до 5MB
-                </p>
-              </div>
+              <Controller
+                name="featured_image"
+                control={control}
+                render={({ field: { value, onChange } }) => (
+                  <CloudFileUpload
+                    label="Главное изображение"
+                    value={value || ''}
+                    onChange={onChange}
+                    accept="image/*"
+                    disabled={isLoading}
+                    preview={true}
+                    siteId={watchedSite}
+                    maxSize={5 * 1024 * 1024} // 5MB
+                    helperText="PNG, JPG, GIF до 5MB"
+                    error={!!errors.featured_image}
+                  />
+                )}
+              />
+              {errors.featured_image && (
+                <p className="mt-2 text-sm text-red-600">{errors.featured_image.message}</p>
+              )}
             </div>
 
             {/* SEO поля */}

@@ -4,6 +4,7 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework import permissions
 from . import views
+from apps.common.views import upload_file_to_cloud, list_media_files, delete_media_file, media_stats
 
 # Настройка Swagger документации
 schema_view = get_schema_view(
@@ -30,6 +31,12 @@ urlpatterns = [
     # Cache management
     path('cache/stats/', views.cache_stats, name='cache-stats'),
     path('cache/clear/', views.clear_cache, name='cache-clear'),
+    
+    # File upload and media library
+    path('files/upload-to-cloud/', upload_file_to_cloud, name='upload-file-to-cloud'),
+    path('media/', list_media_files, name='list-media-files'),
+    path('media/stats/', media_stats, name='media-stats'),
+    path('media/delete/', delete_media_file, name='delete-media-file'),
     
     # API endpoints
     path('auth/', include('apps.accounts.urls')),

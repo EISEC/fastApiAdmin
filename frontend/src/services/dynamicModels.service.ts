@@ -171,10 +171,14 @@ class DynamicModelsService {
    * Создание записи данных
    */
   async createModelData(data: DynamicModelDataCreateData) {
+    console.log('Service createModelData called with:', data);
+    
     // Проверяем, есть ли файлы в данных
     const hasFiles = this._hasFileFields(data.data);
+    console.log('Has files:', hasFiles);
     
     if (hasFiles) {
+      console.log('Processing as FormData...');
       // Создаем FormData для отправки файлов
       const formData = new FormData();
       formData.append('dynamic_model', data.dynamic_model.toString());
@@ -183,12 +187,18 @@ class DynamicModelsService {
       // Обрабатываем поля данных
       if (data.data) {
         Object.entries(data.data).forEach(([key, value]) => {
+          console.log(`Processing field ${key}:`, value, typeof value, value instanceof File);
           if (value instanceof File) {
             formData.append(`data.${key}`, value);
           } else if (value !== null && value !== undefined) {
             formData.append(`data.${key}`, typeof value === 'object' ? JSON.stringify(value) : value.toString());
           }
         });
+      }
+      
+      console.log('FormData entries:');
+      for (let [key, value] of formData.entries()) {
+        console.log(`${key}:`, value);
       }
       
       const response = await apiClient.post<DynamicModelData>(`${this.baseUrl}/data/`, formData, {
@@ -198,6 +208,7 @@ class DynamicModelsService {
       });
       return response.data;
     } else {
+      console.log('Processing as JSON...');
       // Обычная отправка JSON
       const response = await apiClient.post<DynamicModelData>(`${this.baseUrl}/data/`, data);
       return response.data;

@@ -473,7 +473,8 @@ class DynamicModelDataViewSet(viewsets.ModelViewSet):
         """Поддержка multipart/form-data для загрузки файлов"""
         from rest_framework.parsers import MultiPartParser, JSONParser, FormParser
         
-        if self.action in ['create', 'update', 'partial_update']:
+        # Проверяем HTTP метод вместо action, так как action еще не установлен
+        if hasattr(self, 'request') and self.request and self.request.method in ['POST', 'PUT', 'PATCH']:
             return [MultiPartParser(), FormParser(), JSONParser()]
         return super().get_parsers()
     

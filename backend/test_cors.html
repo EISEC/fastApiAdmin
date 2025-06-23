@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест CORS для ifuw.ru</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; color: #155724; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; color: #721c24; }
+        .info { background-color: #d1ecf1; border-color: #bee5eb; color: #0c5460; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 3px; overflow-x: auto; }
+        .log { max-height: 300px; overflow-y: auto; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Тест CORS для домена ifuw.ru</h1>
+    
+    <div class="test-section info">
+        <h3>ℹ️ Информация о тестировании</h3>
+        <p><strong>API URL:</strong> https://admin.ifuw.ru/api/v1/</p>
+        <p><strong>Текущий домен:</strong> <span id="currentDomain"></span></p>
+        <p><strong>Тестируемые endpoints:</strong> sites/, posts/, users/</p>
+    </div>
+
+    <div class="test-section">
+        <h3>🚀 Тесты CORS</h3>
+        <button onclick="testCorsEndpoint('sites/')">Тест Sites API</button>
+        <button onclick="testCorsEndpoint('posts/')">Тест Posts API</button>
+        <button onclick="testCorsEndpoint('users/')">Тест Users API</button>
+        <button onclick="testCorsEndpoint('settings/')">Тест Settings API</button>
+        <button onclick="clearLog()">Очистить лог</button>
+    </div>
+
+    <div class="test-section">
+        <h3>📋 Лог тестирования</h3>
+        <div id="testLog" class="log">
+            <p>Нажмите на кнопки выше для начала тестирования...</p>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h3>🔧 Ручное тестирование</h3>
+        <input type="text" id="customEndpoint" placeholder="Введите endpoint (например: dynamic-models/)" style="width: 300px; padding: 5px;">
+        <button onclick="testCustomEndpoint()">Тестировать</button>
+    </div>
+
+    <script>
+        const API_BASE = 'https://admin.ifuw.ru/api/v1/';
+        const logDiv = document.getElementById('testLog');
+        
+        // Показываем текущий домен
+        document.getElementById('currentDomain').textContent = window.location.origin;
+        
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.innerHTML = `<strong>[${timestamp}]</strong> ${message}`;
+            
+            if (type === 'success') {
+                logEntry.style.color = '#155724';
+            } else if (type === 'error') {
+                logEntry.style.color = '#721c24';
+            } else if (type === 'warning') {
+                logEntry.style.color = '#856404';
+            }
+            
+            logDiv.appendChild(logEntry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+        
+        function clearLog() {
+            logDiv.innerHTML = '<p>Лог очищен...</p>';
+        }
+        
+        async function testCorsEndpoint(endpoint) {
+            const url = API_BASE + endpoint;
+            log(`🔍 Тестирование: ${url}`);
+            
+            try {
+                // Тест с fetch API
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include'
+                });
+                
+                log(`📡 Ответ: ${response.status} ${response.statusText}`, 
+                    response.ok || response.status === 401 ? 'success' : 'error');
+                
+                // Показываем CORS заголовки
+                const corsHeaders = {
+                    'Access-Control-Allow-Origin': response.headers.get('Access-Control-Allow-Origin'),
+                    'Access-Control-Allow-Credentials': response.headers.get('Access-Control-Allow-Credentials'),
+                    'Access-Control-Allow-Methods': response.headers.get('Access-Control-Allow-Methods'),
+                    'Access-Control-Allow-Headers': response.headers.get('Access-Control-Allow-Headers')
+                };
+                
+                log(`📋 CORS заголовки: ${JSON.stringify(corsHeaders, null, 2)}`);
+                
+                if (response.status === 401) {
+                    log('✅ CORS работает корректно (401 - требуется авторизация)', 'success');
+                } else if (response.ok) {
+                    log('✅ CORS работает корректно (200 - успешный ответ)', 'success');
+                    
+                    // Пытаемся прочитать данные
+                    try {
+                        const data = await response.json();
+                        log(`📊 Данные получены: ${Object.keys(data).length} ключей`);
+                    } catch (e) {
+                        log(`⚠️ Не удалось прочитать JSON: ${e.message}`, 'warning');
+                    }
+                } else {
+                    log(`❌ Неожиданный статус: ${response.status}`, 'error');
+                }
+                
+            } catch (error) {
+                log(`❌ Ошибка запроса: ${error.message}`, 'error');
+                
+                if (error.message.includes('CORS')) {
+                    log('🚨 Это ошибка CORS! Проверьте настройки сервера.', 'error');
+                } else if (error.message.includes('NetworkError')) {
+                    log('🌐 Ошибка сети. Проверьте подключение к интернету.', 'error');
+                }
+            }
+            
+            log('─'.repeat(50));
+        }
+        
+        function testCustomEndpoint() {
+            const endpoint = document.getElementById('customEndpoint').value.trim();
+            if (!endpoint) {
+                log('⚠️ Введите endpoint для тестирования', 'warning');
+                return;
+            }
+            
+            testCorsEndpoint(endpoint);
+        }
+        
+        // Автоматический тест при загрузке страницы
+        window.addEventListener('load', () => {
+            log('🚀 Страница загружена. Готов к тестированию CORS.');
+            log(`🌐 Текущий домен: ${window.location.origin}`);
+            log(`🎯 API сервер: ${API_BASE}`);
+            log('─'.repeat(50));
+        });
+        
+        // Обработчик для Enter в поле ввода
+        document.getElementById('customEndpoint').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                testCustomEndpoint();
+            }
+        });
+    </script>
+</body>
+</html> 

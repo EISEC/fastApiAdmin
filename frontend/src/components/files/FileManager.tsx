@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import type { FileItem, FolderItem } from '../../types';
 import { useFilesStore } from '../../store/filesStore';
 import FileThumbnail from './FileThumbnail';
-import FileUploader from './FileUploader';
+import CloudFileUpload from '../ui/CloudFileUpload';
 import Button from '../ui/Button';
 import Icon from '../ui/Icon';
 
@@ -280,16 +280,19 @@ const FileManager: React.FC<FileManagerProps> = ({
         {/* Загрузчик файлов */}
         {showUploader && (
           <div className="p-4 border-b border-gray-200">
-            <FileUploader
-              folderId={selectedFolder || undefined}
-              options={{
-                allowedTypes: accept,
-                maxSize: 50 * 1024 * 1024 // 50MB
+            <CloudFileUpload
+              label="Загрузка файлов в медиа-библиотеку"
+              accept={accept?.join(',')}
+              maxSize={50 * 1024 * 1024} // 50MB
+              preview={true}
+              onChange={(url) => {
+                if (url) {
+                  // Файл успешно загружен
+                  setShowUploader(false);
+                  fetchFiles(selectedFolder || undefined);
+                }
               }}
-              onUploadComplete={() => {
-                setShowUploader(false);
-                fetchFiles(selectedFolder || undefined);
-              }}
+              helperText="Файлы будут загружены в Yandex Object Storage"
             />
           </div>
         )}

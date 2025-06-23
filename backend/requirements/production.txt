@@ -11,4 +11,8 @@ django-security==0.11.3
 flup6==1.1.1
 
 # Дополнительные зависимости для продакшена
-python-dotenv==1.0.0 
+python-dotenv==1.0.0
+
+# Production-specific packages
+gunicorn==21.2.0
+django-storages[boto3]==1.14.2 

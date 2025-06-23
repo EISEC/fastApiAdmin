@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import { Button, Switch, Spinner } from '../components/ui';
 import Card from '../components/ui/Card';
@@ -17,6 +15,8 @@ import type { DynamicModel, DynamicModelData, DynamicModelDataUpdateData } from 
 const EditDynamicModelDataPage: React.FC = () => {
   const { id, dataId } = useParams<{ id: string; dataId: string }>();
   const navigate = useNavigate();
+  
+  console.log('🔴 EditDynamicModelDataPage loaded, URL id:', id, 'dataId:', dataId);
   
   const {
     selectedModel,
@@ -49,57 +49,15 @@ const EditDynamicModelDataPage: React.FC = () => {
     }
   };
 
-  // Динамически создаем схему валидации на основе полей модели
-  const createValidationSchema = (model: DynamicModel) => {
-    const schemaFields: Record<string, any> = {};
-    
-    model.fields_config.fields.forEach(field => {
-      let fieldSchema: any;
-      
-      switch (field.type) {
-        case 'email':
-          fieldSchema = z.string().email('Некорректный email');
-          break;
-        case 'url':
-          fieldSchema = z.string().url('Некорректный URL');
-          break;
-        case 'number':
-          fieldSchema = z.number().or(z.string().transform(val => parseInt(val, 10)));
-          break;
-        case 'boolean':
-          fieldSchema = z.boolean();
-          break;
-        case 'date':
-        case 'datetime':
-          fieldSchema = z.string();
-          break;
-        default:
-          fieldSchema = z.string();
-      }
-      
-      if (field.required) {
-        fieldSchema = fieldSchema.min(1, 'Поле обязательно');
-      } else {
-        fieldSchema = fieldSchema.optional();
-      }
-      
-      schemaFields[field.name] = fieldSchema;
-    });
 
-    // Добавляем системные поля
-    schemaFields.is_published = z.boolean().optional();
-    
-    return z.object(schemaFields);
-  };
 
   const {
     register,
     handleSubmit,
     control,
     reset,
-    formState: { errors, isValid }
+    formState: { errors }
   } = useForm({
-    resolver: selectedModel ? zodResolver(createValidationSchema(selectedModel)) : undefined,
     mode: 'onChange'
   });
 
@@ -265,7 +223,7 @@ const EditDynamicModelDataPage: React.FC = () => {
             </Button>
             <Button
               type="submit"
-              disabled={!isValid || submitting}
+                              disabled={submitting}
               loading={submitting}
             >
               Сохранить изменения

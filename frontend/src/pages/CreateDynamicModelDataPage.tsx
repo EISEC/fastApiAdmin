@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import { Button, Switch, Spinner } from '../components/ui';
 import Card from '../components/ui/Card';
@@ -18,6 +16,8 @@ const CreateDynamicModelDataPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   
+  console.log('🟢 CreateDynamicModelDataPage loaded, URL id:', id);
+  
   const {
     selectedModel,
     fetchModel,
@@ -26,6 +26,8 @@ const CreateDynamicModelDataPage: React.FC = () => {
 
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  
+
 
   useEffect(() => {
     if (id) {
@@ -44,109 +46,79 @@ const CreateDynamicModelDataPage: React.FC = () => {
     }
   };
 
-  // Динамически создаем схему валидации на основе полей модели
-  const createValidationSchema = (model: DynamicModel) => {
-    const schemaFields: Record<string, any> = {};
-    
-    model.fields_config.fields.forEach(field => {
-      let fieldSchema: any;
-      
-      switch (field.type) {
-        case 'email':
-          fieldSchema = z.string().email('Некорректный email');
-          break;
-        case 'url':
-          fieldSchema = z.string().url('Некорректный URL');
-          break;
-        case 'number':
-        case 'decimal':
-        case 'range':
-          fieldSchema = z.number().or(z.string().transform(val => parseInt(val, 10)));
-          break;
-        case 'boolean':
-          fieldSchema = z.boolean();
-          break;
-        case 'date':
-        case 'datetime':
-        case 'time':
-          fieldSchema = z.string();
-          break;
-        case 'file':
-        case 'image':
-        case 'gallery':
-          fieldSchema = z.any(); // Файлы могут быть File объектами или строками
-          break;
-        case 'multiselect':
-        case 'checkbox':
-          fieldSchema = z.array(z.string());
-          break;
-        case 'json':
-          fieldSchema = z.string().refine((val) => {
-            try {
-              JSON.parse(val);
-              return true;
-            } catch {
-              return false;
-            }
-          }, { message: 'Должен быть валидный JSON' });
-          break;
-        case 'color':
-          fieldSchema = z.string().regex(/^#[0-9A-F]{6}$/i, 'Некорректный цвет');
-          break;
-        case 'rating':
-          fieldSchema = z.number().min(0).max(5);
-          break;
-        default:
-          fieldSchema = z.string();
-      }
-      
-      if (field.required) {
-        fieldSchema = fieldSchema.min(1, 'Поле обязательно');
-      } else {
-        fieldSchema = fieldSchema.optional();
-      }
-      
-      schemaFields[field.name] = fieldSchema;
-    });
 
-    // Добавляем системные поля
-    schemaFields.is_published = z.boolean().optional();
-    
-    return z.object(schemaFields);
-  };
 
   const {
     register,
     handleSubmit,
     control,
-    formState: { errors, isValid }
+    reset,
+    formState: { errors }
   } = useForm({
-    resolver: selectedModel ? zodResolver(createValidationSchema(selectedModel)) : undefined,
     mode: 'onChange',
     defaultValues: {
-      is_published: false,
-      ...selectedModel?.fields_config.fields.reduce((acc, field) => {
-        acc[field.name] = field.default_value || '';
-        return acc;
-      }, {} as Record<string, any>)
+      is_published: false
     }
   });
+
+  // Обновляем значения формы после загрузки модели
+  useEffect(() => {
+    if (selectedModel) {
+      const defaultValues = {
+        is_published: false,
+        ...selectedModel.fields_config.fields.reduce((acc, field) => {
+          // Устанавливаем правильные значения по умолчанию в зависимости от типа поля
+          if (['multiselect', 'checkbox'].includes(field.type)) {
+            acc[field.name] = field.default_value || [];
+          } else if (field.type === 'boolean') {
+            acc[field.name] = field.default_value || false;
+          } else if (['number', 'decimal', 'range', 'rating'].includes(field.type)) {
+            acc[field.name] = field.default_value || 0;
+          } else if (['file', 'image', 'gallery'].includes(field.type)) {
+            acc[field.name] = null; // Для файлов изначально null
+          } else {
+            acc[field.name] = field.default_value || '';
+          }
+          return acc;
+        }, {} as Record<string, any>)
+      };
+      
+
+      reset(defaultValues);
+    }
+  }, [selectedModel, reset]);
+
+
 
   const handleFormSubmit = async (data: any) => {
     if (!selectedModel) return;
     
+    console.log('Form data before processing:', data);
+    console.log('Form data types:', Object.keys(data).map(key => `${key}: ${typeof data[key]} ${data[key] instanceof File ? '(File)' : ''}`));
+    
     setSubmitting(true);
     try {
+      // Обрабатываем данные перед отправкой
+      const processedData = { ...data };
+      delete processedData.is_published; // Убираем is_published из data
+      
+      console.log('Processed data:', processedData);
+      console.log('Processed data types:', Object.keys(processedData).map(key => `${key}: ${typeof processedData[key]} ${processedData[key] instanceof File ? '(File)' : ''}`));
+      
       const createData: DynamicModelDataCreateData = {
         dynamic_model: selectedModel.id,
-        data,
+        data: processedData,
         is_published: data.is_published || false,
       };
+
+      console.log('Final create data:', createData);
 
       const result = await createModelData(createData);
       if (result) {
         navigate(`/dynamic-models/${selectedModel.id}/data`);
       }
+    } catch (error) {
+      console.error('Error creating model data:', error);
     } finally {
       setSubmitting(false);
     }
@@ -161,7 +133,7 @@ const CreateDynamicModelDataPage: React.FC = () => {
   };
 
   const renderField = (field: any) => {
-    const fieldError = errors[field.name] as any;
+    const fieldError = (errors as any)?.[field.name];
     
     return (
       <DynamicFieldRenderer
@@ -281,7 +253,7 @@ const CreateDynamicModelDataPage: React.FC = () => {
             </Button>
             <Button
               type="submit"
-              disabled={!isValid || submitting}
+                              disabled={submitting}
               loading={submitting}
             >
               Создать запись

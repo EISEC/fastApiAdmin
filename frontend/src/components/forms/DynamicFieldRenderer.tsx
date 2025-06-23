@@ -1,6 +1,6 @@
 import React from 'react';
 import { UseFormRegister, FieldError, Control, Controller } from 'react-hook-form';
-import { Input, Textarea, Select, Switch, FileUpload } from '../ui';
+import { Input, Textarea, Select, Switch, FileUpload, CloudFileUpload } from '../ui';
 import Icon from '../ui/Icon';
 
 interface FieldOption {
@@ -40,6 +40,7 @@ const DynamicFieldRenderer: React.FC<DynamicFieldRendererProps> = ({
   value,
   onChange
 }) => {
+
   const getErrorMessage = (error: any) => {
     if (error && typeof error === 'object' && 'message' in error) {
       return error.message;
@@ -219,7 +220,6 @@ const DynamicFieldRenderer: React.FC<DynamicFieldRendererProps> = ({
           <Controller
             name={field.name}
             control={control}
-            defaultValue={[]}
             render={({ field: formField }) => (
               <div className="space-y-2">
                 {field.options?.map((option) => (
@@ -256,7 +256,7 @@ const DynamicFieldRenderer: React.FC<DynamicFieldRendererProps> = ({
             name={field.name}
             control={control}
             render={({ field: formField }) => (
-              <FileUpload
+              <CloudFileUpload
                 label={field.label + (field.required ? ' *' : '')}
                 value={formField.value}
                 onChange={formField.onChange}
@@ -278,7 +278,7 @@ const DynamicFieldRenderer: React.FC<DynamicFieldRendererProps> = ({
             name={field.name}
             control={control}
             render={({ field: formField }) => (
-              <FileUpload
+              <CloudFileUpload
                 label={field.label + (field.required ? ' *' : '')}
                 value={formField.value}
                 onChange={formField.onChange}
